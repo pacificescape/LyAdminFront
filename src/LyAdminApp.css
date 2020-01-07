@@ -1,0 +1,74 @@
+/*
+ *  Copyright (c) 2018-present, Evgeny Nadymov
+ *
+ * This source code is licensed under the GPL v.3.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+ *:focus {
+    outline: none;
+}
+
+html {
+    background: #fff;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font: 15px/20px 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+b,
+strong {
+    font-weight: 700;
+}
+
+mark {
+    background-color: #fff8cc;
+    border-radius: 3px;
+    padding: 0 3px;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+}
+
+.page {
+    height: calc(100% - 0px);
+    max-width: 1680px;
+    min-width: 300px;
+    margin: 0 auto;
+    border-style: solid;
+    border-width: 0 1px 0 1px;
+    overflow: hidden;
+}
+
+.page-third-column {
+    max-width: 1680px;
+}
+
+.accent-color {
+}
+
+.accent-background {
+}
+
+.pointer {
+    cursor: pointer;
+}

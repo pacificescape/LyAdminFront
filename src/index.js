@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import styled from 'styled-components'
-import './index.css';
 import LyAdminApp from './LyAdminApp';
 import * as serviceWorker from './serviceWorker';
 
