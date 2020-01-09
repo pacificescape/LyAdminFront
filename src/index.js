@@ -1,11 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import LyAdminApp from './LyAdminApp';
+import Loader from './Components/Loader/Loader'
 import * as serviceWorker from './serviceWorker';
+
+const a = async () => {
+    console.log('a')
+    fetch(window.href)
+}
 
 ReactDOM.render(
         <Router>
+            <Route path='/login' component={Loader}/>
             <Route path='' component={LyAdminApp} />
         </Router>,
     document.getElementById('root')
