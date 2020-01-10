@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LyAdminApp from './LyAdminApp';
+import { Provider } from 'react-redux'
 import createStore from './redux/store';
 import * as serviceWorker from './serviceWorker';
 
@@ -9,7 +10,9 @@ const store = createStore()
 
 ReactDOM.render(
         <Router>
-            <Route store={store} component={LyAdminApp} />
+            <Provider store={store}>
+                <Route component={LyAdminApp} />
+            </Provider>
         </Router>,
     document.getElementById('root')
 );

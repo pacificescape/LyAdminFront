@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import withTheme from './Theme'
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles'
 import { compose } from 'recompose'
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 import GroupsStore from './Stores/GroupsStore'
-// import AuthStore from './Stores/AuthStore'
+import { connect } from 'react-redux'
+import {
+  getUserGroupsThunk,
+  toggleIsAuthThunk
+} from './redux/reducers/App'
 import GroupsList from './Components/GroupsList'
 import Loader from './Components/Loader/Loader'
 import './LyAdminApp.css';
@@ -54,14 +58,7 @@ class LyAdminApp extends Component {
   // let open = useStore(dialogToggler)
 
   componentDidMount() {
-    GroupsStore.getUserGroups()
-      .then((err) => {
-        if(err) return
-        this.setState({
-          isAuth: true,
-          isLoading: false,
-        })
-      })
+    this.props.toggleIsAuth(true)
   }
 
   render() {
@@ -93,6 +90,28 @@ class LyAdminApp extends Component {
 //     margin: auto;
 //     height: 100vh;
 // `
+let mapStateToProps = (state) => {
+  return {
+      isAuth: state.App.isAuth,
+      isLoading: state.App.isFetching,
+      groups: state.App.groups,
+  }
+
+}
+
+let mapDispatchTooProps = (dispatch) => {
+  return {
+    getUserGroups: () => {
+      dispatch(getUserGroupsThunk())
+    },
+    toggleIsAuth: (isAuth) => {
+      dispatch(toggleIsAuthThunk(isAuth))
+    }
+  }
+}
+
+
+const LyAdminAppContainer = connect(mapStateToProps, mapDispatchTooProps)(LyAdminApp)
 
 const enhance = compose(
   // withLanguage,
@@ -101,4 +120,4 @@ const enhance = compose(
   withStyles(styles, { withTheme: true })
 );
 
-export default enhance(LyAdminApp);
+export default enhance(LyAdminAppContainer);

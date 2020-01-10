@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import Groups from './Groups';
+// import App from './App';
+import App from './App';
 import currentGroup from './currentGroup';
 
 
 export default combineReducers({
-    Groups,
+    App,
     currentGroup
 });
