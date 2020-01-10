@@ -9,14 +9,13 @@ class GroupsStore extends EventEmitter {
     }
 
     reset = () => {
-        this.groups = new Map()
+        this.groups = []
     }
 
     getUserGroups = async () => {
         return await fetch(`/api/getUserGroups`)
         .then(res => res.json())
-        .then((groups) => this.groups.set = new Map(groups))
-        .catch((err) => console.log(err))
+        .catch((err) => err)
     }
 
     getGroup = (groupId) => {

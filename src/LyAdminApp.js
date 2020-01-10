@@ -1,13 +1,14 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles';
-import { compose, componentFromStream, createEventHandler } from 'recompose'
+import { compose } from 'recompose'
 import Button from '@material-ui/core/Button';
 import GroupsStore from './Stores/GroupsStore'
+// import AuthStore from './Stores/AuthStore'
 import GroupsList from './Components/GroupsList'
 import Loader from './Components/Loader/Loader'
 import './LyAdminApp.css';
-import { ThemeConsumer } from 'styled-components';
+// import { ThemeConsumer } from 'styled-components';
 
 const styles = theme => ({
   '@global': {
@@ -54,12 +55,21 @@ class LyAdminApp extends Component {
 
   componentDidMount() {
     GroupsStore.getUserGroups()
-      .then((groups) => this.setState({groups}))
+      .then((err) => {
+        if(err) return
+        this.setState({
+          isAuth: true,
+          isLoading: false,
+        })
+      })
   }
 
   render() {
     if(!this.state.isAuth && this.state.isLoading) {
-      return <Loader />
+      return <Loader
+        isAuth={this.state.isAuth}
+        isLoading={this.state.isLoading}
+        />
     }
 
     return (
