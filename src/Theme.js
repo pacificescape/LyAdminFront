@@ -14,6 +14,11 @@ function createTheme(type, primary) {
         status: {
             danger: 'orange',
         },
+        overrides: {
+            MuiAppBar: {
+                flexDirection: "row"
+            }
+        }
     });
 }
 
@@ -25,7 +30,7 @@ function withTheme(WrappedComponent) {
 
             this.state = {}
             const cookies = new Cookies();
-            const { type, primary } = cookies.get('themeOptions') || { type: 'light', primary: { main: '#5B8AF1' } };
+            const { type, primary } = cookies.get('themeOptions') || { type: 'dark', primary: { main: '#5B8AF1' } };
             const theme = createTheme(type, primary);
 
             this.state = { theme };

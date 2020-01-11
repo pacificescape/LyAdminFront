@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
     root: {
-      width: "100%",
+      width: "50%",
       maxWidth: 360,
       margin: "auto",
       padding: 0,
@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     },
     nested: {
       paddingLeft: theme.spacing(4)
+    },
+    ListItem: {
+        width: "60px"
     }
   }));
 
@@ -62,16 +65,16 @@ export default function GroupsList(props) {
             </Dialog>
 
             <List component="nav" className={classes.root}>
-                    <ListItem button onClick={handleClick}>
-                        <ListItemText primary="Inbox" />
-                        {open ? <span>-</span> : <span>+</span>}
-                    </ListItem>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            {renderGroupsList(groups)}
-                        </List>
-                    </Collapse>
-                </List>
+                <ListItem button onClick={handleClick}>
+                    <ListItemText primary="Inbox" />
+                    {open ? <span>-</span> : <span>+</span>}
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {renderGroupsList(groups)}
+                    </List>
+                </Collapse>
+            </List>
         </div>
     )
 

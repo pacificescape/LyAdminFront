@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
 import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
@@ -10,14 +8,16 @@ import {
   toggleIsAuthThunk
 } from './redux/reducers/App'
 import { compose } from 'recompose'
-import GroupsList from './Components/GroupsList'
+
 import Loader from './Components/Loader/Loader'
+import Header from './Components/Header'
 import './LyAdminApp.css';
-import styled from 'styled-components'
+// import styled from 'styled-components'
 // import { ThemeConsumer } from 'styled-components';
 
 import Cookies from 'universal-cookie'
-import { useRouteMatch } from 'react-router-dom'
+// import { useRouteMatch } from 'react-router-dom'
+
 
 
 const styles = theme => ({
@@ -41,6 +41,16 @@ const styles = theme => ({
       textAlign: 'center',
       background: theme.palette.type === 'dark' ? theme.palette.grey[900] : '#ffffff',
       color: theme.palette.text.primary
+    },
+    header: {
+      flexDirection: 'row',
+      backgroundColor: theme.palette.grey[700]
+    },
+    IconButton: {
+      flexGrow: 1
+    },
+    Typography: {
+      flexGrow: 2
     }
   }
 });
@@ -50,17 +60,11 @@ const styles = theme => ({
 class LyAdminApp extends Component {
   constructor(props) {
     super(props);
-    const cookies = new Cookies() // сделать добавление
-    const userName = cookies.get('userName')
-    const userPhoto = cookies.get('userPhoto')
 
     this.state = {
       isLoading: props.isFetching,
       isAuth: props.isAuth,
       isError: props.isError,
-      open: false,
-      userName,
-      userPhoto
     }
   }
   handleClick = () => {
@@ -87,50 +91,38 @@ class LyAdminApp extends Component {
       />
     }
 
-    let title = this.props.currentGroup.info.title || 'Group title'
-
-    if (this.props.isError) {
-      title = 'isError'
-    }
 
     return (
       <div id="app">
-        <div>
-          <Header className="">
-            <Avatar src={this.state.userPhoto} />
-            <span>{this.state.userName}</span>
-          </Header>
-        </div>
-        <Button variant="outlined" color="primary" onClick={this.handleClick}>
-          {title}
-        </Button>
-        {/* <ListOfGroups groups={this.props.groups}/> */}
-        <GroupsList
-          open={this.state.open}
-          groups={this.props.groups}
+        <Header
           getGroup={this.props.getGroup}
-          handleClose={this.handleClick} />
+          groups={this.props.groups}
+          currentGroup={this.props.currentGroup}
+        />
+        {/* <ListOfGroups groups={this.props.groups}/> */}
+
       </div>
     )
   }
 }
 
-const Header = styled.div`
-    vertical-align: middle;
-    display: inline-block;
-    margin-left: 20px;
-    width: 90%;
+// const Header = styled.div`
+//     vertical-align: middle;
+//     display: inline-block;
+//     margin-left: 20px;
+//     width: 100%;
+//     height: 64px;
 
-    div {
-      float: left;
-    }
+//     div {
 
-    span {
-      display: inline-block;
-      margin-left: 20px;
-      vertical-align: middle
-    }
-`
+//     }
+
+//     span {
+//       display: inline-block;
+//       margin-left: 20px;
+//       vertical-align: middle
+//     }
+// `
 
 let mapStateToProps = (state) => {
   return {
