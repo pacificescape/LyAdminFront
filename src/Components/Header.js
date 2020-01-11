@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { applyMiddleware } from 'redux';
 
 const styles = theme => ({
     AppBar: {
@@ -19,9 +20,12 @@ const styles = theme => ({
         flexDirection: 'row'
     },
     IconButton: {
+        marginLeft: '5px',
         flexGrow: 0
     },
     Typography: {
+        verticalAlign: 'middle',
+        lineHeight: '64px',
         textAlign: 'left',
         flexGrow: 2
     },
@@ -47,14 +51,19 @@ class Header extends Component {
         const userPhoto = cookies.get('userPhoto')
 
         this.state = {
-          isLoading: props.isFetching,
-          isAuth: props.isAuth,
-          isError: props.isError,
-          open: false,
-          userName,
-          userPhoto
+            isLoading: props.isFetching,
+            isAuth: props.isAuth,
+            isError: props.isError,
+            open: false,
+            userName,
+            userPhoto
         }
-      }
+    }
+
+    handleClick = () => {
+        this.setState({ open: !this.state.open })
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -75,18 +84,18 @@ class Header extends Component {
                     <Typography variant="h6" className={classes.Typography}>
                         <span>{this.props.currentGroup.info.title}</span>
                     </Typography>
-                    <Avatar src={this.state.userPhoto} className={classes.Avatar}/>
+                    <Avatar src={this.state.userPhoto} className={classes.Avatar} />
                 </AppBar>
                 <span>{this.state.userName}</span>
                 <Button variant="outlined" color="primary" onClick={this.handleClick}>
                     {title}
                 </Button>
                 <GroupsList
-                        className={classes.GroupsList}
-                        open={this.state.open}
-                        groups={this.props.groups}
-                        getGroup={this.props.getGroup}
-                        handleClose={this.handleClick} />
+                    className={classes.GroupsList}
+                    open={this.state.open}
+                    groups={this.props.groups}
+                    getGroup={this.props.getGroup}
+                    handleClose={this.handleClick} />
             </header>
         )
     }

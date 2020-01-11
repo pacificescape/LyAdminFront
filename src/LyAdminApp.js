@@ -67,9 +67,6 @@ class LyAdminApp extends Component {
       isError: props.isError,
     }
   }
-  handleClick = () => {
-    this.setState({ open: !this.state.open })
-  }
 
   // let open = useStore(dialogToggler)
 
