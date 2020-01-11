@@ -76,7 +76,7 @@ class LyAdminApp extends Component {
         />
     }
 
-    let title = this.props.currentGroup.title || 'Group title'
+    let title = this.props.currentGroup.info.title || 'Group title'
 
     if (this.props.isError) {
       title = 'isError'
@@ -95,6 +95,7 @@ class LyAdminApp extends Component {
         <GroupsList
           open={this.state.open}
           groups={this.props.groups}
+          getGroup={this.props.getGroup}
           handleClose={this.handleClick} />
       </div>
     )
@@ -123,8 +124,8 @@ let mapDispatchTooProps = (dispatch) => {
     getUserGroups: () => {
       dispatch(getUserGroupsThunk())
     },
-    getGroup: () => {
-      dispatch(getCurrentGroupThunk())
+    getGroup: (groupId) => {
+      dispatch(getCurrentGroupThunk(groupId))
     },
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))

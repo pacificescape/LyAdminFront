@@ -74,8 +74,8 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
 
         if (!res.ok) return
 
-        let { group } = res.result
-        dispatch(setCurrentGroup(group))
+        let { groupInfo } = res.result
+        dispatch(setCurrentGroup(groupInfo))
     })
 }
 

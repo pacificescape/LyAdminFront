@@ -41,11 +41,12 @@ export default function GroupsList(props) {
   const renderGroupsList = () => {
       return props.groups.map((group, i) => {
           return (
-              <List component="div" key={i} disablePadding>
-                <ListItem button>
+                <ListItem
+                    button key={i}
+                    className={classes.nested}
+                    onClick={() => props.getGroup(group.id)}>
                     <ListItemText primary={group.title} />
                 </ListItem>
-            </List>
           )
         })
   }
@@ -66,7 +67,9 @@ export default function GroupsList(props) {
                         {open ? <span>-</span> : <span>+</span>}
                     </ListItem>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        {renderGroupsList(groups)}
+                        <List component="div" disablePadding>
+                            {renderGroupsList(groups)}
+                        </List>
                     </Collapse>
                 </List>
         </div>
