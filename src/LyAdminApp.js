@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { compose } from 'recompose'
 import Button from '@material-ui/core/Button'
+import Avatar from '@material-ui/core/Avatar'
 import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
   getCurrentGroupThunk,
   toggleIsAuthThunk
 } from './redux/reducers/App'
+import { compose } from 'recompose'
 import GroupsList from './Components/GroupsList'
 import Loader from './Components/Loader/Loader'
 import './LyAdminApp.css';
+import styled from 'styled-components'
 // import { ThemeConsumer } from 'styled-components';
+
+import Cookies from 'universal-cookie'
+import { useRouteMatch } from 'react-router-dom'
+
 
 const styles = theme => ({
   '@global': {
@@ -44,16 +50,21 @@ const styles = theme => ({
 class LyAdminApp extends Component {
   constructor(props) {
     super(props);
+    const cookies = new Cookies() // сделать добавление
+    const userName = cookies.get('userName')
+    const userPhoto = cookies.get('userPhoto')
 
     this.state = {
       isLoading: props.isFetching,
       isAuth: props.isAuth,
       isError: props.isError,
-      open: false
+      open: false,
+      userName,
+      userPhoto
     }
   }
   handleClick = () => {
-    this.setState({open: !this.state.open})
+    this.setState({ open: !this.state.open })
   }
 
   // let open = useStore(dialogToggler)
@@ -69,11 +80,11 @@ class LyAdminApp extends Component {
   }
 
   render() {
-    if(!this.props.isAuth) {
+    if (!this.props.isAuth) {
       return <Loader
         isAuth={this.props.isAuth}
         isLoading={this.props.isLoading}
-        />
+      />
     }
 
     let title = this.props.currentGroup.info.title || 'Group title'
@@ -84,10 +95,12 @@ class LyAdminApp extends Component {
 
     return (
       <div id="app">
-        <header className="">
-          LyAdminApp
-        <p>{this.props.currentGroup.title}</p>
-        </header>
+        <div>
+          <Header className="">
+            <Avatar src={this.state.userPhoto} />
+            <span>{this.state.userName}</span>
+          </Header>
+        </div>
         <Button variant="outlined" color="primary" onClick={this.handleClick}>
           {title}
         </Button>
@@ -102,12 +115,22 @@ class LyAdminApp extends Component {
   }
 }
 
-// const Theme = styled.div`
-//     background-color: #181a1b;
-//     color: #ffffff;
-//     margin: auto;
-//     height: 100vh;
-// `
+const Header = styled.div`
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 20px;
+    width: 90%;
+
+    div {
+      float: left;
+    }
+
+    span {
+      display: inline-block;
+      margin-left: 20px;
+      vertical-align: middle
+    }
+`
 
 let mapStateToProps = (state) => {
   return {
