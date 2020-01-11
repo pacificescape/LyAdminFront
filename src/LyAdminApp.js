@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
+  getCurrentGroupThunk,
   toggleIsAuthThunk
 } from './redux/reducers/App'
 import GroupsList from './Components/GroupsList'
@@ -90,7 +91,11 @@ class LyAdminApp extends Component {
         <Button variant="outlined" color="primary" onClick={this.handleClick}>
           {title}
         </Button>
-        <GroupsList open={this.state.open} handleClose={this.handleClick} />
+        {/* <ListOfGroups groups={this.props.groups}/> */}
+        <GroupsList
+          open={this.state.open}
+          groups={this.props.groups}
+          handleClose={this.handleClick} />
       </div>
     )
   }
@@ -117,6 +122,9 @@ let mapDispatchTooProps = (dispatch) => {
   return {
     getUserGroups: () => {
       dispatch(getUserGroupsThunk())
+    },
+    getGroup: () => {
+      dispatch(getCurrentGroupThunk())
     },
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))
