@@ -1,7 +1,6 @@
 import React from 'react';
 // import { Redirect } from 'react-router-dom';
 import styles from './Loader.module.css';
-import { connect } from 'react-redux';
 
 class Loader extends React.Component {
     tgButton = () => 'Ошибка'
@@ -38,34 +37,4 @@ class Loader extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
-    return {
-        isAuth: state.App.isAuth,
-        isFetching: state.App.isFetching,
-        groups: state.App.groups
-    }
-
-}
-
-let mapDispatchTooProps = () => {
-    return {
-
-    }
-}
-
-
-const LoaderContainer = connect(mapStateToProps, mapDispatchTooProps)(Loader)
-
-export default LoaderContainer
-
-
-                // <div className="mt-5">
-                //     <Redirect from="/we" to="/" />
-                //     <div className="mx-auto" style={{width: "fit-content"}}>
-                //         <img alt='' src='https://media.giphy.com/media/2yzIXo95cy4Y7sGCNM/giphy.gif' width="100" className=''></img>
-                //     </div>
-                //     <div className="mx-auto" style={{width: "fit-content"}}>
-                //         <h2 className="text-warning text-center">Войти</h2>
-                //         <div id="authButton"></div>
-                //     </div>
-                // </div>
+export default Loader

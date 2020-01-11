@@ -3,7 +3,6 @@ import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { compose } from 'recompose'
 import Button from '@material-ui/core/Button'
-import GroupsStore from './Stores/GroupsStore'
 import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
@@ -46,8 +45,9 @@ class LyAdminApp extends Component {
     super(props);
 
     this.state = {
-      isLoading: true,
-      isAuth: false,
+      isLoading: props.isFetching,
+      isAuth: props.isAuth,
+      isError: props.isError,
       open: false
     }
   }
@@ -58,25 +58,37 @@ class LyAdminApp extends Component {
   // let open = useStore(dialogToggler)
 
   componentDidMount() {
-    this.props.toggleIsAuth(true)
+    if (this.props.groups.length === 0 && !this.props.isError) {
+      this.props.getUserGroups()
+    }
+  }
+
+  componentDidUpdate() {
+    console.log('did update')
   }
 
   render() {
-    if(!this.state.isAuth && this.state.isLoading) {
+    if(!this.props.isAuth) {
       return <Loader
-        isAuth={this.state.isAuth}
-        isLoading={this.state.isLoading}
+        isAuth={this.props.isAuth}
+        isLoading={this.props.isLoading}
         />
+    }
+
+    let title = this.props.currentGroup.title || 'Group title'
+
+    if (this.props.isError) {
+      title = 'isError'
     }
 
     return (
       <div id="app">
         <header className="">
           LyAdminApp
-        <p>{this.state.counter}</p>
+        <p>{this.props.currentGroup.title}</p>
         </header>
         <Button variant="outlined" color="primary" onClick={this.handleClick}>
-          Open simple dialog
+          {title}
         </Button>
         <GroupsList open={this.state.open} handleClose={this.handleClick} />
       </div>
@@ -90,13 +102,15 @@ class LyAdminApp extends Component {
 //     margin: auto;
 //     height: 100vh;
 // `
+
 let mapStateToProps = (state) => {
   return {
-      isAuth: state.App.isAuth,
-      isLoading: state.App.isFetching,
-      groups: state.App.groups,
+    isAuth: state.App.isAuth,
+    isLoading: state.App.isFetching,
+    isError: state.App.isError,
+    groups: state.App.groups,
+    currentGroup: state.App.currentGroup
   }
-
 }
 
 let mapDispatchTooProps = (dispatch) => {
@@ -110,12 +124,9 @@ let mapDispatchTooProps = (dispatch) => {
   }
 }
 
-
 const LyAdminAppContainer = connect(mapStateToProps, mapDispatchTooProps)(LyAdminApp)
 
 const enhance = compose(
-  // withLanguage,
-  // withTranslation(),
   withTheme,
   withStyles(styles, { withTheme: true })
 );

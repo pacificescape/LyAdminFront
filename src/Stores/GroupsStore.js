@@ -21,8 +21,6 @@ class GroupsStore extends EventEmitter {
     getGroup = (groupId) => {
         return this.groups.get(groupId)
     }
-
-
 }
 
 const store = new GroupsStore()
