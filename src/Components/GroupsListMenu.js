@@ -25,23 +25,26 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
         boxShadow: 'none',
         '&:hover': {
-            boxShadow: 'none'
+            boxShadow: 'none',
+            backgroundColor: theme.palette.primary.main
         }
     },
-    menuList: {
-        paddingTop: 0,
-        paddingBottom: 0,
+    StyledMenuItem: {
+        borderRadius: 0
     }
-
 }));
 
 const StyledMenu = withStyles({
-    root: {
-        padding: 0
+    list: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        borderRadius: 0,
+
     },
     paper: {
         border: 'none',
-        padding: 0
+        padding: 0,
+        borderRadius: 0
     },
 })(props => (
     <Menu
@@ -61,6 +64,7 @@ const StyledMenu = withStyles({
 
 const StyledMenuItem = withStyles(theme => ({
     root: {
+        borderRadius: 0,
         '&:focus': {
             backgroundColor: theme.palette.primary.main,
             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -79,8 +83,10 @@ export default function GroupsListMenu(props) {
         return props.groups.map((group, i) => {
             return (
                 <StyledMenuItem
-                    button key={i}
-                    className={classes.nested}
+                    border={1}
+                    button
+                    key={i}
+                    className={classes.StyledMenuItem}
                     onClick={() => {
                         props.getGroup(group.id)
                         handleClose()
@@ -106,6 +112,7 @@ export default function GroupsListMenu(props) {
     return (
         <div>
             <Button
+                disableRipple={true}
                 className={classes.menuButton}
                 aria-controls="customized-menu"
                 aria-haspopup="true"

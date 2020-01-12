@@ -14,10 +14,9 @@ function createTheme(type, primary) {
         status: {
             danger: 'orange',
         },
-        overrides: {
-            MuiAppBar: {
-                flexDirection: "row"
-            }
+
+        MuiAppBar: {
+            flexDirection: "row"
         }
     });
 }

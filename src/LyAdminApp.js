@@ -31,7 +31,7 @@ const styles = theme => ({
     pre: {
       borderColor: theme.palette.divider,
       color: theme.palette.primary.dark,
-      // background: theme.palette.primary.main + '11'
+      background: theme.palette.primary.main + '11',
       '&::selection': {
         color: theme.palette.text.primary,
         backgroundColor: 'highlight'
@@ -68,8 +68,6 @@ class LyAdminApp extends Component {
     }
   }
 
-  // let open = useStore(dialogToggler)
-
   componentDidMount() {
     if (this.props.groups.length === 0 && !this.props.isError) {
       this.props.getUserGroups()
@@ -96,30 +94,10 @@ class LyAdminApp extends Component {
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
         />
-        {/* <ListOfGroups groups={this.props.groups}/> */}
-
       </div>
     )
   }
 }
-
-// const Header = styled.div`
-//     vertical-align: middle;
-//     display: inline-block;
-//     margin-left: 20px;
-//     width: 100%;
-//     height: 64px;
-
-//     div {
-
-//     }
-
-//     span {
-//       display: inline-block;
-//       margin-left: 20px;
-//       vertical-align: middle
-//     }
-// `
 
 let mapStateToProps = (state) => {
   return {
