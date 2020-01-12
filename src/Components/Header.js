@@ -4,20 +4,27 @@ import { compose } from 'recompose';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '../Theme';
 
-import GroupsList from './GroupsList'
+import GroupsListMenu from './GroupsListMenu'
 
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import { applyMiddleware } from 'redux';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
 const styles = theme => ({
+    header: {
+
+    },
     AppBar: {
         height: '64px',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: '10px'
     },
     IconButton: {
         marginLeft: '5px',
@@ -54,7 +61,6 @@ class Header extends Component {
             isLoading: props.isFetching,
             isAuth: props.isAuth,
             isError: props.isError,
-            open: false,
             userName,
             userPhoto
         }
@@ -75,13 +81,16 @@ class Header extends Component {
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
-                    <IconButton edge="start"
-                        className={classes.IconButton}
-                        color="inherit"
-                        aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.Typography}>
+                    <GroupsListMenu
+                    className={classes.GroupsList}
+                    open={this.state.open}
+                    groups={this.props.groups}
+                    getGroup={this.props.getGroup}
+                    handleClose={this.handleClick}
+                    />
+                    <Typography
+                        variant="h6"
+                        className={classes.Typography}>
                         <span>{this.props.currentGroup.info.title}</span>
                     </Typography>
                     <Avatar src={this.state.userPhoto} className={classes.Avatar} />
@@ -90,12 +99,6 @@ class Header extends Component {
                 <Button variant="outlined" color="primary" onClick={this.handleClick}>
                     {title}
                 </Button>
-                <GroupsList
-                    className={classes.GroupsList}
-                    open={this.state.open}
-                    groups={this.props.groups}
-                    getGroup={this.props.getGroup}
-                    handleClose={this.handleClick} />
             </header>
         )
     }
