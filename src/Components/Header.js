@@ -66,18 +66,9 @@ class Header extends Component {
         }
     }
 
-    handleClick = () => {
-        this.setState({ open: !this.state.open })
-    }
-
     render() {
         const { classes } = this.props;
 
-        let title = this.props.currentGroup.info.title || 'Group title'
-
-        if (this.props.isError) {
-            title = 'isError'
-        }
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
@@ -95,10 +86,6 @@ class Header extends Component {
                     </Typography>
                     <Avatar src={this.state.userPhoto} className={classes.Avatar} />
                 </AppBar>
-                <span>{this.state.userName}</span>
-                <Button variant="outlined" color="primary" onClick={this.handleClick}>
-                    {title}
-                </Button>
             </header>
         )
     }

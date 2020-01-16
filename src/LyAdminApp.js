@@ -11,6 +11,7 @@ import { compose } from 'recompose'
 
 import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
+import Firstline from './Components/Firstline'
 import './LyAdminApp.css';
 // import styled from 'styled-components'
 // import { ThemeConsumer } from 'styled-components';
@@ -94,6 +95,7 @@ class LyAdminApp extends Component {
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
         />
+        <Firstline groupTitle={this.props.currentGroup.info.title}/>
       </div>
     )
   }

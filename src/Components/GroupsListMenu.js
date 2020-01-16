@@ -24,10 +24,14 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '32px',
         padding: 0,
         boxShadow: 'none',
+        userSelect: 'none',
         '&:hover': {
             boxShadow: 'none',
             backgroundColor: theme.palette.primary.main
         }
+    },
+    IconButton: {
+        userSelect: 'none'
     },
     StyledMenuItem: {
         borderRadius: 0
@@ -65,13 +69,16 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles(theme => ({
     root: {
         borderRadius: 0,
+    },
+    selected: {
         '&:focus': {
             backgroundColor: theme.palette.primary.main,
             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                 color: theme.palette.common.white,
             },
         },
-    },
+    }
+
 }))(MenuItem);
 
 export default function GroupsListMenu(props) {
@@ -101,7 +108,11 @@ export default function GroupsListMenu(props) {
     }
 
     const handleClick = event => {
+        event.preventDefault()
         setAnchorEl(event.currentTarget);
+        window.event = {}
+        window.event.target = {}
+        window.event.target.className = 'MuiSvgIcon-root'
     };
 
     const handleClose = () => {
@@ -112,7 +123,8 @@ export default function GroupsListMenu(props) {
     return (
         <div>
             <Button
-                disableRipple={true}
+                id={'headerMenuButton'}
+
                 className={classes.menuButton}
                 aria-controls="customized-menu"
                 aria-haspopup="true"
@@ -120,12 +132,7 @@ export default function GroupsListMenu(props) {
                 color="primary"
                 onClick={handleClick}
             >
-                <IconButton edge="start"
-                    className={classes.IconButton}
-                    color="inherit"
-                    aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
+                <MenuIcon/>
             </Button>
 
             <StyledMenu
