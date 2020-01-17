@@ -17,9 +17,10 @@ import './LyAdminApp.css';
 // import { ThemeConsumer } from 'styled-components';
 
 import Cookies from 'universal-cookie'
-// import { useRouteMatch } from 'react-router-dom'
+import getDataFromUrl from './utils/getDataFromUrl'
+import { useLocation, useParams, useRouteMatch } from 'react-router-dom'
 
-
+const maxAge = 30 * 24 * 60 * 60
 
 const styles = theme => ({
   '@global': {
@@ -61,8 +62,19 @@ const styles = theme => ({
 class LyAdminApp extends Component {
   constructor(props) {
     super(props);
+    const cookies = new Cookies()
+
+    if (props.location.pathname.indexOf('login') !== -1) {
+      let { first_name, photo_url } = getDataFromUrl(props.location.search)
+
+      cookies.set('userName', first_name, { maxAge })
+      cookies.set('userPhoto', photo_url, { maxAge })
+    }
+
 
     this.state = {
+      userPhoto: cookies.get('userPhoto'),
+      userName: cookies.get('userName'),
       isLoading: props.isFetching,
       isAuth: props.isAuth,
       isError: props.isError,
@@ -91,6 +103,7 @@ class LyAdminApp extends Component {
     return (
       <div id="app">
         <Header
+          userPhoto={this.state.userPhoto}
           getGroup={this.props.getGroup}
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}

@@ -108,11 +108,7 @@ export default function GroupsListMenu(props) {
     }
 
     const handleClick = event => {
-        event.preventDefault()
         setAnchorEl(event.currentTarget);
-        window.event = {}
-        window.event.target = {}
-        window.event.target.className = 'MuiSvgIcon-root'
     };
 
     const handleClose = () => {
@@ -121,6 +117,7 @@ export default function GroupsListMenu(props) {
 
 
     return (
+
         <div>
             <Button
                 id={'headerMenuButton'}

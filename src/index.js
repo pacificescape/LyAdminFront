@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+    Redirect,
+    useParams
+} from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import LyAdminApp from './LyAdminApp';
 import { Provider } from 'react-redux'
 import createStore from './redux/store';
@@ -15,10 +21,7 @@ if (window.location.href.indexOf('login') !== -1) {
 ReactDOM.render(
         <Router>
             <Provider store={store}>
-            <Route path="/login">
-                <Redirect to="" />
-            </Route>
-            <Route path="" component={LyAdminApp}/>
+            <Route path="/" component={LyAdminApp} />
             </Provider>
         </Router>,
     document.getElementById('root')

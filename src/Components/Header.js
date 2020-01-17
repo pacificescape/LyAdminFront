@@ -18,9 +18,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
-    header: {
-
-    },
     AppBar: {
         height: '64px',
         flexDirection: 'row',
@@ -44,6 +41,7 @@ const styles = theme => ({
         width: '64px',
         flexGrow: 0,
         '& > *': {
+            margin: '12px',
             borderRadius: '40px',
             width: '40px',
             height: '40px'
@@ -84,7 +82,9 @@ class Header extends Component {
                         className={classes.Typography}>
                         <span>{this.props.currentGroup.info.title}</span>
                     </Typography>
-                    <Avatar src={this.state.userPhoto} className={classes.Avatar} />
+                    <div className={classes.Avatar} >
+                        <Avatar src={this.props.userPhoto}/>
+                    </div>
                 </AppBar>
             </header>
         )
