@@ -57,8 +57,13 @@ const styles = theme => ({
     },
     wrapper: { top: "64px" },
     list: {
-        top: "64px",
-        width: 250
+        width: '100%',
+        '&:first-child': {
+            border: '1px, solid, grey'
+        },
+        '&div': {
+            border: '1px, solid, grey'
+        }
     },
     fullList: {
         display: 'flex',
@@ -91,9 +96,11 @@ class Header extends Component {
             onClick={this.handleClick}
             onKeyDown={this.handleClick}
         >
-            <List>
+            <List className={this.props.classes.list}>
                 {this.props.groups.map((group, i) => (
                     <ListItem
+                        selected={group.id === this.props.currentGroup.info.id}
+                        className={this.props.classes.listItem}
                         button key={i}
                         onClick={() => {
                             this.props.getGroup(group.id)
@@ -127,7 +134,7 @@ class Header extends Component {
                         className={classes.GroupsList}
                         onClick={this.handleClick}
                     >
-                        <ArrowRightIcon/>
+                        <ArrowRightIcon />
                         {this.props.currentGroup.info.title}
                     </Button>
                     <Drawer
