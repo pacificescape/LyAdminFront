@@ -65,8 +65,9 @@ class LyAdminApp extends Component {
     const cookies = new Cookies()
 
     if (props.location.pathname.indexOf('login') !== -1) {
-      let { first_name, photo_url } = getDataFromUrl(props.location.search)
+      let { first_name, photo_url, group_id } = getDataFromUrl(props.location.search)
 
+      cookies.set('defaultGroup', group_id, { maxAge })
       cookies.set('userName', first_name, { maxAge })
       cookies.set('userPhoto', photo_url, { maxAge })
     }
@@ -75,6 +76,7 @@ class LyAdminApp extends Component {
     this.state = {
       userPhoto: cookies.get('userPhoto'),
       userName: cookies.get('userName'),
+      defaultGroup: cookies.get('defaultGroup'),
       isLoading: props.isFetching,
       isAuth: props.isAuth,
       isError: props.isError,
@@ -84,6 +86,7 @@ class LyAdminApp extends Component {
   componentDidMount() {
     if (this.props.groups.length === 0 && !this.props.isError) {
       this.props.getUserGroups()
+      this.props.getGroup(this.state.defaultGroup)
     }
   }
 

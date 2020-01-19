@@ -20,7 +20,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import GroupIcon from '@material-ui/icons/Group';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
 
@@ -119,11 +120,15 @@ class Header extends Component {
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
+                    <Button className={classes.IconButton}>
+                        <MenuIcon></MenuIcon>
+                    </Button>
                     <Button
                         className={classes.GroupsList}
                         onClick={this.handleClick}
                     >
-                        a {this.props.currentGroup.info.title}
+                        <ArrowRightIcon/>
+                        {this.props.currentGroup.info.title}
                     </Button>
                     <Drawer
                         className={classes.wrapper}
