@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ChatIcon from '@material-ui/icons/Chat'
 import ListItemText from "@material-ui/core/ListItemText";
@@ -119,6 +120,7 @@ export default function GroupsListMenu(props) {
     return (
 
         <div>
+            <Button onClick={handleClick}>Open Top</Button>
             <Button
                 id={'headerMenuButton'}
 
@@ -128,8 +130,13 @@ export default function GroupsListMenu(props) {
                 variant="contained"
                 color="primary"
                 onClick={handleClick}
-            >
-                <MenuIcon/>
+            ><Typography
+                    noWrap
+                    component={"button"}
+                    variant="button"
+                    className={classes.Typography}>
+                    <span>{props.title}</span>
+                </Typography>
             </Button>
 
             <StyledMenu

@@ -3,19 +3,26 @@ import Cookies from 'universal-cookie';
 import { compose } from 'recompose';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '../Theme';
+import { makeStyles } from "@material-ui/core/styles";
 
 import GroupsListMenu from './GroupsListMenu'
 
 import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography';
+
 import { applyMiddleware } from 'redux';
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Drawer from "@material-ui/core/Drawer";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import GroupIcon from '@material-ui/icons/Group';
 import ListItemText from '@material-ui/core/ListItemText';
+
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
 
 const styles = theme => ({
     AppBar: {
@@ -46,8 +53,19 @@ const styles = theme => ({
             width: '40px',
             height: '40px'
         }
+    },
+    wrapper: { top: "64px" },
+    list: {
+        top: "64px",
+        width: 250
+    },
+    fullList: {
+        display: 'flex',
+        top: "64px",
+        flexGrow: 10
     }
 });
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -56,6 +74,7 @@ class Header extends Component {
         const userPhoto = cookies.get('userPhoto')
 
         this.state = {
+            top: false,
             isLoading: props.isFetching,
             isAuth: props.isAuth,
             isError: props.isError,
@@ -64,26 +83,58 @@ class Header extends Component {
         }
     }
 
+    renderGroupsList = () => (
+        <div
+            className={this.props.classes.fullList}
+            role="presentation"
+            onClick={this.handleClick}
+            onKeyDown={this.handleClick}
+        >
+            <List>
+                {this.props.groups.map((group, i) => (
+                    <ListItem
+                        button key={i}
+                        onClick={() => {
+                            this.props.getGroup(group.id)
+                            this.handleClick()
+                        }}>
+                        <ListItemIcon>
+                            <GroupIcon />
+                        </ListItemIcon>
+                        <Typography variant="inherit">{group.title}</Typography>
+                    </ListItem>
+                ))}
+            </List>
+        </div>
+    )
+
+
+    handleClick = () => {
+        this.setState({ top: !this.state.top });
+    };
+
     render() {
         const { classes } = this.props;
 
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
-                    <GroupsListMenu
-                    className={classes.GroupsList}
-                    open={this.state.open}
-                    groups={this.props.groups}
-                    getGroup={this.props.getGroup}
-                    handleClose={this.handleClick}
-                    />
-                    <Typography
-                        variant="h6"
-                        className={classes.Typography}>
-                        <span>{this.props.currentGroup.info.title}</span>
-                    </Typography>
+                    <Button
+                        className={classes.GroupsList}
+                        onClick={this.handleClick}
+                    >
+                        a {this.props.currentGroup.info.title}
+                    </Button>
+                    <Drawer
+                        className={classes.wrapper}
+                        anchor="top"
+                        open={this.state.top}
+                        onClose={this.handleClick}
+                    >
+                        {this.renderGroupsList()}
+                    </Drawer>
                     <div className={classes.Avatar} >
-                        <Avatar src={this.props.userPhoto}/>
+                        <Avatar src={this.props.userPhoto} />
                     </div>
                 </AppBar>
             </header>
