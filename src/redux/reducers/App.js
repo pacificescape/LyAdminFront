@@ -1,8 +1,11 @@
 import getUserGroups from '../../Api/getUserGroups'
 import getGroup from '../../Api/getGroup'
+import getGroupMembers from '../../Api/getGroupMembers'
 
 const SET_GROUPS = 'SET_GROUPS'
 const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'
+const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS'
+
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
@@ -17,6 +20,9 @@ let initialState = {
         id: '',
         info: {},
         settings: {}
+    },
+    groupmembers: {
+        empty: true
     }
 }
 
@@ -37,12 +43,20 @@ export default (state = initialState, action) => {
         case SET_CURRENT_GROUP: {
             return { ...state, currentGroup: action.group }
         }
+        case SET_GROUP_MEMBERS: {
+            let newmembers = {}
+            Object.assign(newmembers, action.members, state.groupmembers )
+            newmembers.empty = false
+            debugger;
+            return { ...state, groupmembers: newmembers }
+        }
         default: return state
     }
 }
 
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
+export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
@@ -54,7 +68,10 @@ export const getUserGroupsThunk = () => (dispatch) => {
     getUserGroups().then(res => {
         dispatch(toggleIsFetching(false))
 
-        if (!res.ok) return
+        if (!res.ok) {
+            dispatch(toggleIsError(true))
+            return
+        }
 
         dispatch(toggleIsAuth(true))
         let { groups } = res.result
@@ -72,7 +89,10 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
     getGroup(groupId).then((res) => {
         dispatch(toggleIsFetching(false))
 
-        if (!res.ok) return
+        if (!res.ok) {
+            dispatch(toggleIsError(true))
+            return
+        }
 
         let { groupInfo } = res.result
         dispatch(setCurrentGroup(groupInfo))
@@ -83,3 +103,25 @@ export const toggleIsAuthThunk = (isAuth) => (dispatch) => {
     dispatch(toggleIsAuth(isAuth))
     dispatch(toggleIsFetching(false))
 }
+
+export const getGroupMembersThunk = (groupId) => (dispatch) => {
+    dispatch(toggleIsFetching(true))
+
+    getGroupMembers(groupId).then((res) => {
+        dispatch(toggleIsFetching(false))
+
+        if (!res.ok) {
+            dispatch(toggleIsError(true))
+            return
+        }
+
+        let members = res.result
+        dispatch(setGroupMembers({[groupId]: members}))
+    })
+    .catch((err) => {
+        dispatch(toggleIsError(true))
+        console.log('getUserGroups thunk failed', err)
+    })
+}
+
+// отдельный стор для groupmembers

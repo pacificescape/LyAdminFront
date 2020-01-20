@@ -5,13 +5,15 @@ import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
   getCurrentGroupThunk,
-  toggleIsAuthThunk
+  toggleIsAuthThunk,
+  getGroupMembersThunk
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
 import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
 import Firstline from './Components/Firstline'
+import MemberList from './Components/MemberList'
 import './LyAdminApp.css';
 // import styled from 'styled-components'
 // import { ThemeConsumer } from 'styled-components';
@@ -88,6 +90,8 @@ class LyAdminApp extends Component {
       this.props.getUserGroups()
       this.props.getGroup(this.state.defaultGroup)
     }
+
+    this.props.getGroupMembers(this.props.currentGroup.info.id)
   }
 
   componentDidUpdate() {
@@ -112,6 +116,8 @@ class LyAdminApp extends Component {
           currentGroup={this.props.currentGroup}
         />
         <Firstline groupTitle={this.props.currentGroup.info.title}/>
+        <span onClick={() => this.props.getGroupMembers(this.props.currentGroup.info.id)}>touch and go</span>
+        <MemberList groupmembers={this.props.groupmembers} id={this.props.currentGroup.info.id}/>
       </div>
     )
   }
@@ -123,7 +129,8 @@ let mapStateToProps = (state) => {
     isLoading: state.App.isFetching,
     isError: state.App.isError,
     groups: state.App.groups,
-    currentGroup: state.App.currentGroup
+    currentGroup: state.App.currentGroup,
+    groupmembers: state.App.groupmembers
   }
 }
 
@@ -137,6 +144,9 @@ let mapDispatchTooProps = (dispatch) => {
     },
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))
+    },
+    getGroupMembers: (groupId) => {
+      dispatch(getGroupMembersThunk(groupId))
     }
   }
 }
