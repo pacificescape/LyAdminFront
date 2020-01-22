@@ -18,8 +18,10 @@ export default function MemberList(props) {
     const classes = useStyles();
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
+        props.getGroupMembers()
         return 'загрузка...' // прелоадер
     }
+
 
     return (
       <TableContainer component={Paper}>
