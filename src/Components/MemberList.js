@@ -17,8 +17,8 @@ const useStyles = makeStyles({
 export default function MemberList(props) {
     const classes = useStyles();
 
-    if (props.groupmembers.empty) {
-        return 'загрузка...'
+    if (props.groupmembers.empty || !props.groupmembers[props.id]) {
+        return 'загрузка...' // прелоадер
     }
 
     return (
@@ -27,22 +27,24 @@ export default function MemberList(props) {
           <TableHead>
             <TableRow>
               <TableCell>Имя</TableCell>
-              <TableCell align="right">messages</TableCell>
-              <TableCell align="right">banan</TableCell>
-              <TableCell align="right">first</TableCell>
+              <TableCell padding='none' align="center">messages</TableCell>
+              <TableCell padding='none' align="center">banan</TableCell>
+              <TableCell padding='none' align="center">first</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.groupmembers[props.id].map(member => (
+            {props.groupmembers[props.id].map(member => {
+                debugger;
+                return (
               <TableRow key={member.telegram_id}>
                 <TableCell component="th" scope="row">
                   {member.telegram_id}
                 </TableCell>
-                <TableCell align="right">{member.stats.messagesCount}</TableCell>
-                <TableCell align="right">{member.banan.num}</TableCell>
-                <TableCell align="right">{Date(member.createdAt)}</TableCell>
+                <TableCell align="center">{member.stats.messagesCount}</TableCell>
+                <TableCell align="center">{member.banan.num}</TableCell>
+                <TableCell align="center">{member.createdAt.split('T')[0].split('-').reverse().join('.')}</TableCell>
               </TableRow>
-            ))}
+            )})}
           </TableBody>
         </Table>
       </TableContainer>

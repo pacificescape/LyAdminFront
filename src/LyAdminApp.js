@@ -91,7 +91,7 @@ class LyAdminApp extends Component {
       this.props.getGroup(this.state.defaultGroup)
     }
 
-    this.props.getGroupMembers(this.props.currentGroup.info.id)
+    this.props.getGroupMembers(this.state.defaultGroup)
   }
 
   componentDidUpdate() {
@@ -115,9 +115,10 @@ class LyAdminApp extends Component {
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
         />
-        <Firstline groupTitle={this.props.currentGroup.info.title}/>
-        <span onClick={() => this.props.getGroupMembers(this.props.currentGroup.info.id)}>touch and go</span>
+        {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
+        <span>Участники</span>
         <MemberList groupmembers={this.props.groupmembers} id={this.props.currentGroup.info.id}/>
+        <span>Еще что то</span>
       </div>
     )
   }
@@ -159,3 +160,5 @@ const enhance = compose(
 );
 
 export default enhance(LyAdminAppContainer);
+
+// смена чатов, ширина таблички, отдельная стора?
