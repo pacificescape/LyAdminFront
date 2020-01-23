@@ -1,10 +1,12 @@
 import getUserGroups from '../../Api/getUserGroups'
 import getGroup from '../../Api/getGroup'
+import getUser from '../../Api/getUser'
 import getGroupMembers from '../../Api/getGroupMembers'
 
 const SET_GROUPS = 'SET_GROUPS'
 const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'
 const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS'
+const SET_USER = 'SET_USER'
 
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
@@ -23,7 +25,8 @@ let initialState = {
     },
     groupmembers: {
         empty: true
-    }
+    },
+    users: {}
 }
 
 export default (state = initialState, action) => {
@@ -45,10 +48,17 @@ export default (state = initialState, action) => {
         }
         case SET_GROUP_MEMBERS: {
             let newmembers = {}
-            Object.assign(newmembers, action.members, state.groupmembers )
+            Object.assign(newmembers, action.members, state.groupmembers)
             newmembers.empty = false
             debugger;
             return { ...state, groupmembers: newmembers }
+        }
+        case SET_USER: {
+            let newusers = {}
+            Object.assign(newusers, action.user, state.users)
+            newusers.empty = false
+            debugger;
+            return { ...state, users: newusers }
         }
         default: return state
     }
@@ -57,6 +67,7 @@ export default (state = initialState, action) => {
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
+export const setUser = (user) => ({ type: SET_USER, user })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
@@ -96,6 +107,22 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
 
         let { groupInfo } = res.result
         dispatch(setCurrentGroup(groupInfo))
+    })
+}
+
+export const getUserThunk = (userId) => (dispatch) => {
+    dispatch(toggleIsFetching(true))
+
+    getUser(userId).then((res) => {
+        dispatch(toggleIsFetching(false))
+
+        if (!res.ok) {
+            dispatch(toggleIsError(true))
+            return
+        }
+        debugger
+        let userInfo = res.result
+        dispatch(setUser({[userId]: userInfo}))
     })
 }
 

@@ -6,7 +6,8 @@ import {
   getUserGroupsThunk,
   getCurrentGroupThunk,
   toggleIsAuthThunk,
-  getGroupMembersThunk
+  getGroupMembersThunk,
+  getUserThunk
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
@@ -85,6 +86,12 @@ class LyAdminApp extends Component {
     }
   }
 
+  // users = async () => {
+  //   return await Promise.all(this.props.groupmembers[this.props.currentGroup.info.id].map((user) => {
+  //     this.props.getUser(user.telegram_id)
+  //   }))
+  // }
+
   componentDidMount() {
     if (this.props.groups.length === 0 && !this.props.isError) {
       this.props.getUserGroups()
@@ -121,6 +128,8 @@ class LyAdminApp extends Component {
         groupmembers={this.props.groupmembers}
         id={this.props.currentGroup.info.id}
         getGroupMembers={() => this.props.getGroupMembers(this.props.currentGroup.info.id)}
+        currentGroup={this.props.currentGroup}
+        getUser={this.props.getUser}
         />
         <p>Еще что то</p>
       </div>
@@ -147,6 +156,9 @@ let mapDispatchTooProps = (dispatch) => {
     getGroup: (groupId) => {
       dispatch(getCurrentGroupThunk(groupId))
     },
+    getUser: (userId) => {
+      dispatch(getUserThunk(userId))
+    },
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))
     },
@@ -166,3 +178,5 @@ const enhance = compose(
 export default enhance(LyAdminAppContainer);
 
 // смена чатов, ширина таблички, отдельная стора?
+
+// сделать метод выдающий страницы таблицы

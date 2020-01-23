@@ -17,6 +17,7 @@ import { applyMiddleware } from 'redux';
 import Drawer from "@material-ui/core/Drawer";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import GroupIcon from '@material-ui/icons/Group';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -109,7 +110,7 @@ class Header extends Component {
                         <ListItemIcon>
                             <GroupIcon />
                         </ListItemIcon>
-                        <Typography variant="inherit">{group.title}</Typography>
+                        <Typography variant="inherit" noWrap>{group.title}</Typography>
                     </ListItem>
                 ))}
             </List>
@@ -135,7 +136,9 @@ class Header extends Component {
                         onClick={this.handleClick}
                     >
                         <ArrowRightIcon />
-                        {this.props.currentGroup.info.title}
+                        <Typography variant="inherit" noWrap>
+                            {this.props.currentGroup.info.title}
+                        </Typography>
                     </Button>
                     <Drawer
                         className={classes.wrapper}
