@@ -48,7 +48,9 @@ function MemberList(props) {
     useEffect(() => console.log('effect'))
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
-        props.getGroupMembers(props.currentGroup.info.id)
+        if(!props.isLoading) {
+            props.getGroupMembers(props.currentGroup.info.id)
+        }
         return <p>Загрузка...</p> // прелоадер
     }
 

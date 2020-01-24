@@ -130,6 +130,7 @@ class LyAdminApp extends Component {
         getGroupMembers={this.props.getGroupMembers}
         currentGroup={this.props.currentGroup}
         getUser={this.props.getUser}
+        isLoading={this.props.isLoading}
         />
         <p>Еще что то</p>
       </div>

@@ -55,8 +55,8 @@ export default (state = initialState, action) => {
         }
         case SET_USER: {
             let newusers = {}
-            let usersGroup = state.users[action.id] || {}
-            Object.assign(usersGroup, {[action.id]: action.user})
+            let usersGroup = state.users[action.groupId] || {}
+            Object.assign(usersGroup, {[action.user.telegram_id]: action.user})
             Object.assign(newusers, usersGroup, state.users)
             newusers.empty = false
             debugger;
@@ -69,7 +69,7 @@ export default (state = initialState, action) => {
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
-export const setUser = (user, id) => ({ type: SET_USER, user })
+export const setUser = (user, groupId) => ({ type: SET_USER, user, groupId })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
