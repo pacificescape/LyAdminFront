@@ -127,7 +127,7 @@ class LyAdminApp extends Component {
         <MemberList
         groupmembers={this.props.groupmembers}
         id={this.props.currentGroup.info.id}
-        getGroupMembers={() => this.props.getGroupMembers(this.props.currentGroup.info.id)}
+        getGroupMembers={this.props.getGroupMembers}
         currentGroup={this.props.currentGroup}
         getUser={this.props.getUser}
         />
@@ -156,8 +156,8 @@ let mapDispatchTooProps = (dispatch) => {
     getGroup: (groupId) => {
       dispatch(getCurrentGroupThunk(groupId))
     },
-    getUser: (userId) => {
-      dispatch(getUserThunk(userId))
+    getUser: (userId, groupId) => {
+      dispatch(getUserThunk(userId, groupId))
     },
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))

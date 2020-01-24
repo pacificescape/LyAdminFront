@@ -41,21 +41,21 @@ function MemberList(props) {
 
     const grabUsers = () => {
         return Promise.all(props.groupmembers[props.currentGroup.info.id].map( async (user) => {
-            return await props.getUser(user.telegram_id)
+            return await props.getUser(user.telegram_id, props.currentGroup.info.id)
         }))
     }
 
     useEffect(() => console.log('effect'))
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
-        props.getGroupMembers()
+        props.getGroupMembers(props.currentGroup.info.id)
         return <p>Загрузка...</p> // прелоадер
     }
 
     if (!users.empty) {
         setUsers(() => { grabUsers(); return {empty:true}})
         return <p>Загрузка...</p> // прелоадер
-    }
+    } // загружается только одна ава
 
 
     return (

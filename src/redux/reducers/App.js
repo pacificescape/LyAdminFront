@@ -55,7 +55,9 @@ export default (state = initialState, action) => {
         }
         case SET_USER: {
             let newusers = {}
-            Object.assign(newusers, action.user, state.users)
+            let usersGroup = state.users[action.id] || {}
+            Object.assign(usersGroup, {[action.id]: action.user})
+            Object.assign(newusers, usersGroup, state.users)
             newusers.empty = false
             debugger;
             return { ...state, users: newusers }
@@ -67,7 +69,7 @@ export default (state = initialState, action) => {
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
-export const setUser = (user) => ({ type: SET_USER, user })
+export const setUser = (user, id) => ({ type: SET_USER, user })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
@@ -110,7 +112,7 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
     })
 }
 
-export const getUserThunk = (userId) => (dispatch) => {
+export const getUserThunk = (userId, groupId) => (dispatch) => {
     dispatch(toggleIsFetching(true))
 
     getUser(userId).then((res) => {
@@ -122,7 +124,7 @@ export const getUserThunk = (userId) => (dispatch) => {
         }
         debugger
         let userInfo = res.result
-        dispatch(setUser({[userId]: userInfo}))
+        dispatch(setUser(userInfo, groupId))
     })
 }
 
