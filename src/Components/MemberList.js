@@ -12,10 +12,13 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
-    'avatar' : {
-        display: 'inline-block',
-        width: '20px',
-        height: '20px'
+    avatarWrapper: {
+        display: 'flex'
+    },
+    avatar: {
+        marginRight: '10px',
+        width: '25px',
+        height: '25px'
     },
     table: {
       minWidth: 250,
@@ -102,8 +105,8 @@ function MemberList(props) {
                             }
                             return (
                                 <TableRow key={member.telegram_id}>
-                                    <TableCell component="th" scope="row">
-                                        <Avatar src={avatar} className={classes.avatar}>{avatar ? props.users[props.id][member.telegram_id].first_name : null}</Avatar>
+                                    <TableCell component="th" scope="row" className={classes.avatarWrapper}>
+                                        <Avatar src={avatar} className={classes.avatar}>{avatar ? null: props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
                                         {props.users[props.id][member.telegram_id].first_name}
                                     </TableCell>
                                     <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
