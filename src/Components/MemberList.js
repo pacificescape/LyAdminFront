@@ -53,14 +53,16 @@ function MemberList(props) {
     })
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
-        if(!props.groupmembers[props.id]) {
-            props.getGroupMembers(props.currentGroup.info.id)
+        if(!props.isLoading.getGroupMembers) {
+            props.getGroupMembers(props.id)
         }
         return <p>Загрузка...</p> // прелоадер
     }
 
-    if (!users.empty) {
-        setUsers(() => { grabUsers(); return {empty:true}})
+    if (!props.users[props.id] && !props.isLoading.getUser) {
+        // setUsers(() => {
+        //     ; return {empty:true}})
+            grabUsers()
         return <p>Загрузка...</p> // прелоадер
     } // загружается только одна ава
 
@@ -81,25 +83,25 @@ function MemberList(props) {
                     </TableHead>
                     <TableBody>
                         {props.groupmembers[props.id].map(member => {
-                            debugger;
-                            let avatar = ''
-                            if (props.users[member.telegram_id] && props.users[member.telegram_id].avatar) {
-                                avatar = props.users[member.telegram_id].avatar
-                            }
-                            if (!props.users[member.telegram_id]) {
+                            if (!props.users[props.id] || !props.users[props.id][member.telegram_id]) {
                                 return (
-                                    <TableRow key=''>
+                                    <TableRow key={member.telegram_id}>
                                         <TableCell>
                                             Loading...
                                         </TableCell>
                                     </TableRow>
                                 )
                             }
+                            debugger;
+                            let avatar = ''
+                            if (props.users[props.id][member.telegram_id] && props.users[props.id][member.telegram_id].avatar) {
+                                avatar = props.users[props.id][member.telegram_id].avatar
+                            }
                             return (
                                 <TableRow key={member.telegram_id}>
                                     <TableCell component="th" scope="row">
                                         <img src={avatar} alt='ava' width="10px" />
-                                        {props.users[member.telegram_id].first_name}
+                                        {props.users[props.id][member.telegram_id].first_name}
                                     </TableCell>
                                     <TableCell align="center">{member.stats.messagesCount}</TableCell>
                                     <TableCell align="center">{member.banan.num}</TableCell>
@@ -119,7 +121,11 @@ let mapStateToProps = (state) => {
       users: state.App.users,
       currentGroup: state.App.currentGroup,
       groupmembers: state.App.groupmembers,
-      id: state.App.currentGroup.info.id
+      id: state.App.currentGroup.info.id,
+      isLoading: {
+          getUser: state.App.api.getUser,
+          getGroupMembers: state.App.api.getGroupMembers
+      }
     }
   }
 

@@ -109,7 +109,6 @@ class LyAdminApp extends Component {
     if (!this.props.isAuth) {
       return <Loader
         isAuth={this.props.isAuth}
-        isLoading={this.props.isLoading}
       />
     }
 
@@ -137,6 +136,7 @@ let mapStateToProps = (state) => {
   return {
     isAuth: state.App.isAuth,
     isLoading: state.App.isFetching,
+    isLoadingGetGroupMembers: state.App.api.getGroupMembers,
     isError: state.App.isError,
     groups: state.App.groups,
     currentGroup: state.App.currentGroup,

@@ -26,7 +26,12 @@ let initialState = {
     groupmembers: {
         empty: true
     },
-    users: {}
+    users: {},
+    api: {
+        getUserGroups: false,
+        getGroupMembers: false,
+        getUser: false
+    }
 }
 
 export default (state = initialState, action) => {
@@ -35,6 +40,9 @@ export default (state = initialState, action) => {
             return { ...state, isAuth: action.isAuth }
         }
         case TOGGLE_IS_FETCHING: {
+            if (action.method) {
+                return { ...state, api: { ...state.api, [action.method]: action.isFetching}}
+            }
             return { ...state, isFetching: action.isFetching }
         }
         case TOGGLE_IS_ERROR: {
@@ -55,9 +63,7 @@ export default (state = initialState, action) => {
         }
         case SET_USER: {
             let newusers = {}
-            let usersGroup = state.users[action.groupId] || {}
-            Object.assign(usersGroup, {[action.user.telegram_id]: action.user})
-            Object.assign(newusers, usersGroup, state.users)
+            Object.assign(newusers, action.user, state.users)
             newusers.empty = false
             debugger;
             return { ...state, users: newusers }
@@ -72,23 +78,24 @@ export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members 
 export const setUser = (user, groupId) => ({ type: SET_USER, user, groupId })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
+export const toggleIsFetching = (isFetching, method) => ({ type: TOGGLE_IS_FETCHING, isFetching, method })
 export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
 
-export const getUserGroupsThunk = (state) => (dispatch) => {
-    dispatch(toggleIsFetching(true))
+export const getUserGroupsThunk = () => (dispatch) => {
+    dispatch(toggleIsFetching(true, 'getUserGroups'))
 
     getUserGroups().then(res => {
-        dispatch(toggleIsFetching(false))
 
         if (!res.ok) {
             dispatch(toggleIsError(true))
+            dispatch(toggleIsFetching(false, 'getUserGroups'))
             return
         }
 
         dispatch(toggleIsAuth(true))
         let { groups } = res.result
         dispatch(setGroups(groups))
+        dispatch(toggleIsFetching(false, 'getUserGroups'))
     })
         .catch((err) => {
             dispatch(toggleIsError(true))
@@ -113,10 +120,10 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
 }
 
 export const getUserThunk = (userId, groupId) => (dispatch) => {
-    dispatch(toggleIsFetching(true))
+    dispatch(toggleIsFetching(true, 'getUser'))
 
     getUser(userId).then((res) => {
-        dispatch(toggleIsFetching(false))
+        dispatch(toggleIsFetching(false, 'getUser'))
 
         if (!res.ok) {
             dispatch(toggleIsError(true))
@@ -124,7 +131,7 @@ export const getUserThunk = (userId, groupId) => (dispatch) => {
         }
         debugger
         let userInfo = res.result
-        dispatch(setUser(userInfo, groupId))
+        dispatch(setUser({ [groupId]: { [userInfo.telegram_id]: userInfo } }, groupId))
     })
 }
 
@@ -134,10 +141,10 @@ export const toggleIsAuthThunk = (isAuth) => (dispatch) => {
 }
 
 export const getGroupMembersThunk = (groupId) => (dispatch) => {
-    dispatch(toggleIsFetching(true))
+    dispatch(toggleIsFetching(true, 'getGroupMembers'))
 
     getGroupMembers(groupId).then((res) => {
-        dispatch(toggleIsFetching(false))
+        dispatch(toggleIsFetching(false, 'getGroupMembers'))
 
         if (!res.ok) {
             dispatch(toggleIsError(true))
