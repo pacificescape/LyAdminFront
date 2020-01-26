@@ -48,29 +48,17 @@ function MemberList(props) {
 
     const [users, setUsers] = useState({empty: false})
 
-    const grabUsers = () => {
-        return Promise.all(props.groupmembers[props.currentGroup.info.id].map( async (user) => {
-            return await props.getUser(user.telegram_id, props.currentGroup.info.id)
-        }))
-    }
-
-    useEffect(() => {
-
-    })
-
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
         if(!props.isLoading.getGroupMembers) {
             props.getGroupMembers(props.id)
         }
-        return <p>Загрузка...</p> // прелоадер
+        return <p>Загрузка...</p>
     }
 
     if (!props.users[props.id] && !props.isLoading.getUser) {
-        // setUsers(() => {
-        //     ; return {empty:true}})
-            grabUsers()
-        return <p>Загрузка...</p> // прелоадер
-    } // загружается только одна ава
+        props.getUser(props.groupmembers[props.id], props.id)
+        return <p>Загрузка...</p>
+    }
 
 
     return (
