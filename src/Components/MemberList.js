@@ -6,13 +6,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
-    '&' : {
-        borderRadius: 0
+    'avatar' : {
+        display: 'inline-block',
+        width: '20px',
+        height: '20px'
     },
     table: {
       minWidth: 250,
@@ -75,7 +78,7 @@ function MemberList(props) {
                 <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
-                            <TableCell onClick={() => { props.getUser(993298773) }}><span role="img" aria-label="banan">😊</span></TableCell>
+                            <TableCell><span role="img" aria-label="banan">😊</span></TableCell>
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">✉️</span></TableCell>
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">🍌</span></TableCell>
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">🎂</span></TableCell>
@@ -100,12 +103,12 @@ function MemberList(props) {
                             return (
                                 <TableRow key={member.telegram_id}>
                                     <TableCell component="th" scope="row">
-                                        <img src={avatar} alt='ava' width="10px" />
+                                        <Avatar src={avatar} className={classes.avatar}>{avatar ? props.users[props.id][member.telegram_id].first_name : null}</Avatar>
                                         {props.users[props.id][member.telegram_id].first_name}
                                     </TableCell>
-                                    <TableCell align="center">{member.stats.messagesCount}</TableCell>
+                                    <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
                                     <TableCell align="center">{member.banan.num}</TableCell>
-                                    <TableCell align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell padding='none' align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
                                 </TableRow>
                             )
                         })}

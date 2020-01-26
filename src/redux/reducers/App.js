@@ -63,10 +63,10 @@ export default (state = initialState, action) => {
         }
         case SET_USER: {
             let newusers = {}
-            Object.assign(newusers, action.user, state.users)
+            Object.assign(newusers, action.user, state.users[action.groupId])
             newusers.empty = false
             debugger;
-            return { ...state, users: newusers }
+            return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
         default: return state
     }
@@ -107,7 +107,6 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
     dispatch(toggleIsFetching(true))
 
     getGroup(groupId).then((res) => {
-        dispatch(toggleIsFetching(false))
 
         if (!res.ok) {
             dispatch(toggleIsError(true))
@@ -116,6 +115,7 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
 
         let { groupInfo } = res.result
         dispatch(setCurrentGroup(groupInfo))
+        dispatch(toggleIsFetching(false))
     })
 }
 
@@ -123,7 +123,6 @@ export const getUserThunk = (userId, groupId) => (dispatch) => {
     dispatch(toggleIsFetching(true, 'getUser'))
 
     getUser(userId).then((res) => {
-        dispatch(toggleIsFetching(false, 'getUser'))
 
         if (!res.ok) {
             dispatch(toggleIsError(true))
@@ -131,7 +130,8 @@ export const getUserThunk = (userId, groupId) => (dispatch) => {
         }
         debugger
         let userInfo = res.result
-        dispatch(setUser({ [groupId]: { [userInfo.telegram_id]: userInfo } }, groupId))
+        dispatch(setUser({ [userInfo.telegram_id]: userInfo }, groupId))
+        dispatch(toggleIsFetching(false, 'getUser'))
     })
 }
 
