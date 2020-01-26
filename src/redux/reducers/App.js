@@ -75,7 +75,7 @@ export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
 
-export const getUserGroupsThunk = () => (dispatch) => {
+export const getUserGroupsThunk = (state) => (dispatch) => {
     dispatch(toggleIsFetching(true))
 
     getUserGroups().then(res => {

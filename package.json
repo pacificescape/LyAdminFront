@@ -53,5 +53,8 @@
     "url": "https://github.com/pacificescape/LyAdminFront/issues"
   },
   "homepage": "https://github.com/pacificescape/LyAdminFront#readme",
-  "proxy": "http://localhost:4000"
+  "proxy": "http://localhost:4000",
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^2.3.0"
+  }
 }

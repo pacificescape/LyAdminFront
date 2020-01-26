@@ -123,14 +123,9 @@ class LyAdminApp extends Component {
           currentGroup={this.props.currentGroup}
         />
         {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
-        <span>Участники</span>
         <MemberList
-        groupmembers={this.props.groupmembers}
-        id={this.props.currentGroup.info.id}
         getGroupMembers={this.props.getGroupMembers}
-        currentGroup={this.props.currentGroup}
         getUser={this.props.getUser}
-        isLoading={this.props.isLoading}
         />
         <p>Еще что то</p>
       </div>

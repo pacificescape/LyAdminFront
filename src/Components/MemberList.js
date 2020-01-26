@@ -11,6 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
+    '&' : {
+        borderRadius: 0
+    },
     table: {
       minWidth: 250,
     },
@@ -45,10 +48,12 @@ function MemberList(props) {
         }))
     }
 
-    useEffect(() => console.log('effect'))
+    useEffect(() => {
+
+    })
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
-        if(!props.isLoading) {
+        if(!props.groupmembers[props.id]) {
             props.getGroupMembers(props.currentGroup.info.id)
         }
         return <p>Загрузка...</p> // прелоадер
@@ -61,44 +66,60 @@ function MemberList(props) {
 
 
     return (
-      <TableContainer component={Paper}>
-        <Table className={classes.table} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell onClick={ () => { props.getUser(993298773) } }>Имя</TableCell>
-              <TableCell padding='none' align="center">messages</TableCell>
-              <TableCell padding='none' align="center">banan</TableCell>
-              <TableCell padding='none' align="center">first</TableCell>
-            </TableRow>
-          </TableHead>
-                <TableBody>
-                    {props.groupmembers[props.id].map(member => {
-                        debugger;
-                        let avatar = ''
-                        if (props.users[member.telegram_id] && props.users[member.telegram_id].avatar) {
-                            avatar = props.users[member.telegram_id].avatar
-                        }
-                        return (
-                            <TableRow key={member.telegram_id}>
-                                <TableCell component="th" scope="row">
-                                    <img src={avatar} alt='ava' width="10px"/>
-                                    {member.telegram_id}
-                                </TableCell>
-                                <TableCell align="center">{member.stats.messagesCount}</TableCell>
-                                <TableCell align="center">{member.banan.num}</TableCell>
-                                <TableCell align="center">{member.createdAt.split('T')[0].split('-').reverse().join('.')}</TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-        </Table>
-      </TableContainer>
+        <div>
+            <span>В чате {props.groupmembers[props.id].length} <span role="img" aria-label="banan">😊</span></span>
+            <p></p>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell onClick={() => { props.getUser(993298773) }}><span role="img" aria-label="banan">😊</span></TableCell>
+                            <TableCell padding='none' align="center"><span role="img" aria-label="banan">✉️</span></TableCell>
+                            <TableCell padding='none' align="center"><span role="img" aria-label="banan">🍌</span></TableCell>
+                            <TableCell padding='none' align="center"><span role="img" aria-label="banan">🎂</span></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {props.groupmembers[props.id].map(member => {
+                            debugger;
+                            let avatar = ''
+                            if (props.users[member.telegram_id] && props.users[member.telegram_id].avatar) {
+                                avatar = props.users[member.telegram_id].avatar
+                            }
+                            if (!props.users[member.telegram_id]) {
+                                return (
+                                    <TableRow key=''>
+                                        <TableCell>
+                                            Loading...
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            }
+                            return (
+                                <TableRow key={member.telegram_id}>
+                                    <TableCell component="th" scope="row">
+                                        <img src={avatar} alt='ava' width="10px" />
+                                        {props.users[member.telegram_id].first_name}
+                                    </TableCell>
+                                    <TableCell align="center">{member.stats.messagesCount}</TableCell>
+                                    <TableCell align="center">{member.banan.num}</TableCell>
+                                    <TableCell align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+    </div>
     )
 }
 
 let mapStateToProps = (state) => {
     return {
-      users: state.App.users
+      users: state.App.users,
+      currentGroup: state.App.currentGroup,
+      groupmembers: state.App.groupmembers,
+      id: state.App.currentGroup.info.id
     }
   }
 
