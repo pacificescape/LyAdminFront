@@ -97,7 +97,6 @@ function MemberList(props) {
                                     </TableRow>
                                 )
                             }
-                            debugger;
                             let avatar = ''
                             if (props.users[props.id][member.telegram_id] && props.users[props.id][member.telegram_id].avatar) {
                                 avatar = props.users[props.id][member.telegram_id].avatar
@@ -120,7 +119,7 @@ function MemberList(props) {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={false}
+                rowsPerPageOptions={[]}
                 component="div"
                 count={props.groupmembers[props.id].length}
                 rowsPerPage={10}

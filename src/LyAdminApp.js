@@ -7,7 +7,9 @@ import {
   getCurrentGroupThunk,
   toggleIsAuthThunk,
   getGroupMembersThunk,
-  getUserThunk
+  getUserThunk,
+  changeThemeThunk,
+  toggleIsError
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
@@ -15,6 +17,7 @@ import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
 import Firstline from './Components/Firstline'
 import MemberList from './Components/MemberList'
+import GroupSettings from './Components/GroupSettings'
 import './LyAdminApp.css';
 // import styled from 'styled-components'
 // import { ThemeConsumer } from 'styled-components';
@@ -106,6 +109,11 @@ class LyAdminApp extends Component {
       />
     }
 
+    // if (this.props.isError) {
+    //   this.props.getGroupMembers(this.props.currentGroup.info.id)
+    //   this.props.toggleIsError(false)
+    // }
+
 
     return (
       <div id="app">
@@ -114,6 +122,10 @@ class LyAdminApp extends Component {
           getGroup={this.props.getGroup}
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
+          onChangeTheme={() => {
+            this.props.toggleTheme()
+            this.props.onChangeTheme()
+          }}
         />
         {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
         <MemberList
@@ -121,7 +133,8 @@ class LyAdminApp extends Component {
         getUser={this.props.getUser}
         id={this.props.currentGroup.info.id}
         />
-        <p>Еще что то</p>
+        <p>Settings</p>
+        <GroupSettings/>
       </div>
     )
   }
@@ -153,8 +166,14 @@ let mapDispatchTooProps = (dispatch) => {
     toggleIsAuth: (isAuth) => {
       dispatch(toggleIsAuthThunk(isAuth))
     },
+    toggleIsError: (isError) => {
+      toggleIsError(isError)
+    },
     getGroupMembers: (groupId) => {
       dispatch(getGroupMembersThunk(groupId))
+    },
+    toggleTheme: () => {
+      dispatch(changeThemeThunk())
     }
   }
 }
@@ -167,7 +186,5 @@ const enhance = compose(
 );
 
 export default enhance(LyAdminAppContainer);
-
-// смена чатов, ширина таблички, отдельная стора?
 
 // сделать метод выдающий страницы таблицы

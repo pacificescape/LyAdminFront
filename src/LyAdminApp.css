@@ -3,9 +3,11 @@
 }
 
 html {
-    background: #fff;
+    background: rgb(50, 50, 50);
     /* height: 100%; */
     width: 100%;
+    max-width: 600px;
+    margin: auto;
     overflow-y: auto !important;
     overflow-x: hidden !important;
 }

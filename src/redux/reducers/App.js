@@ -3,14 +3,23 @@ import getGroup from '../../Api/getGroup'
 import getUser from '../../Api/getUser'
 import getGroupMembers from '../../Api/getGroupMembers'
 
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import indigo from '@material-ui/core/colors/indigo';
+import teal from '@material-ui/core/colors/teal';
+import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+
 const SET_GROUPS = 'SET_GROUPS'
 const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'
 const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS'
 const SET_USER = 'SET_USER'
 
+const TOGGLE_THEME = 'TOGGLE_THEME'
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
+
 
 
 let initialState = {
@@ -32,9 +41,7 @@ let initialState = {
         getGroupMembers: false,
         getUser: false
     },
-    theme: {
-
-    }
+    theme: { type: 'dark', primary: { main: deepPurple.A200 }}
 }
 
 export default (state = initialState, action) => {
@@ -71,6 +78,14 @@ export default (state = initialState, action) => {
             debugger;
             return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
+        case TOGGLE_THEME: {
+            let random = Math.random() > 0.5
+            const newtheme = {
+                type: random ? 'dark' : 'light',
+                primary: random ? green : deepOrange
+            }
+            return { ...state, theme: newtheme }
+        }
         default: return state
     }
 }
@@ -79,6 +94,8 @@ export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
 export const setUser = (users, groupId) => ({ type: SET_USER, users, groupId })
+
+export const changeTheme = (themeType, primary) => ({ type: TOGGLE_THEME, themeType, primary })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching, method) => ({ type: TOGGLE_IS_FETCHING, isFetching, method })
@@ -116,7 +133,7 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
             return
         }
 
-        let { groupInfo } = res.result
+        let groupInfo = res.result
         dispatch(setCurrentGroup(groupInfo))
         dispatch(toggleIsFetching(false))
     })
@@ -171,6 +188,10 @@ export const getGroupMembersThunk = (groupId) => (dispatch) => {
         dispatch(toggleIsError(true))
         console.log('getUserGroups thunk failed', err)
     })
+}
+
+export const changeThemeThunk = (type, primary) => (dispatch) => {
+    dispatch(changeTheme(type, primary))
 }
 
 // отдельный стор для groupmembers

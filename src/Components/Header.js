@@ -26,6 +26,10 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
 
+
+
+import green from '@material-ui/core/colors/green';
+
 const styles = theme => ({
     AppBar: {
         height: '64px',
@@ -90,6 +94,12 @@ class Header extends Component {
         }
     }
 
+    themePicker = () => {
+        const cookies = new Cookies();
+        cookies.set('lyAdminTheme', {type: 'light', primary: green})
+        // const theme = createTheme(type, primary);
+    }
+
     renderGroupsList = () => (
         <div
             className={this.props.classes.fullList}
@@ -128,7 +138,9 @@ class Header extends Component {
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
-                    <Button className={classes.IconButton}>
+                    <Button
+                        className={classes.IconButton}
+                        onClick={this.props.onChangeTheme}>
                         <MenuIcon></MenuIcon>
                     </Button>
                     <Button
