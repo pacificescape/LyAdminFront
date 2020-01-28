@@ -7,8 +7,8 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 function createTheme(type, primary) {
     return createMuiTheme({
         palette: {
-            type: type,
-            primary: primary,
+            type: 'light',
+            primary: { main: '#5B8AF1' },
             secondary: { main: '#E53935' }
         },
         status: {

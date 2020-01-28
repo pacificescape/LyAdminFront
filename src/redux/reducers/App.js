@@ -31,6 +31,9 @@ let initialState = {
         getUserGroups: false,
         getGroupMembers: false,
         getUser: false
+    },
+    theme: {
+
     }
 }
 

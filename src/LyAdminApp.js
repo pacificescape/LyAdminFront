@@ -44,7 +44,7 @@ const styles = theme => ({
     },
     body: {
       textAlign: 'center',
-      background: theme.palette.type === 'dark' ? theme.palette.grey[900] : '#ffffff',
+      background: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[300],
       color: theme.palette.text.primary
     },
     header: {
@@ -86,12 +86,6 @@ class LyAdminApp extends Component {
     }
   }
 
-  // users = async () => {
-  //   return await Promise.all(this.props.groupmembers[this.props.currentGroup.info.id].map((user) => {
-  //     this.props.getUser(user.telegram_id)
-  //   }))
-  // }
-
   componentDidMount() {
     if (this.props.groups.length === 0 && !this.props.isError) {
       this.props.getUserGroups()
@@ -125,6 +119,7 @@ class LyAdminApp extends Component {
         <MemberList
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
+        id={this.props.currentGroup.info.id}
         />
         <p>Еще что то</p>
       </div>
