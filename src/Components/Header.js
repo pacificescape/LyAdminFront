@@ -6,6 +6,7 @@ import withTheme from '../Theme';
 import { makeStyles } from "@material-ui/core/styles";
 
 import GroupsListMenu from './GroupsListMenu'
+import HeaderMenu from './HeaderMenu'
 
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -94,12 +95,6 @@ class Header extends Component {
         }
     }
 
-    themePicker = () => {
-        const cookies = new Cookies();
-        cookies.set('lyAdminTheme', {type: 'light', primary: green})
-        // const theme = createTheme(type, primary);
-    }
-
     renderGroupsList = () => (
         <div
             className={this.props.classes.fullList}
@@ -138,11 +133,10 @@ class Header extends Component {
         return (
             <header className={classes.header}>
                 <AppBar position="static" className={classes.AppBar}>
-                    <Button
-                        className={classes.IconButton}
-                        onClick={this.props.onChangeTheme}>
-                        <MenuIcon></MenuIcon>
-                    </Button>
+                    <HeaderMenu
+                        IconButton={classes.IconButton}
+                        onChangeTheme={this.props.onChangeTheme}
+                    />
                     <Button
                         className={classes.GroupsList}
                         onClick={this.handleClick}

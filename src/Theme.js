@@ -52,10 +52,12 @@ function withTheme(WrappedComponent) {
             console.log('theme is mount')
         }
 
-        onChangeTheme = (type, primary) => {
+        onChangeTheme = () => {
             let theme = createTheme(this.props.theme.type, this.props.theme.primary)
             debugger;
             this.setState({ theme })
+            const cookies = new Cookies();
+            cookies.set('lyAdminTheme', {type: this.props.theme.type, primary: this.props.theme.primary})
         }
 
         render() {
