@@ -13,6 +13,7 @@ import {
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
+import Divider from '@material-ui/core/Divider';
 import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
 import Firstline from './Components/Firstline'
@@ -133,6 +134,7 @@ class LyAdminApp extends Component {
         getUser={this.props.getUser}
         id={this.props.currentGroup.info.id}
         />
+        <Divider/>
         <p>Settings</p>
         <GroupSettings/>
       </div>
