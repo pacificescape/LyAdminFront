@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles, getStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
@@ -12,45 +12,213 @@ import Dialog from '@material-ui/core/Dialog';
 import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
+import { blue, green, red, orange, amber, indigo, deepPurple } from '@material-ui/core/colors';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
-const useStyles = makeStyles({
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
+const styles = theme => ({
+    formControl: {
+        margin: '10px'
+    },
+    group: {
+        margin: '10px'
+    },
+    redRoot: {
+        color: red[600],
+        '&$checked': {
+            color: red[500]
+        }
+    },
+    orangeRoot: {
+        color: orange[600],
+        '&$checked': {
+            color: orange[500]
+        }
+    },
+    amberRoot: {
+        color: amber[600],
+        '&$checked': {
+            color: amber[500]
+        }
+    },
+    greenRoot: {
+        color: green[600],
+        '&$checked': {
+            color: green[500]
+        }
+    },
+    blueRoot: {
+        color: '#5B8AF1',
+        '&$checked': {
+            color: '#5B8AF1'
+        }
+    },
+    indigoRoot: {
+        color: indigo[600],
+        '&$checked': {
+            color: indigo[500]
+        }
+    },
+    deepPurpleRoot: {
+        color: deepPurple[600],
+        '&$checked': {
+            color: deepPurple[500]
+        }
+    },
+    checked: {}
 });
 
 function SimpleDialog(props) {
-  const classes = useStyles();
+    const { classes } = props
 
-  return (
-    <Dialog onClose={props.onClose} aria-labelledby="simple-dialog-title" open={props.open}>
-      <DialogTitle id="simple-dialog-title">Color theme picker</DialogTitle>
-      <List>
-        <ListItem autoFocus button onClick={props.onClose}>
-          <ListItemAvatar>
-            <Avatar>
-              <AddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Add account" />
-        </ListItem>
-      </List>
-    </Dialog>
-  );
+    const [color, setColor] = useState(props.theme.palette.primary.main)
+
+    const handleAccentChange = (event) => {
+        setColor(event.target.value)
+    }
+
+    return (
+        <Dialog
+            onClose={props.onClose}
+            aria-labelledby="simple-dialog-title"
+            open={props.open}
+            fullWidth={true}
+            maxWidth={'xl'}>
+
+            <DialogTitle id="simple-dialog-title">Color theme picker</DialogTitle>
+            <FormControl component='fieldset' className={classes.formControl}>
+                <FormLabel focused component='legend'>
+                    Accent
+                        </FormLabel>
+                <RadioGroup
+                    aria-label='accent'
+                    name='accent1'
+                    className={classes.group}
+                    value={color}
+                    onChange={handleAccentChange}>
+                    <FormControlLabel
+                        value='red'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.redRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Red'
+                    />
+                    <FormControlLabel
+                        value='orange'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.orangeRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Orange'
+                    />
+                    <FormControlLabel
+                        value='amber'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.amberRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Amber'
+                    />
+                    <FormControlLabel
+                        value='green'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.greenRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Green'
+                    />
+                    <FormControlLabel
+                        value='blue'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.blueRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Blue'
+                    />
+                    <FormControlLabel
+                        value='indigo'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.indigoRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Indigo'
+                    />
+                    <FormControlLabel
+                        value='deepPurple'
+                        control={
+                            <Radio
+                                color='primary'
+                                classes={{
+                                    root: classes.deepPurpleRoot,
+                                    checked: classes.checked
+                                }}
+                            />
+                        }
+                        label='Deep Purple'
+                    />
+                </RadioGroup>
+            </FormControl>
+
+        </Dialog>
+    );
 }
 
+function ThemePicker(props) {
+    const handleClose = () => {
+        props.onClose();
+    };
 
-export default function ThemePicker(props) {
-  const handleClose = () => {
-    props.onClose();
-  };
-
-  return (
-    <div>
-      <SimpleDialog open={props.open} onClose={handleClose} />
-    </div>
-  );
+    return (
+        <div>
+            <SimpleDialog {...props} open={props.open} onClose={handleClose} />
+        </div>
+    );
 }
+
+export default withStyles(styles, { withTheme: true })(ThemePicker);
+
+// <List>
+// <ListItem autoFocus button onClick={props.onClose}>
+//   <ListItemAvatar>
+//     <Avatar>
+//       <AddIcon />
+//     </Avatar>
+//   </ListItemAvatar>
+//   <ListItemText primary="Add account" />
+// </ListItem>
+// </List>

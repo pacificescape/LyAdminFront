@@ -71,14 +71,14 @@ export default function HeaderMenu(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <StyledMenuItem>
+                <StyledMenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <SendIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Sent mail" />
                 </StyledMenuItem>
                 <StyledMenuItem
-                    onClick={() => openThemePicker ? null: setOpenThemePicker(true)}
+                    onClick={() => {handleClose(); return openThemePicker ? null: setOpenThemePicker(true)}}
                 >
                     <ThemePicker
                         open={openThemePicker}
