@@ -36,32 +36,41 @@ function createTheme(type, primary) {
 
 function withTheme(WrappedComponent) {
 
-    class ThemeWrapper extends Component {
+    class ThemeWrapper extends Component { // переписать на хуки
         constructor(props) {
             super(props)
 
             this.state = {}
-            const cookies = new Cookies();
-            const { type, primary } = cookies.get('lyAdminTheme') || this.props.theme //{ type: 'dark', primary: { main: deepPurple.A200 } };
-            const theme = createTheme(type, primary);
+            // const cookies = new Cookies();
+            // console.log(cookies.get('lyAdminTheme'))
+            // const { type, primary } = cookies.get('lyAdminTheme') || { type: 'dark', primary: { main: deepPurple.A200 } };
+            const theme = createTheme(this.props.type, this.props.primary);
 
-            this.state = { theme };
+            this.state = { theme }
         }
 
         componentDidMount() {
             console.log('theme is mount')
         }
 
+
         onChangeTheme = () => {
-            let theme = createTheme(this.props.theme.type, this.props.theme.primary)
+            let theme = createTheme(this.props.type, this.props.primary)
             debugger;
             this.setState({ theme })
-            const cookies = new Cookies();
-            cookies.set('lyAdminTheme', {type: this.props.theme.type, primary: this.props.theme.primary})
+            // const cookies = new Cookies();
+            // cookies.set('lyAdminTheme', {type: this.state.theme.palette.type, primary: this.state.theme.palette.primary})
+            // console.log(cookies.get('lyAdminTheme'))
         }
 
         render() {
             const { theme } = this.state;
+            // debugger;
+            // if (this.props.type) {
+            //     if (this.props.type !== this.state.theme.palette.type || this.props.primary[500] !== this.state.theme.palette.primary[500]) {
+            //         this.onChangeTheme()
+            //     }
+            // }
 
             return (
                 <StylesProvider injectFirst={true}>
@@ -75,7 +84,8 @@ function withTheme(WrappedComponent) {
 
     let mapStateToProps = (state) => {
         return {
-            theme: state.App.theme
+            type: state.App.theme.type,
+            primary: state.App.theme.primary
         }
     }
 

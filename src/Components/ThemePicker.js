@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import {
+    changeThemeThunk,
+  } from '../redux/reducers/App'
+
 import { makeStyles, withStyles, getStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
@@ -72,6 +76,27 @@ const styles = theme => ({
     checked: {}
 });
 
+const getColor = value => {
+    switch (value) {
+        case 'red':
+            return red;
+        case 'orange':
+            return orange;
+        case 'amber':
+            return amber;
+        case 'green':
+            return green;
+        case 'blue':
+            return { main: '#5B8AF1' };
+        case 'indigo':
+            return indigo;
+        case 'deepPurple':
+            return deepPurple;
+        default:
+            return null
+    }
+};
+
 function SimpleDialog(props) {
     const { classes } = props
 
@@ -79,6 +104,8 @@ function SimpleDialog(props) {
 
     const handleAccentChange = (event) => {
         setColor(event.target.value)
+
+        props.toggleTheme('dark', getColor(event.target.value))
     }
 
     return (
@@ -210,7 +237,24 @@ function ThemePicker(props) {
     );
 }
 
-export default withStyles(styles, { withTheme: true })(ThemePicker);
+let mapDispatchToProps = (dispatch) => {
+    return {
+        toggleTheme: (type, primary) => {
+            dispatch(changeThemeThunk(type, primary))
+        }
+    }
+}
+
+let mapStateToProps = state => {
+    return {
+        type: state.App.theme.type,
+        primary: state.App.theme.primary
+    }
+}
+
+const ThemePickerContainer = connect(mapStateToProps, mapDispatchToProps)(ThemePicker)
+
+export default withStyles(styles, { withTheme: true })(ThemePickerContainer);
 
 // <List>
 // <ListItem autoFocus button onClick={props.onClose}>

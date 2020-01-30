@@ -1,3 +1,5 @@
+import Cookies from 'universal-cookie';
+
 import getUserGroups from '../../Api/getUserGroups'
 import getGroup from '../../Api/getGroup'
 import getUser from '../../Api/getUser'
@@ -20,7 +22,9 @@ const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 
-
+const cookies = new Cookies();
+console.log(cookies.get('lyAdminTheme'))
+const theme = cookies.get('lyAdminTheme') || { type: 'dark', primary: { main: deepPurple.A200 } };
 
 let initialState = {
     isAuth: false,
@@ -41,7 +45,7 @@ let initialState = {
         getGroupMembers: false,
         getUser: false
     },
-    theme: { type: 'dark', primary: { main: deepPurple.A200 }}
+    theme
 }
 
 export default (state = initialState, action) => {
@@ -81,9 +85,11 @@ export default (state = initialState, action) => {
         case TOGGLE_THEME: {
             let random = Math.random() > 0.5
             const newtheme = {
-                type: random ? 'dark' : 'light',
-                primary: random ? green : deepOrange
+                type: action.themeType, // || random ? 'dark' : 'light',
+                primary: action.primary // || random ? green : deepOrange
             }
+            debugger;
+            cookies.set('lyAdminTheme', {type: action.themeType, primary: action.primary})
             return { ...state, theme: newtheme }
         }
         default: return state

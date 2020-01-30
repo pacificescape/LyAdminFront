@@ -13,15 +13,15 @@ import {
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
-import Divider from '@material-ui/core/Divider';
+import Divider from '@material-ui/core/Divider'
 import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
 import Firstline from './Components/Firstline'
 import MemberList from './Components/MemberList'
 import GroupSettings from './Components/GroupSettings'
-import './LyAdminApp.css';
+import './LyAdminApp.css'
 // import styled from 'styled-components'
-// import { ThemeConsumer } from 'styled-components';
+// import { ThemeConsumer } from 'styled-components'
 
 import Cookies from 'universal-cookie'
 import getDataFromUrl from './utils/getDataFromUrl'
@@ -62,13 +62,13 @@ const styles = theme => ({
       flexGrow: 2
     }
   }
-});
+})
 
 
 
 class LyAdminApp extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     const cookies = new Cookies()
 
     if (props.location.pathname.indexOf('login') !== -1) {
@@ -185,8 +185,8 @@ const LyAdminAppContainer = connect(mapStateToProps, mapDispatchTooProps)(LyAdmi
 const enhance = compose(
   withTheme,
   withStyles(styles, { withTheme: true })
-);
+)
 
-export default enhance(LyAdminAppContainer);
+export default enhance(LyAdminAppContainer)
 
 // сделать метод выдающий страницы таблицы
