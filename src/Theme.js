@@ -50,7 +50,6 @@ function withTheme(WrappedComponent) {
             console.log('theme is mount')
         }
 
-
         // onChangeTheme = () => {
         //         let theme = createTheme(this.props.type, this.props.primary)
         //         debugger;

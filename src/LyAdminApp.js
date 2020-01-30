@@ -99,9 +99,7 @@ class LyAdminApp extends Component {
     this.props.getGroupMembers(this.state.defaultGroup)
   }
 
-  componentDidUpdate() {
-    console.log('did update')
-  }
+
 
   render() {
     if (!this.props.isAuth) {
@@ -114,6 +112,7 @@ class LyAdminApp extends Component {
     //   this.props.getGroupMembers(this.props.currentGroup.info.id)
     //   this.props.toggleIsError(false)
     // }
+
 
 
     return (

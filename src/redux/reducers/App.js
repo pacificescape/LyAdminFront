@@ -23,7 +23,7 @@ const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 
 const cookies = new Cookies();
-const theme = cookies.get('lyAdminTheme') || { type: 'dark', primary: { main: deepPurple.A200 } };
+const theme = cookies.get('lyAdminTheme') || {}
 
 let initialState = {
     isAuth: false,
@@ -44,7 +44,10 @@ let initialState = {
         getGroupMembers: false,
         getUser: false
     },
-    theme
+    theme: {
+        type: theme.type || 'dark',
+        primary: theme.primary || { main: deepPurple.A200 }
+    }
 }
 
 export default (state = initialState, action) => {
@@ -82,9 +85,12 @@ export default (state = initialState, action) => {
             return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
         case TOGGLE_THEME: {
+            // if(!action.primary[500] && !action.primary.main) {
+            //     action.primary = state.theme.primary
+            // }
             const newtheme = {
                 type: action.themeType,
-                primary: action.primary
+                primary: action.primary || state.theme.primary
             }
             debugger;
             cookies.set('lyAdminTheme', {type: action.themeType, primary: action.primary})
@@ -195,7 +201,7 @@ export const getGroupMembersThunk = (groupId) => (dispatch) => {
 }
 
 export const changeThemeThunk = (type, primary) => (dispatch) => {
-    dispatch(changeTheme(type, primary))
+        dispatch(changeTheme(type, primary))
 }
 
 // отдельный стор для groupmembers

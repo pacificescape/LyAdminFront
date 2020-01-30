@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import { blue, green, red, orange, amber, indigo, deepPurple } from '@material-ui/core/colors';
 
+import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -26,7 +27,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 const styles = theme => ({
     formControl: {
-        margin: '10px'
+        width: '175px',
+        margin: 'auto'
     },
     group: {
         margin: '10px'
@@ -75,6 +77,27 @@ const styles = theme => ({
     },
     checked: {}
 });
+const getColorString = value => {
+    switch (value) {
+        case red['500']:
+            return 'red';
+        case orange['500']:
+            return 'orange';
+        case amber['500']:
+            return 'amber';
+        case green['500']:
+            return 'green';
+        case '#5B8AF1':
+            return 'blue';
+        case indigo['500']:
+            return 'indigo';
+        case deepPurple['500']:
+            return 'deepPurple';
+        default:
+            return null;
+        }
+
+};
 
 const getColor = value => {
     switch (value) {
@@ -100,13 +123,27 @@ const getColor = value => {
 function SimpleDialog(props) {
     const { classes } = props
 
-    const [color, setColor] = useState(props.theme.palette.primary.main)
+    const [color, setColor] = useState(getColorString(props.theme.palette.primary[500]))
+    const [darkMode, setDarkMode] = React.useState(props.theme.palette.type === 'dark' ? true : false);
+    console.log('color', color)
 
     const handleAccentChange = (event) => {
         setColor(event.target.value)
-
-        props.toggleTheme('dark', getColor(event.target.value))
+        let dark = darkMode ? 'dark' : 'light'
+        props.toggleTheme(dark, getColor(event.target.value))
     }
+
+    const handleDarkModeChange = event => {
+        if (event.target.checked) {
+            setDarkMode(true)
+
+            props.toggleTheme('dark', getColor(color))
+        } else {
+            setDarkMode(false)
+
+            props.toggleTheme('light', getColor(color))
+        }
+      }
 
     return (
         <Dialog
@@ -117,6 +154,13 @@ function SimpleDialog(props) {
             maxWidth={'xl'}>
 
             <DialogTitle id="simple-dialog-title">Color theme picker</DialogTitle>
+            <FormControlLabel
+              className={classes.formControl}
+              control={
+                <Switch checked={darkMode} onChange={handleDarkModeChange} value="fullWidth" />
+              }
+              label="Dark mode"
+            />
             <FormControl component='fieldset' className={classes.formControl}>
                 <FormLabel focused component='legend'>
                     Accent
@@ -220,7 +264,6 @@ function SimpleDialog(props) {
                     />
                 </RadioGroup>
             </FormControl>
-
         </Dialog>
     );
 }
