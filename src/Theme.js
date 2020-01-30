@@ -39,11 +39,8 @@ function withTheme(WrappedComponent) {
     class ThemeWrapper extends Component { // переписать на хуки
         constructor(props) {
             super(props)
-
             this.state = {}
-            // const cookies = new Cookies();
-            // console.log(cookies.get('lyAdminTheme'))
-            // const { type, primary } = cookies.get('lyAdminTheme') || { type: 'dark', primary: { main: deepPurple.A200 } };
+
             const theme = createTheme(this.props.type, this.props.primary);
 
             this.state = { theme }
@@ -54,17 +51,17 @@ function withTheme(WrappedComponent) {
         }
 
 
-        onChangeTheme = () => {
-            let theme = createTheme(this.props.type, this.props.primary)
-            debugger;
-            this.setState({ theme })
-            // const cookies = new Cookies();
-            // cookies.set('lyAdminTheme', {type: this.state.theme.palette.type, primary: this.state.theme.palette.primary})
-            // console.log(cookies.get('lyAdminTheme'))
-        }
+        // onChangeTheme = () => {
+        //         let theme = createTheme(this.props.type, this.props.primary)
+        //         debugger;
+        //         const cookies = new Cookies();
+        //         console.log(cookies.get('lyAdminTheme'))
+        //         this.setState({ theme })
+        // }
+
 
         render() {
-            const { theme } = this.state;
+            const theme = createTheme(this.props.type, this.props.primary);
             // debugger;
             // if (this.props.type) {
             //     if (this.props.type !== this.state.theme.palette.type || this.props.primary[500] !== this.state.theme.palette.primary[500]) {
@@ -75,7 +72,7 @@ function withTheme(WrappedComponent) {
             return (
                 <StylesProvider injectFirst={true}>
                     <MuiThemeProvider theme={theme}>
-                        <WrappedComponent {...this.props} onChangeTheme={this.onChangeTheme}/>
+                        <WrappedComponent {...this.props} />
                     </MuiThemeProvider>
                 </StylesProvider>
             );

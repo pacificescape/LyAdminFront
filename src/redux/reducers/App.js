@@ -23,7 +23,6 @@ const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 
 const cookies = new Cookies();
-console.log(cookies.get('lyAdminTheme'))
 const theme = cookies.get('lyAdminTheme') || { type: 'dark', primary: { main: deepPurple.A200 } };
 
 let initialState = {
@@ -83,10 +82,9 @@ export default (state = initialState, action) => {
             return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
         case TOGGLE_THEME: {
-            let random = Math.random() > 0.5
             const newtheme = {
-                type: action.themeType, // || random ? 'dark' : 'light',
-                primary: action.primary // || random ? green : deepOrange
+                type: action.themeType,
+                primary: action.primary
             }
             debugger;
             cookies.set('lyAdminTheme', {type: action.themeType, primary: action.primary})

@@ -83,6 +83,7 @@ export default function HeaderMenu(props) {
                     <ThemePicker
                         open={openThemePicker}
                         onClose={() => openThemePicker ? setOpenThemePicker(false) : null}
+                        onChangeTheme={props.onChangeTheme}
                     />
                     <ListItemIcon>
                         <PaletteIcon fontSize="small" />

@@ -123,10 +123,6 @@ class LyAdminApp extends Component {
           getGroup={this.props.getGroup}
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
-          onChangeTheme={() => {
-            this.props.toggleTheme()
-            this.props.onChangeTheme()
-          }}
         />
         {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
         <MemberList

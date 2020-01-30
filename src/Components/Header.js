@@ -135,7 +135,6 @@ class Header extends Component {
                 <AppBar position="static" className={classes.AppBar}>
                     <HeaderMenu
                         IconButton={classes.IconButton}
-                        onChangeTheme={this.props.onChangeTheme}
                     />
                     <Button
                         className={classes.GroupsList}
