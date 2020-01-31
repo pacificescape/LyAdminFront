@@ -105,7 +105,7 @@ function MemberList(props) {
                                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
                                     <TableCell component="th" scope="row">
                                         <div className={classes.avatarWrapper}>
-                                            <Avatar src={avatar} className={classes.avatar}>{avatar ? null: props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
+                                            <Avatar src={`/file/${avatar}`} className={classes.avatar}>{avatar ? null: props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
                                             {props.users[props.id][member.telegram_id].first_name}
                                         </div>
                                     </TableCell>
