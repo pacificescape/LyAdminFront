@@ -60,6 +60,9 @@ const styles = theme => ({
     },
     Typography: {
       flexGrow: 2
+    },
+    MemberList: {
+      backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[300],
     }
   }
 })
@@ -125,12 +128,11 @@ class LyAdminApp extends Component {
         />
         {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
         <MemberList
+        className={this.props.MemberList}
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
         id={this.props.currentGroup.info.id}
         />
-        <Divider/>
-        <p>Settings</p>
         <GroupSettings/>
       </div>
     )
