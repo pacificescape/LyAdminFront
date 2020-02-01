@@ -15,11 +15,11 @@ const styles = theme => ({
         padding: '10px',
         backgroundColor: theme.palette.grey[700] + '11'
     },
-    SwitchSettingsBlock: {
+    SetSettingsBlock: {
         margin: '10px 0px 0 10px',
         display: 'flex',
         justifyContent: 'center',
-        '& div': {
+        '& div:nth-child(odd)': {
             margin: '0 5px'
         }
     },
@@ -74,13 +74,17 @@ function GroupSettings(props) {
         <div>
             <Typography className={classes.GroupSettingsHeader}>Settings</Typography>
 
-            <div className={classes.SwitchSettingsBlock}>
+            <div className={classes.SetSettingsBlock}>
                 <div className={classes.GreetingsBlock}>
                     <Typography className={classes.formControl}>Greetings:</Typography>
                     <FormControlLabel
                         className={classes.formControl}
                         control={
-                            <Switch checked={welcome} onChange={handleWelcomeChange} value="welcome" />
+                            <Switch
+                                color={'secondary'}
+                                checked={welcome}
+                                onChange={handleWelcomeChange}
+                                value="welcome" />
                         }
                     />
                 </div>
