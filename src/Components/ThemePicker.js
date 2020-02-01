@@ -123,7 +123,7 @@ const getColor = value => {
 function SimpleDialog(props) {
     const { classes } = props
 
-    const [color, setColor] = useState(getColorString(props.theme.palette.primary[500]))
+    const [color, setColor] = useState(getColorString(props.theme.palette.primary.main))
     const [darkMode, setDarkMode] = React.useState(props.theme.palette.type === 'dark' ? true : false);
     console.log('color', color)
 

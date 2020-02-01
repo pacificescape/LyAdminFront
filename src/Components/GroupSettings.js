@@ -94,7 +94,11 @@ function GroupSettings(props) {
                     <FormControlLabel
                         className={classes.formControl}
                         control={
-                            <Switch checked={cas} onChange={handleCASChange} value="welcome" />
+                            <Switch
+                            color={'secondary'}
+                                checked={cas}
+                                onChange={handleCASChange}
+                                value="welcome" />
                         }
                     />
                 </div>
