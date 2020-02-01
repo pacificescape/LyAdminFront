@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
@@ -15,9 +16,12 @@ const styles = theme => ({
         backgroundColor: theme.palette.grey[700] + '11'
     },
     SwitchSettingsBlock: {
-        margin: '0 0px 0 0px',
+        margin: '10px 0px 0 10px',
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        '& div': {
+            margin: '0 5px'
+        }
     },
     formControl: {
         display: 'inline-block',
@@ -27,6 +31,14 @@ const styles = theme => ({
         display: 'inline-block',
         textAlign: 'left',
     },
+    inputs: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    bananField: {
+        maxWidth: '130px',
+        width: '80px'
+    }
 })
 
 function GroupSettings(props) {
@@ -34,6 +46,8 @@ function GroupSettings(props) {
 
     const [welcome, setWelcome] = useState(props.currentGroup.settings.welcome.enable)
     const [cas, setCAS] = useState(props.currentGroup.settings.cas)
+    const [banan, setBanan] = useState(props.currentGroup.settings.banan.default)
+    const [bananError, setBananError] = useState(false)
 
     const handleWelcomeChange = (event) => {
         setWelcome(event.target.checked)
@@ -41,6 +55,19 @@ function GroupSettings(props) {
 
     const handleCASChange = (event) => {
         setCAS(event.target.checked)
+    }
+
+    const handleBananChange = (event) => {
+        if (RegExp(/\D/).test(event.target.value)) {
+            setBananError(true)
+            return
+        }
+        if (event.target.value < 300) {
+            setBananError(true)
+            return
+        }
+        setBanan(event.target.value)
+        setBananError(false)
     }
 
     return (
@@ -67,8 +94,22 @@ function GroupSettings(props) {
                         }
                     />
                 </div>
+                <div>
+                    <TextField
+                        className={classes.bananField}
+                        onChange={handleBananChange}
+                        error={bananError}
+                        id="bananField"
+                        label="Banan"
+                        defaultValue={banan}
+                        variant="outlined"
+                        margin={'dense'}
+                    />
+                </div>
             </div>
+            <div className={classes.inputs}>
 
+            </div>
             <Divider />
         </div>
     )

@@ -99,13 +99,13 @@ function MemberList(props) {
                             }
                             let avatar = ''
                             if (props.users[props.id][member.telegram_id] && props.users[props.id][member.telegram_id].avatar) {
-                                avatar = props.users[props.id][member.telegram_id].avatar
+                                avatar = `/file/${props.users[props.id][member.telegram_id].avatar}`
                             }
                             return (
                                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
                                     <TableCell component="th" scope="row">
                                         <div className={classes.avatarWrapper}>
-                                            <Avatar src={`/file/${avatar}`} className={classes.avatar}>{avatar ? null: props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
+                                            <Avatar src={avatar} className={classes.avatar}>{avatar ? null: props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
                                             {props.users[props.id][member.telegram_id].first_name}
                                         </div>
                                     </TableCell>

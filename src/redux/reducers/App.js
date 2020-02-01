@@ -21,6 +21,7 @@ const TOGGLE_THEME = 'TOGGLE_THEME'
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
+const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
 
 const cookies = new Cookies();
 const theme = cookies.get('lyAdminTheme') || {}
@@ -29,11 +30,20 @@ let initialState = {
     isAuth: false,
     isFetching: true,
     isError: false,
+    isChangingSettings: false,
     groups: [],
     currentGroup: {
         id: '',
         info: {},
-        settings: {}
+        settings: {
+            welcome: {
+                enable: true
+            },
+            banan: {
+                default: 300
+            },
+            cas: true
+        }
     },
     groupmembers: {
         empty: true
@@ -61,6 +71,9 @@ export default (state = initialState, action) => {
             }
             return { ...state, isFetching: action.isFetching }
         }
+        case TOGGLE_IS_CHANGING_SETTINGS: {
+            return { ...state, isChangingSettings: action.isChanging }
+        }
         case TOGGLE_IS_ERROR: {
             return { ...state, isError: action.isError }
         }
@@ -74,14 +87,12 @@ export default (state = initialState, action) => {
             let newmembers = {}
             Object.assign(newmembers, action.members, state.groupmembers)
             newmembers.empty = false
-            debugger;
             return { ...state, groupmembers: newmembers }
         }
         case SET_USER: {
             let newusers = {}
             Object.assign(newusers, action.users, state.users[action.groupId])
             newusers.empty = false
-            debugger;
             return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
         case TOGGLE_THEME: {
@@ -92,7 +103,6 @@ export default (state = initialState, action) => {
                 type: action.themeType,
                 primary: action.primary || state.theme.primary
             }
-            debugger;
             cookies.set('lyAdminTheme', {type: action.themeType, primary: action.primary})
             return { ...state, theme: newtheme }
         }
@@ -110,6 +120,7 @@ export const changeTheme = (themeType, primary) => ({ type: TOGGLE_THEME, themeT
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching, method) => ({ type: TOGGLE_IS_FETCHING, isFetching, method })
 export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
+export const toggleisChangingSettings = (isChanging) => ({ type: TOGGLE_IS_CHANGING_SETTINGS, isChanging })
 
 export const getUserGroupsThunk = () => (dispatch) => {
     dispatch(toggleIsFetching(true, 'getUserGroups'))
@@ -169,7 +180,6 @@ export const getUserThunk = (userIds, groupId) => (dispatch) => {
         users.forEach((user) => {
             usersObj[user.telegram_id] = user
         })
-        debugger
         dispatch(setUser(usersObj, groupId))
         dispatch(toggleIsFetching(false, 'getUser'))
     })
@@ -202,6 +212,16 @@ export const getGroupMembersThunk = (groupId) => (dispatch) => {
 
 export const changeThemeThunk = (type, primary) => (dispatch) => {
         dispatch(changeTheme(type, primary))
+}
+
+export const applySettingsThunk = () => (dispatch) => {
+    dispatch(toggleisChangingSettings(true))
+
+    // saveSettings then applySettings
+
+    // dispatch(applySettings())
+
+    // then dispatch(toggleisChangingSettings(false))
 }
 
 // отдельный стор для groupmembers
