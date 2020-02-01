@@ -120,6 +120,7 @@ function MemberList(props) {
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[]}
+                labelDisplayedRows={({from, to, count}) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
                 component="div"
                 count={props.groupmembers[props.id].length}
                 rowsPerPage={10}
