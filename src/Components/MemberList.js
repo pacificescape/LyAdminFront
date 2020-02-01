@@ -32,23 +32,23 @@ const useStyles = makeStyles({
     }
   });
 
-const renderTable = async (props) => {
-    return await Promise.all(props.groupmembers[props.id].map(async member => {
-        let user = await props.getUser(member.telegram_id)
-        return (
-            <TableRow key={member.telegram_id} >
-                <TableCell component="th" scope="row">
-                    <img img={user.link} alt="ava" />
-                    {member.telegram_id}
-                </TableCell>
-                <TableCell align="center">{member.stats.messagesCount}</TableCell>
-                <TableCell align="center">{member.banan.num}</TableCell>
-                <TableCell align="center">{member.createdAt.split('T')[0].split('-').reverse().join('.')}</TableCell>
-            </TableRow>
-        )
-    }
-    ))
-}
+// const renderTable = async (props) => {
+//     return await Promise.all(props.groupmembers[props.id].map(async member => {
+//         let user = await props.getUser(member.telegram_id)
+//         return (
+//             <TableRow key={member.telegram_id} >
+//                 <TableCell component="th" scope="row">
+//                     <img img={user.link} alt="ava" />
+//                     {member.telegram_id}
+//                 </TableCell>
+//                 <TableCell align="center">{member.stats.messagesCount}</TableCell>
+//                 <TableCell align="center">{member.banan.num}</TableCell>
+//                 <TableCell align="center">{member.createdAt.split('T')[0].split('-').reverse().join('.')}</TableCell>
+//             </TableRow>
+//         )
+//     }
+//     ))
+// }
 
 function MemberList(props) {
     const classes = useStyles();
@@ -69,6 +69,7 @@ function MemberList(props) {
     }
 
     const handleChangePage = (event, newPage) => {
+        debugger
         setPage(newPage);
       }
 
@@ -87,7 +88,7 @@ function MemberList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {props.groupmembers[props.id].map(member => {
+                        {props.groupmembers[props.id].slice(page, page + 10).map(member => {
                             if (!props.users[props.id] || !props.users[props.id][member.telegram_id]) {
                                 return (
                                     <TableRow key={member.telegram_id} className={classes.tableRow}>
@@ -120,7 +121,7 @@ function MemberList(props) {
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[]}
-                labelDisplayedRows={({from, to, count}) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
+                labelDisplayedRows={({from, count}) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
                 component="div"
                 count={props.groupmembers[props.id].length}
                 rowsPerPage={10}
