@@ -1,20 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Cookies from 'universal-cookie';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { StylesProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-
-import {
-    toggleThemeThunk
-} from './redux/reducers/App'
-
-import deepPurple from '@material-ui/core/colors/deepPurple';
-import indigo from '@material-ui/core/colors/indigo';
-import teal from '@material-ui/core/colors/teal';
-import green from '@material-ui/core/colors/green';
-import amber from '@material-ui/core/colors/amber';
-import deepOrange from '@material-ui/core/colors/deepOrange';
 
 function createTheme(type, primary) {
     return createMuiTheme({

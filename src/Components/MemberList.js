@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 function MemberList(props) {
     const classes = useStyles();
 
-    const [users, setUsers] = useState({empty: false})
+    // const [users, setUsers] = useState({empty: false})
     const [page, setPage] = React.useState(0)
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {

@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import { compose } from 'recompose';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withTheme from '../Theme';
-import { makeStyles } from "@material-ui/core/styles";
 
-import GroupsListMenu from './GroupsListMenu'
 import HeaderMenu from './HeaderMenu'
 
 import AppBar from '@material-ui/core/AppBar';
@@ -13,23 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 
-import { applyMiddleware } from 'redux';
-
 import Drawer from "@material-ui/core/Drawer";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import GroupIcon from '@material-ui/icons/Group';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
-
-
-
-import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
     AppBar: {
@@ -131,11 +118,10 @@ class Header extends Component {
         const { classes } = this.props;
         const groupId = this.props.currentGroup.info.id
         let groupPhoto
-        debugger
+
         this.props.groups.forEach((i) => {
-            debugger
             if (groupId === i.id && i.photo) {
-                groupPhoto = i.photo.small_file_id
+                groupPhoto = `/file/${i.photo.small_file_id}`
             }
         })
 
@@ -163,7 +149,7 @@ class Header extends Component {
                         {this.renderGroupsList()}
                     </Drawer>
                     <div className={classes.Avatar} >
-                        <Avatar src={`/file/${groupPhoto}`}>{this.props.currentGroup.info.title}</Avatar>
+                        <Avatar src={groupPhoto}>{this.props.currentGroup.info.title}</Avatar>
                     </div>
                 </AppBar>
             </header>

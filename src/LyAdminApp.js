@@ -13,10 +13,8 @@ import {
 } from './redux/reducers/App'
 import { compose } from 'recompose'
 
-import Divider from '@material-ui/core/Divider'
 import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
-import Firstline from './Components/Firstline'
 import MemberList from './Components/MemberList'
 import Gifs from './Components/Gifs'
 import GroupSettings from './Components/GroupSettings'
@@ -26,7 +24,6 @@ import './LyAdminApp.css'
 
 import Cookies from 'universal-cookie'
 import getDataFromUrl from './utils/getDataFromUrl'
-import { useLocation, useParams, useRouteMatch } from 'react-router-dom'
 
 const maxAge = 30 * 24 * 60 * 60
 

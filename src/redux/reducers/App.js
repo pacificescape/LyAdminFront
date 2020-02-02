@@ -6,11 +6,6 @@ import getUser from '../../Api/getUser'
 import getGroupMembers from '../../Api/getGroupMembers'
 
 import deepPurple from '@material-ui/core/colors/deepPurple';
-import indigo from '@material-ui/core/colors/indigo';
-import teal from '@material-ui/core/colors/teal';
-import green from '@material-ui/core/colors/green';
-import amber from '@material-ui/core/colors/amber';
-import deepOrange from '@material-ui/core/colors/deepOrange';
 
 const SET_GROUPS = 'SET_GROUPS'
 const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'

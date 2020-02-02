@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import Typography from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
 
 
 const styles = theme => ({

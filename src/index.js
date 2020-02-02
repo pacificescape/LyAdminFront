@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Route,
-    Redirect,
-    useParams
 } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import LyAdminApp from './LyAdminApp';
 import { Provider } from 'react-redux'
 import createStore from './redux/store';

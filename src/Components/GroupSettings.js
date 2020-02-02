@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'

@@ -4,19 +4,10 @@ import {
     changeThemeThunk,
   } from '../redux/reducers/App'
 
-import { makeStyles, withStyles, getStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
-import { blue, green, red, orange, amber, indigo, deepPurple } from '@material-ui/core/colors';
+import { green, red, orange, amber, indigo, deepPurple } from '@material-ui/core/colors';
 
 import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
@@ -125,7 +116,6 @@ function SimpleDialog(props) {
 
     const [color, setColor] = useState(getColorString(props.theme.palette.primary.main))
     const [darkMode, setDarkMode] = React.useState(props.theme.palette.type === 'dark' ? true : false);
-    console.log('color', color)
 
     const handleAccentChange = (event) => {
         setColor(event.target.value)
