@@ -129,6 +129,15 @@ class Header extends Component {
 
     render() {
         const { classes } = this.props;
+        const groupId = this.props.currentGroup.info.id
+        let groupPhoto
+        debugger
+        this.props.groups.forEach((i) => {
+            debugger
+            if (groupId === i.id && i.photo) {
+                groupPhoto = i.photo.small_file_id
+            }
+        })
 
         return (
             <header className={classes.header}>
@@ -154,7 +163,7 @@ class Header extends Component {
                         {this.renderGroupsList()}
                     </Drawer>
                     <div className={classes.Avatar} >
-                        <Avatar src={this.props.userPhoto} />
+                        <Avatar src={`/file/${groupPhoto}`}>{this.props.currentGroup.info.title}</Avatar>
                     </div>
                 </AppBar>
             </header>
