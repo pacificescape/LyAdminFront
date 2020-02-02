@@ -37,7 +37,10 @@ let initialState = {
         info: {},
         settings: {
             welcome: {
-                enable: true
+                enable: true,
+                timer: 180,
+                gifs: [],
+                texts: []
             },
             banan: {
                 default: 300

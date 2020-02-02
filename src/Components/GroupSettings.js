@@ -19,6 +19,7 @@ const styles = theme => ({
         margin: '10px 0px 0 10px',
         display: 'flex',
         justifyContent: 'center',
+        flexDirection: 'row',
         '& div:nth-child(odd)': {
             margin: '0 5px'
         }
@@ -31,13 +32,27 @@ const styles = theme => ({
         display: 'inline-block',
         textAlign: 'left',
     },
-    inputs: {
+    CASBlock: {
+        display: 'inline-block',
+        textAlign: 'left',
+    },
+    setSettingsInputs: {
+        margin: '10px 0px 0 10px',
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: 'row',
     },
     bananField: {
+        display: 'inline-block',
         maxWidth: '130px',
-        width: '80px'
+        width: '80px',
+        margin: '0 10px 10px'
+    },
+    timerField: {
+        display: 'inline-block',
+        maxWidth: '130px',
+        width: '80px',
+        margin: '0 10px 10px'
     }
 })
 
@@ -47,7 +62,9 @@ function GroupSettings(props) {
     const [welcome, setWelcome] = useState(props.currentGroup.settings.welcome.enable)
     const [cas, setCAS] = useState(props.currentGroup.settings.cas)
     const [banan, setBanan] = useState(props.currentGroup.settings.banan.default)
+    const [timer, setTimer] = useState(props.currentGroup.settings.welcome.timer)
     const [bananError, setBananError] = useState(false)
+    const [timerError, setTimerError] = useState(false)
 
     const handleWelcomeChange = (event) => {
         setWelcome(event.target.checked)
@@ -62,12 +79,25 @@ function GroupSettings(props) {
             setBananError(true)
             return
         }
-        if (event.target.value < 300) {
+        if (event.target.value < 60) {
             setBananError(true)
             return
         }
         setBanan(event.target.value)
         setBananError(false)
+    }
+
+    const handleTimerChange = (event) => {
+        if (RegExp(/\D/).test(event.target.value)) {
+            setTimerError(true)
+            return
+        }
+        if (event.target.value < 300) {
+            setTimerError(true)
+            return
+        }
+        setTimer(event.target.value)
+        setTimerError(false)
     }
 
     return (
@@ -95,13 +125,16 @@ function GroupSettings(props) {
                         className={classes.formControl}
                         control={
                             <Switch
-                            color={'secondary'}
+                                color={'secondary'}
                                 checked={cas}
                                 onChange={handleCASChange}
                                 value="welcome" />
                         }
                     />
                 </div>
+            </div>
+            <Divider />
+            <div className={classes.setSettingsInputs}>
                 <div>
                     <TextField
                         className={classes.bananField}
@@ -114,11 +147,19 @@ function GroupSettings(props) {
                         margin={'dense'}
                     />
                 </div>
+                <div>
+                    <TextField
+                        className={classes.timerField}
+                        onChange={handleTimerChange}
+                        error={timerError}
+                        id="timerField"
+                        label="timer"
+                        defaultValue={timer}
+                        variant="outlined"
+                        margin={'dense'}
+                    />
+                </div>
             </div>
-            <div className={classes.inputs}>
-
-            </div>
-            <Divider />
         </div>
     )
 }

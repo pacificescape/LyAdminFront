@@ -88,7 +88,7 @@ function MemberList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {props.groupmembers[props.id].slice(page, page + 10).map(member => {
+                        {props.groupmembers[props.id].slice(page * 10, page + 10).map(member => {
                             if (!props.users[props.id] || !props.users[props.id][member.telegram_id]) {
                                 return (
                                     <TableRow key={member.telegram_id} className={classes.tableRow}>
