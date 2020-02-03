@@ -58,7 +58,9 @@ function MemberList(props) {
 
     if (props.groupmembers.empty || !props.groupmembers[props.id]) {
         if(!props.isLoading.getGroupMembers) {
-            props.getGroupMembers(props.id)
+            if (props.id) {
+                props.getGroupMembers(props.id)
+            }
         }
         return <p>Загрузка...</p>
     }

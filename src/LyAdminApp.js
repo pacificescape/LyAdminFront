@@ -97,7 +97,7 @@ class LyAdminApp extends Component {
       this.props.getGroup(this.state.defaultGroup)
     }
 
-    this.props.getGroupMembers(this.state.defaultGroup)
+    // this.props.getGroupMembers(this.state.defaultGroup)
   }
 
 
@@ -129,7 +129,7 @@ class LyAdminApp extends Component {
         className={this.props.MemberList}
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
-        id={this.props.currentGroup.info.id}
+        id={this.props.currentGroup.info.id || this.props.defaultGroup}
         />
         <Gifs/>
         <GroupSettings/>
