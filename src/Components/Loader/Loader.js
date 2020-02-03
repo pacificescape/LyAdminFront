@@ -9,11 +9,12 @@ class Loader extends React.Component {
         if (!this.props.isAuth) {
 
             let telegramButton = document.createElement('script');
-            telegramButton.src = 'https://telegram.org/js/telegram-widget.js?6'
-            telegramButton.setAttribute('data-telegram-login', 'LyAdminBot')
+            telegramButton.src = "https://telegram.org/js/telegram-widget.js?7"
+            telegramButton.setAttribute('data-telegram-login', "lywebbot")
             telegramButton.setAttribute('data-size', 'large')
             telegramButton.setAttribute('data-radius', '20')
-            telegramButton.setAttribute('data-auth-url', 'localhost:3000')
+            telegramButton.setAttribute('data-request-access', "write")
+            telegramButton.setAttribute('data-auth-url', "https://lyadmin.stickerstat.info/")
             document.getElementById('authButton').appendChild(telegramButton)
         } else {
             document.getElementById('authButton').appendChild('Ошибка загрузки')
