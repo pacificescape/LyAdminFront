@@ -71,6 +71,7 @@ class LyAdminApp extends Component {
   constructor(props) {
     super(props)
     const cookies = new Cookies()
+    this.props.getUserGroups()
 
     if (props.location.pathname.indexOf('login') !== -1) {
       let { first_name, photo_url, group_id } = getDataFromUrl(props.location.search)
@@ -86,14 +87,14 @@ class LyAdminApp extends Component {
       userName: cookies.get('userName'),
       defaultGroup: cookies.get('defaultGroup'),
       isLoading: props.isFetching,
-      isAuth: props.isAuth,
-      isError: props.isError,
     }
+
+
   }
 
   componentDidMount() {
     if (this.props.groups.length === 0 && !this.props.isError) {
-      this.props.getUserGroups()
+
       this.props.getGroup(this.state.defaultGroup)
     }
 

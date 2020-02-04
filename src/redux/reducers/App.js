@@ -131,9 +131,9 @@ export const getUserGroupsThunk = () => (dispatch) => {
             return
         }
 
-        dispatch(toggleIsAuth(true))
         let { groups } = res.result
         dispatch(setGroups(groups))
+        dispatch(toggleIsAuth(true))
         dispatch(toggleIsFetching(false, 'getUserGroups'))
     })
         .catch((err) => {
