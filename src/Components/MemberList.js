@@ -100,10 +100,8 @@ function MemberList(props) {
                                     </TableRow>
                                 )
                             }
-                            let avatar = ''
-                            if (props.users[props.id][member.telegram_id] && props.users[props.id][member.telegram_id].avatar) {
-                                avatar = `/file/${props.users[props.id][member.telegram_id].avatar}`
-                            }
+                            debugger
+                            let avatar = props.users[props.id][member.telegram_id].username ? `https://t.me/i/userpic/320/${props.users[props.id][member.telegram_id].username}.jpg` : ''
                             return (
                                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
                                     <TableCell component="th" scope="row">
