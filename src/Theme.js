@@ -34,10 +34,6 @@ function withTheme(WrappedComponent) {
             this.state = { theme }
         }
 
-        componentDidMount() {
-            console.log('theme is mount')
-        }
-
         // onChangeTheme = () => {
         //         let theme = createTheme(this.props.type, this.props.primary)
         //         debugger;

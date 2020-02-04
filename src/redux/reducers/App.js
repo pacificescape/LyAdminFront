@@ -29,7 +29,7 @@ let initialState = {
     groups: [],
     currentGroup: {
         id: '',
-        info: {},
+        info: { id: cookies.get('defaultGroup') },
         settings: {
             welcome: {
                 enable: true,
@@ -83,13 +83,13 @@ export default (state = initialState, action) => {
         }
         case SET_GROUP_MEMBERS: {
             let newmembers = {}
-            Object.assign(newmembers, action.members, state.groupmembers)
+            newmembers ={ ...action.members, ...state.groupmembers}
             newmembers.empty = false
             return { ...state, groupmembers: newmembers }
         }
         case SET_USER: {
             let newusers = {}
-            Object.assign(newusers, action.users, state.users[action.groupId])
+            newusers = { ...action.users, ...state.users[action.groupId] }
             newusers.empty = false
             return { ...state, users: { ...state.users, [action.groupId]: newusers} }
         }
