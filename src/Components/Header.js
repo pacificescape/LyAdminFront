@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import Cookies from 'universal-cookie';
 import { compose } from 'recompose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import {
-    getGroupSettingsThunk,
     setCurrentGroupIdThunk
   } from '../redux/reducers/App'
 
@@ -75,18 +73,10 @@ const styles = theme => ({
 
 class Header extends Component {
     constructor(props) {
-        super(props);
-        // const cookies = new Cookies() // сделать добавление
-        // const userName = cookies.get('userName')
-        // const userPhoto = cookies.get('userPhoto')
+        super(props)
 
         this.state = {
             top: false,
-            isLoading: props.isFetching,
-            isAuth: props.isAuth,
-            isError: props.isError,
-            // userName,
-            // userPhoto
         }
     }
 
@@ -105,7 +95,6 @@ class Header extends Component {
                         button key={i}
                         onClick={() => {
                             this.props.setCurrentGroupId(group)
-                            // this.props.getGroup(group.id)
                             this.handleClick()
                         }}>
                         <ListItemIcon>
@@ -168,9 +157,6 @@ const mapStateToProps = (state) => ({
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        getGroup: (groupId) => {
-            dispatch(getGroupSettingsThunk(groupId))
-          },
           setCurrentGroupId: (groupId) => {
               dispatch(setCurrentGroupIdThunk(groupId))
           }

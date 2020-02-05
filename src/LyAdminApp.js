@@ -94,7 +94,6 @@ class LyAdminApp extends Component {
 
   componentDidMount() {
       this.props.getGroup(this.state.defaultGroup)
-    // this.props.getGroupMembers(this.state.defaultGroup)
   }
 
 
@@ -179,5 +178,3 @@ const enhance = compose(
 )
 
 export default enhance(LyAdminAppContainer)
-
-// сделать метод выдающий страницы таблицы

@@ -63,7 +63,7 @@ function Gifs(props) {
                             key={gif}>
                             <video
                                 onMouseOver={handlePlay}
-                                src={`/file/${gif}.mp4`}
+                                src={`/file/${gif}`}
                             />
                         </div>
                     )
