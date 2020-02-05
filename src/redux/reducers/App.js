@@ -8,7 +8,7 @@ import getGroupMembers from '../../Api/getGroupMembers'
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
 const SET_GROUPS = 'SET_GROUPS'
-const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'
+const SET_GROUP_SETTINGS = 'SET_GROUP_SETTINGS'
 const SET_CURRENT_GROUP_ID = 'SET_CURRENT_GROUP_ID'
 const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS'
 const SET_USER = 'SET_USER'
@@ -80,20 +80,28 @@ export default (state = initialState, action) => {
             return { ...state, currentGroupId: action.groupId }
         }
         case SET_GROUPS: {
-            debugger
-            return { ...state, groups: action.groups }
+            let newGroups = state.groups
+            for ( const group in action.groups ) {
+                if (newGroups[group]){
+                    delete action.groups[group].settings
+                }
+                newGroups = { ...newGroups, [group]: {...action.groups[group], ...newGroups[group] }}
+                debugger
+            }
+
+            return { ...state, groups: newGroups }
         }
-        case SET_CURRENT_GROUP: {
+        case SET_GROUP_SETTINGS: {
             debugger
-            let currentGroup = state.groups[action.group.info.id]
             return {
                 ...state,
                 currentGroupId: action.group.info.id,
                 groups: {
                     ...state.groups,
                     [action.group.info.id]: {
-                        ...currentGroup,
-                        ...action.group
+                        ...state.groups[action.group.info.id],
+                        info: action.group.info,
+                        settings: action.group.settings
                     }
                 }
             }
@@ -126,7 +134,7 @@ export default (state = initialState, action) => {
 }
 
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
-export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
+export const setGroupSettings = (group) => ({ type: SET_GROUP_SETTINGS, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
 export const setUser = (users, groupId) => ({ type: SET_USER, users, groupId })
 export const setCurrentGroupId = (groupId) => ({ type: SET_CURRENT_GROUP_ID, groupId })
@@ -147,7 +155,7 @@ export const getUserGroupsThunk = () => (dispatch) => {
             dispatch(toggleIsFetching(false, 'getUserGroups'))
             return
         }
-        debugger
+        // debugger
         const arrOfGroups = res.result.groups || []
 
         let groups = {}
@@ -171,7 +179,7 @@ export const setCurrentGroupIdThunk = groupId => (dispatch) => {
 
 export const getGroupSettingsThunk = (groupId) => (dispatch) => {
     dispatch(toggleIsFetching(true))
-    debugger
+    // debugger
     getGroup(groupId).then((res) => {
 
         if (!res.ok) {
@@ -180,8 +188,8 @@ export const getGroupSettingsThunk = (groupId) => (dispatch) => {
         }
 
         let groupInfo = res.result
-        debugger;
-        dispatch(setCurrentGroup(groupInfo))
+        // debugger
+        dispatch(setGroupSettings(groupInfo))
         dispatch(toggleIsFetching(false))
     })
 }
