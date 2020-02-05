@@ -93,11 +93,7 @@ class LyAdminApp extends Component {
   }
 
   componentDidMount() {
-    if (this.props.groups.length === 0 && !this.props.isError) {
-      this.props.getUserGroups()
       this.props.getGroup(this.state.defaultGroup)
-    }
-
     // this.props.getGroupMembers(this.state.defaultGroup)
   }
 

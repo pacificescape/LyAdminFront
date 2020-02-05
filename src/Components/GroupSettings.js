@@ -167,7 +167,7 @@ function GroupSettings(props) {
 let mapStateToProps = (state) => {
     return {
         isError: state.App.isError,
-        currentGroup: state.App.currentGroup,
+        currentGroup: state.App.groups[state.App.currentGroupId],
         groupmembers: state.App.groupmembers
     }
 }

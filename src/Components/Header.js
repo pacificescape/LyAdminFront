@@ -98,20 +98,20 @@ class Header extends Component {
             onKeyDown={this.handleClick}
         >
             <List className={this.props.classes.list}>
-                {this.props.groups.map((group, i) => (
+                {Object.keys(this.props.groups).map((group, i) => (
                     <ListItem
-                        selected={group.id === this.props.currentGroupId}
+                        selected={group === this.props.currentGroupId}
                         className={this.props.classes.listItem}
                         button key={i}
                         onClick={() => {
-                            this.props.setCurrentGroupId(group.id)
+                            this.props.setCurrentGroupId(group)
                             // this.props.getGroup(group.id)
                             this.handleClick()
                         }}>
                         <ListItemIcon>
                             <GroupIcon />
                         </ListItemIcon>
-                        <Typography variant="inherit" noWrap>{group.title}</Typography>
+                        <Typography variant="inherit" noWrap>{this.props.groups[group].title}</Typography>
                     </ListItem>
                 ))}
             </List>
@@ -126,13 +126,8 @@ class Header extends Component {
     render() {
         const { classes } = this.props;
         const groupId = this.props.currentGroupId
-        let groupPhoto
-
-        this.props.groups.forEach((i) => {
-            if (groupId === i.id && i.photo) {
-                groupPhoto = `/file/${i.photo.small_file_id}`
-            }
-        })
+        const group = this.props.groups[groupId]
+        const groupPhoto = `/file/${group.photo.small_file_id}`
 
         return (
             <header className={classes.header}>
@@ -146,7 +141,7 @@ class Header extends Component {
                     >
                         <ArrowRightIcon />
                         <Typography variant="inherit" noWrap>
-                            {this.props.currentGroup.info.title}
+                            {group.title}
                         </Typography>
                     </Button>
                     <Drawer
@@ -158,7 +153,7 @@ class Header extends Component {
                         {this.renderGroupsList()}
                     </Drawer>
                     <div className={classes.Avatar} >
-                        <Avatar src={groupPhoto}>{this.props.currentGroup.info.title}</Avatar>
+                        <Avatar src={groupPhoto}>{group.title}</Avatar>
                     </div>
                 </AppBar>
             </header>

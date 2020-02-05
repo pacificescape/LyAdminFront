@@ -91,7 +91,7 @@ function Gifs(props) {
 }
 
 const mapStateToProps = (state) => ({
-    gifs: state.App.currentGroup.settings.welcome.gifs
+    gifs: state.App.groups[state.App.currentGroupId].settings.welcome.gifs
 })
 
 let mapDispatchToProps = (dispatch) => {

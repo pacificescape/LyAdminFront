@@ -22,29 +22,28 @@ const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
 const cookies = new Cookies();
 const theme = cookies.get('lyAdminTheme') || {}
 
+const initialSettings = {
+    settings: {
+        welcome: {
+            enable: true,
+            timer: 180,
+            gifs: [],
+            texts: []
+        },
+        banan: {
+            default: 300
+        },
+        cas: true
+    }
+}
+
 let initialState = {
     isAuth: false,
     isFetching: true,
     isError: false,
     isChangingSettings: false,
-    groups: [],
+    groups: {},
     currentGroupId: cookies.get('defaultGroup'),
-    currentGroup: {
-        id: '',
-        info: { id: cookies.get('defaultGroup') },
-        settings: {
-            welcome: {
-                enable: true,
-                timer: 180,
-                gifs: [],
-                texts: []
-            },
-            banan: {
-                default: 300
-            },
-            cas: true
-        }
-    },
     groupmembers: {
         empty: true
     },
@@ -67,7 +66,7 @@ export default (state = initialState, action) => {
         }
         case TOGGLE_IS_FETCHING: {
             if (action.method) {
-                return { ...state, api: { ...state.api, [action.method]: action.isFetching}}
+                return { ...state, api: { ...state.api, [action.method]: action.isFetching } }
             }
             return { ...state, isFetching: action.isFetching }
         }
@@ -86,11 +85,22 @@ export default (state = initialState, action) => {
         }
         case SET_CURRENT_GROUP: {
             debugger
-            return { ...state, currentGroup: action.group, currentGroupId: action.group.info.id}
+            let currentGroup = state.groups[action.group.info.id]
+            return {
+                ...state,
+                currentGroupId: action.group.info.id,
+                groups: {
+                    ...state.groups,
+                    [action.group.info.id]: {
+                        ...currentGroup,
+                        ...action.group
+                    }
+                }
+            }
         }
         case SET_GROUP_MEMBERS: {
             let newmembers = {}
-            newmembers ={ ...action.members, ...state.groupmembers}
+            newmembers = { ...action.members, ...state.groupmembers }
             newmembers.empty = false
             return { ...state, groupmembers: newmembers }
         }
@@ -98,7 +108,7 @@ export default (state = initialState, action) => {
             let newusers = {}
             newusers = { ...action.users, ...state.users[action.groupId] }
             newusers.empty = false
-            return { ...state, users: { ...state.users, [action.groupId]: newusers} }
+            return { ...state, users: { ...state.users, [action.groupId]: newusers } }
         }
         case TOGGLE_THEME: {
             // if(!action.primary[500] && !action.primary.main) {
@@ -108,7 +118,7 @@ export default (state = initialState, action) => {
                 type: action.themeType,
                 primary: action.primary || state.theme.primary
             }
-            cookies.set('lyAdminTheme', {type: action.themeType, primary: action.primary})
+            cookies.set('lyAdminTheme', { type: action.themeType, primary: action.primary })
             return { ...state, theme: newtheme }
         }
         default: return state
@@ -119,7 +129,7 @@ export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
 export const setUser = (users, groupId) => ({ type: SET_USER, users, groupId })
-export const setsetCurrentGroupId = (groupId) => ({ type: SET_CURRENT_GROUP_ID, groupId })
+export const setCurrentGroupId = (groupId) => ({ type: SET_CURRENT_GROUP_ID, groupId })
 export const changeTheme = (themeType, primary) => ({ type: TOGGLE_THEME, themeType, primary })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
@@ -137,8 +147,14 @@ export const getUserGroupsThunk = () => (dispatch) => {
             dispatch(toggleIsFetching(false, 'getUserGroups'))
             return
         }
+        debugger
+        const arrOfGroups = res.result.groups || []
 
-        let { groups } = res.result
+        let groups = {}
+        arrOfGroups.forEach( group => {
+            groups = { ...groups, [group.id]: { ...group, ...initialSettings }}
+        })
+
         dispatch(setGroups(groups))
         dispatch(toggleIsAuth(true))
         dispatch(toggleIsFetching(false, 'getUserGroups'))
@@ -150,7 +166,7 @@ export const getUserGroupsThunk = () => (dispatch) => {
 }
 
 export const setCurrentGroupIdThunk = groupId => (dispatch) => {
-    dispatch(setsetCurrentGroupId(groupId))
+    dispatch(setCurrentGroupId(groupId))
 }
 
 export const getGroupSettingsThunk = (groupId) => (dispatch) => {
@@ -173,7 +189,7 @@ export const getGroupSettingsThunk = (groupId) => (dispatch) => {
 export const getUserThunk = (userIds, groupId) => (dispatch) => {
     dispatch(toggleIsFetching(true, 'getUser'))
 
-    let grabUsers = Promise.all(userIds.map( async (userId) => {
+    let grabUsers = Promise.all(userIds.map((userId) => {
 
         return getUser(userId.telegram_id).then((res) => {
             if (!res.ok) {
@@ -211,17 +227,17 @@ export const getGroupMembersThunk = (groupId) => (dispatch) => {
         }
 
         let members = res.result
-        dispatch(setGroupMembers({[groupId]: members}))
+        dispatch(setGroupMembers({ [groupId]: members }))
         dispatch(toggleIsFetching(false, 'getGroupMembers'))
     })
-    .catch((err) => {
-        dispatch(toggleIsError(true))
-        console.log('getUserGroups thunk failed', err)
-    })
+        .catch((err) => {
+            dispatch(toggleIsError(true))
+            console.log('getUserGroups thunk failed', err)
+        })
 }
 
 export const changeThemeThunk = (type, primary) => (dispatch) => {
-        dispatch(changeTheme(type, primary))
+    dispatch(changeTheme(type, primary))
 }
 
 export const applySettingsThunk = () => (dispatch) => {
