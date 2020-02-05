@@ -9,6 +9,7 @@ import deepPurple from '@material-ui/core/colors/deepPurple';
 
 const SET_GROUPS = 'SET_GROUPS'
 const SET_CURRENT_GROUP = 'SET_CURRENT_GROUP'
+const SET_CURRENT_GROUP_ID = 'SET_CURRENT_GROUP_ID'
 const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS'
 const SET_USER = 'SET_USER'
 
@@ -27,6 +28,7 @@ let initialState = {
     isError: false,
     isChangingSettings: false,
     groups: [],
+    currentGroupId: cookies.get('defaultGroup'),
     currentGroup: {
         id: '',
         info: { id: cookies.get('defaultGroup') },
@@ -75,11 +77,16 @@ export default (state = initialState, action) => {
         case TOGGLE_IS_ERROR: {
             return { ...state, isError: action.isError }
         }
+        case SET_CURRENT_GROUP_ID: {
+            return { ...state, currentGroupId: action.groupId }
+        }
         case SET_GROUPS: {
+            debugger
             return { ...state, groups: action.groups }
         }
         case SET_CURRENT_GROUP: {
-            return { ...state, currentGroup: action.group }
+            debugger
+            return { ...state, currentGroup: action.group, currentGroupId: action.group.info.id}
         }
         case SET_GROUP_MEMBERS: {
             let newmembers = {}
@@ -112,7 +119,7 @@ export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setCurrentGroup = (group) => ({ type: SET_CURRENT_GROUP, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
 export const setUser = (users, groupId) => ({ type: SET_USER, users, groupId })
-
+export const setsetCurrentGroupId = (groupId) => ({ type: SET_CURRENT_GROUP_ID, groupId })
 export const changeTheme = (themeType, primary) => ({ type: TOGGLE_THEME, themeType, primary })
 
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
@@ -142,9 +149,13 @@ export const getUserGroupsThunk = () => (dispatch) => {
         })
 }
 
-export const getCurrentGroupThunk = (groupId) => (dispatch) => {
-    dispatch(toggleIsFetching(true))
+export const setCurrentGroupIdThunk = groupId => (dispatch) => {
+    dispatch(setsetCurrentGroupId(groupId))
+}
 
+export const getGroupSettingsThunk = (groupId) => (dispatch) => {
+    dispatch(toggleIsFetching(true))
+    debugger
     getGroup(groupId).then((res) => {
 
         if (!res.ok) {
@@ -153,6 +164,7 @@ export const getCurrentGroupThunk = (groupId) => (dispatch) => {
         }
 
         let groupInfo = res.result
+        debugger;
         dispatch(setCurrentGroup(groupInfo))
         dispatch(toggleIsFetching(false))
     })

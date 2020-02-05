@@ -3,6 +3,11 @@ import Cookies from 'universal-cookie';
 import { compose } from 'recompose';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import {
+    getGroupSettingsThunk,
+    setCurrentGroupIdThunk
+  } from '../redux/reducers/App'
+
 import HeaderMenu from './HeaderMenu'
 
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +22,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import GroupIcon from '@material-ui/icons/Group';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     AppBar: {
@@ -48,7 +54,9 @@ const styles = theme => ({
             height: '40px'
         }
     },
-    wrapper: { top: "64px" },
+    wrapper: {
+        top: "64px"
+    },
     list: {
         width: '100%',
         '&:first-child': {
@@ -68,17 +76,17 @@ const styles = theme => ({
 class Header extends Component {
     constructor(props) {
         super(props);
-        const cookies = new Cookies() // сделать добавление
-        const userName = cookies.get('userName')
-        const userPhoto = cookies.get('userPhoto')
+        // const cookies = new Cookies() // сделать добавление
+        // const userName = cookies.get('userName')
+        // const userPhoto = cookies.get('userPhoto')
 
         this.state = {
             top: false,
             isLoading: props.isFetching,
             isAuth: props.isAuth,
             isError: props.isError,
-            userName,
-            userPhoto
+            // userName,
+            // userPhoto
         }
     }
 
@@ -92,11 +100,12 @@ class Header extends Component {
             <List className={this.props.classes.list}>
                 {this.props.groups.map((group, i) => (
                     <ListItem
-                        selected={group.id === this.props.currentGroup.info.id}
+                        selected={group.id === this.props.currentGroupId}
                         className={this.props.classes.listItem}
                         button key={i}
                         onClick={() => {
-                            this.props.getGroup(group.id)
+                            this.props.setCurrentGroupId(group.id)
+                            // this.props.getGroup(group.id)
                             this.handleClick()
                         }}>
                         <ListItemIcon>
@@ -116,7 +125,7 @@ class Header extends Component {
 
     render() {
         const { classes } = this.props;
-        const groupId = this.props.currentGroup.info.id
+        const groupId = this.props.currentGroupId
         let groupPhoto
 
         this.props.groups.forEach((i) => {
@@ -157,8 +166,26 @@ class Header extends Component {
     }
 }
 
+
+const mapStateToProps = (state) => ({
+    currentGroupId: state.App.currentGroupId
+})
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        getGroup: (groupId) => {
+            dispatch(getGroupSettingsThunk(groupId))
+          },
+          setCurrentGroupId: (groupId) => {
+              dispatch(setCurrentGroupIdThunk(groupId))
+          }
+    }
+}
+
+const HeaderContainer = connect(mapStateToProps, mapDispatchToProps)(Header)
+
 const enhance = compose(
     withStyles(styles, { withTheme: true })
 );
 
-export default enhance(Header);
+export default enhance(HeaderContainer);

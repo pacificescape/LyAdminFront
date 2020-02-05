@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import {
   getUserGroupsThunk,
-  getCurrentGroupThunk,
+  getGroupSettingsThunk,
   toggleIsAuthThunk,
   getGroupMembersThunk,
   getUserThunk,
@@ -121,7 +121,6 @@ class LyAdminApp extends Component {
       <div id="app">
         <Header
           userPhoto={this.state.userPhoto}
-          getGroup={this.props.getGroup}
           groups={this.props.groups}
           currentGroup={this.props.currentGroup}
         />
@@ -130,7 +129,6 @@ class LyAdminApp extends Component {
         className={this.props.MemberList}
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
-        id={this.props.currentGroup.info.id || this.props.defaultGroup}
         />
         <Gifs/>
         <GroupSettings/>
@@ -157,7 +155,7 @@ let mapDispatchTooProps = (dispatch) => {
       dispatch(getUserGroupsThunk())
     },
     getGroup: (groupId) => {
-      dispatch(getCurrentGroupThunk(groupId))
+      dispatch(getGroupSettingsThunk(groupId))
     },
     getUser: (userId, groupId) => {
       dispatch(getUserThunk(userId, groupId))

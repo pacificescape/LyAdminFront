@@ -56,7 +56,7 @@ function MemberList(props) {
     // const [users, setUsers] = useState({empty: false})
     const [page, setPage] = useState(0)
 
-    if (props.groupmembers.empty || !props.groupmembers[props.id]) {
+    if (!props.groupmembers[props.id]) {
         if(!props.isLoading.getGroupMembers) {
             if (props.id) {
                 props.getGroupMembers(props.id)
@@ -100,7 +100,6 @@ function MemberList(props) {
                                     </TableRow>
                                 )
                             }
-                            debugger
                             let avatar = props.users[props.id][member.telegram_id].username ? `https://t.me/i/userpic/320/${props.users[props.id][member.telegram_id].username}.jpg` : ''
                             return (
                                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
@@ -136,6 +135,7 @@ let mapStateToProps = (state) => {
     return {
       users: state.App.users,
       currentGroup: state.App.currentGroup,
+      id: state.App.currentGroupId,
       groupmembers: state.App.groupmembers,
     //   id: state.App.currentGroup.info.id,
       isLoading: {

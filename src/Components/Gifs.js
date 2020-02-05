@@ -94,12 +94,12 @@ const mapStateToProps = (state) => ({
     gifs: state.App.currentGroup.settings.welcome.gifs
 })
 
-let mapDispatchTooProps = (dispatch) => {
+let mapDispatchToProps = (dispatch) => {
     return {
     }
 }
 
-const GifsContainer = connect(mapStateToProps, mapDispatchTooProps)(Gifs)
+const GifsContainer = connect(mapStateToProps, mapDispatchToProps)(Gifs)
 
 const enhance = compose(
     withStyles(styles, { withTheme: true })
