@@ -178,6 +178,11 @@ export const setCurrentGroupIdThunk = groupId => (dispatch) => {
 }
 
 export const getGroupSettingsThunk = (groupId) => (dispatch) => {
+    if (!groupId) {
+        console.log('getgroupSettings: no group')
+        return
+    }
+
     dispatch(toggleIsFetching(true))
     // debugger
     getGroup(groupId).then((res) => {

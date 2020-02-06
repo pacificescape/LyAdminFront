@@ -93,7 +93,11 @@ class LyAdminApp extends Component {
   }
 
   componentDidMount() {
+    if (this.state.defaultGroup) {
       this.props.getGroup(this.state.defaultGroup)
+    } else if (this.props.isAuth) {
+      this.props.getGroup(this.props.currentGroup)
+    }
   }
 
 
@@ -125,7 +129,7 @@ class LyAdminApp extends Component {
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
         />
-        <Gifs/>
+        {/* <Gifs/> */}
         <GroupSettings/>
       </div>
     )

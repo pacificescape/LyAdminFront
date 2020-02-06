@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
+import { grey } from '@material-ui/core/colors';
 
 import { connect } from 'react-redux'
 
@@ -20,7 +21,8 @@ const useStyles = makeStyles({
     avatar: {
         marginRight: '10px',
         width: '25px',
-        height: '25px'
+        height: '25px',
+        backgroundColor: grey[500]
     },
     table: {
       minWidth: 250,
@@ -90,7 +92,7 @@ function MemberList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {props.groupmembers[props.id].slice(page * 10, page + 10).map(member => {
+                        {props.groupmembers[props.id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page + 10).map(member => {
                             if (!props.users[props.id] || !props.users[props.id][member.telegram_id]) {
                                 return (
                                     <TableRow key={member.telegram_id} className={classes.tableRow}>
@@ -100,13 +102,22 @@ function MemberList(props) {
                                     </TableRow>
                                 )
                             }
-                            let avatar = props.users[props.id][member.telegram_id].username ? `https://t.me/i/userpic/320/${props.users[props.id][member.telegram_id].username}.jpg` : ''
+                            let user = props.users[props.id][member.telegram_id]
+
+                            let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
+
                             return (
                                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
                                     <TableCell component="th" scope="row">
                                         <div className={classes.avatarWrapper}>
-                                            <Avatar src={avatar} className={classes.avatar}>{props.users[props.id][member.telegram_id].first_name[0]}</Avatar>
-                                            {props.users[props.id][member.telegram_id].first_name}
+                                            <Avatar
+                                                // alt={user.first_name}
+                                                src={avatar}
+                                                className={classes.avatar}
+                                                >
+                                                {user.last_name ? user.first_name[0] + ' ' + user.last_name[0] : user.first_name[0]}
+                                            </Avatar>
+                                            {(() => (user.last_name ? user.first_name + ' ' + user.last_name : user.first_name))()}
                                         </div>
                                     </TableCell>
                                     <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
