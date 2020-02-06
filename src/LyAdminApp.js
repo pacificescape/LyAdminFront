@@ -3,6 +3,7 @@ import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import {
+  setCurrentGroupIdThunk,
   getUserGroupsThunk,
   getGroupSettingsThunk,
   toggleIsAuthThunk,
@@ -80,7 +81,10 @@ class LyAdminApp extends Component {
       cookies.set('userName', first_name, { maxAge })
       cookies.set('userPhoto', photo_url, { maxAge })
     }
-    const defaultGroup = cookies.get('defaultGroup')
+    const defaultGroup = +cookies.get('defaultGroup')
+    if (defaultGroup) {
+      this.props.setCurrentGroupId(defaultGroup)
+    }
 
     this.state = {
       userPhoto: cookies.get('userPhoto'),
@@ -171,7 +175,10 @@ let mapDispatchTooProps = (dispatch) => {
     },
     toggleTheme: () => {
       dispatch(changeThemeThunk())
-    }
+    },
+    setCurrentGroupId: (groupId) => {
+      dispatch(setCurrentGroupIdThunk(groupId))
+  }
   }
 }
 

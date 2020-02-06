@@ -159,14 +159,16 @@ export const getUserGroupsThunk = () => (dispatch) => {
         const arrOfGroups = res.result.groups || []
 
         let groups = {}
-        arrOfGroups.forEach( group => {
-            groups = { ...groups, [group.id]: { ...group, ...initialSettings }}
+        arrOfGroups.forEach(group => {
+            groups = { ...groups, [group.id]: { ...group, ...initialSettings } }
         })
 
         dispatch(setGroups(groups))
-        dispatch(toggleIsAuth(true))
         dispatch(toggleIsFetching(false, 'getUserGroups'))
     })
+        .then(() => {
+            dispatch(toggleIsAuth(true))
+        })
         .catch((err) => {
             dispatch(toggleIsError(true))
             console.log('getUserGroups thunk failed', err)

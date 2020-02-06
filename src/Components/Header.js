@@ -116,7 +116,7 @@ class Header extends Component {
         const { classes } = this.props;
         const groupId = this.props.currentGroupId
         const group = this.props.groups[groupId]
-        const groupPhoto = `/file/${group.photo ? group.photo.small_file_id : ''}`
+        const groupPhoto = `/file/${group && group.photo ? group.photo.small_file_id : ''}`
 
         return (
             <header className={classes.header}>
