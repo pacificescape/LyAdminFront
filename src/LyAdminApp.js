@@ -3,6 +3,7 @@ import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import {
+  setGroupMembers,
   getUserGroupsThunk,
   getGroupSettingsThunk,
   toggleIsAuthThunk,
@@ -81,6 +82,7 @@ class LyAdminApp extends Component {
       cookies.set('userPhoto', photo_url, { maxAge })
     }
 
+    setGroupMembers(cookies.get('defaultGroup'))
 
     this.state = {
       userPhoto: cookies.get('userPhoto'),
