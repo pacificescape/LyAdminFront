@@ -95,7 +95,6 @@ export default (state = initialState, action) => {
             debugger
             return {
                 ...state,
-                currentGroupId: action.group.info.id,
                 groups: {
                     ...state.groups,
                     [action.group.info.id]: {
@@ -164,9 +163,9 @@ export const getUserGroupsThunk = () => (dispatch) => {
         })
 
         dispatch(setGroups(groups))
-        dispatch(toggleIsFetching(false, 'getUserGroups'))
     })
-        .then(() => {
+    .then(() => {
+            dispatch(toggleIsFetching(false, 'getUserGroups'))
             dispatch(toggleIsAuth(true))
         })
         .catch((err) => {
