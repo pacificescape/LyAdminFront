@@ -3,7 +3,6 @@ import withTheme from './Theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import {
-  setGroupMembers,
   getUserGroupsThunk,
   getGroupSettingsThunk,
   toggleIsAuthThunk,
@@ -81,14 +80,13 @@ class LyAdminApp extends Component {
       cookies.set('userName', first_name, { maxAge })
       cookies.set('userPhoto', photo_url, { maxAge })
     }
-
-    setGroupMembers(cookies.get('defaultGroup'))
+    const defaultGroup = cookies.get('defaultGroup')
 
     this.state = {
       userPhoto: cookies.get('userPhoto'),
       userName: cookies.get('userName'),
-      defaultGroup: cookies.get('defaultGroup'),
       isLoading: props.isFetching,
+      defaultGroup
     }
 
 
@@ -111,10 +109,11 @@ class LyAdminApp extends Component {
       />
     }
 
-    // if (this.props.isError) {
-    //   this.props.getGroupMembers(this.props.currentGroup.info.id)
-    //   this.props.toggleIsError(false)
-    // }
+    if (!this.props.groups[this.props.currentGroup]) {
+      return <Loader
+        isAuth={this.props.isAuth}
+      />
+    }
 
 
 
