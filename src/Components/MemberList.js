@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Avatar from '@material-ui/core/Avatar';
-import Paper from '@material-ui/core/Paper';
-import { grey } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TablePagination from '@material-ui/core/TablePagination'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Avatar from '@material-ui/core/Avatar'
+import Paper from '@material-ui/core/Paper'
+import { grey } from '@material-ui/core/colors'
 
 import { connect } from 'react-redux'
 
@@ -32,25 +32,7 @@ const useStyles = makeStyles({
             borderCollapse: 'none'
         }
     }
-  });
-
-// const renderTable = async (props) => {
-//     return await Promise.all(props.groupmembers[props.id].map(async member => {
-//         let user = await props.getUser(member.telegram_id)
-//         return (
-//             <TableRow key={member.telegram_id} >
-//                 <TableCell component="th" scope="row">
-//                     <img img={user.link} alt="ava" />
-//                     {member.telegram_id}
-//                 </TableCell>
-//                 <TableCell align="center">{member.stats.messagesCount}</TableCell>
-//                 <TableCell align="center">{member.banan.num}</TableCell>
-//                 <TableCell align="center">{member.createdAt.split('T')[0].split('-').reverse().join('.')}</TableCell>
-//             </TableRow>
-//         )
-//     }
-//     ))
-// }
+  })
 
 function MemberList(props) {
     const classes = useStyles();

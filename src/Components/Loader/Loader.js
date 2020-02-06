@@ -26,11 +26,10 @@ class Loader extends React.Component {
         return (
             <div className={styles.bananaWrapper}>
                 <div className={styles.bananaContainer}>
-                    {/* <Redirect from="/" to="/" /> */}
                     <div className={styles.banana}>
                         <img alt='ban' src='https://media.giphy.com/media/2yzIXo95cy4Y7sGCNM/giphy.gif' width="100" className=''></img>
                     </div>
-                    <div id="authButton" className={styles.authButton} />
+                    {this.props.isAuth ? 'error' : <div id="authButton" className={styles.authButton} />}
                 </div>
             </div>
 

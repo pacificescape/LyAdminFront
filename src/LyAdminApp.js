@@ -114,13 +114,9 @@ class LyAdminApp extends Component {
     }
 
     if (!this.props.groups[this.props.currentGroup]) {
-      return (
-        <div>
-          {this.props.currentGroup}
-          <br></br>
-          {this.props.groups}
-        </div>
-      )
+      return <Loader
+        isAuth={this.props.isAuth}
+      />
     }
 
 
