@@ -59,26 +59,21 @@ const styles = theme => ({
 function GroupSettings(props) {
     const { classes } = props
 
+    const currentGroup = props.groups[props.currentGroupId]
 
+    let use_welcome = (currentGroup && currentGroup.settings && currentGroup.settings.welcome && currentGroup.settings.welcome.enable) || true
+    let use_cas = (currentGroup && currentGroup.settings && currentGroup.settings.cas) || true
+    let use_banan = (currentGroup && currentGroup.settings && currentGroup.settings.banan && currentGroup.settings.banan.default) || 300
+    let use_timer = (currentGroup && currentGroup.settings && currentGroup.settings.welcome && currentGroup.settings.welcome.timer) || 180
+    let use_bananError = false
+    let use_timerError = false
 
-    const [welcome, setWelcome] = useState(true)
-    const [cas, setCAS] = useState(true)
-    const [banan, setBanan] = useState(300)
-    const [timer, setTimer] = useState(180)
-    const [bananError, setBananError] = useState(false)
-    const [timerError, setTimerError] = useState(false)
-
-    if ((!props.groups && !props.currentGroupId) || props.groups[props.currentGroupId]) {
-        return <Typography className={classes.GroupSettingsHeader}>Settings</Typography>
-    } else {
-        const currentGroup = props.groups[props.currentGroupId]
-        setWelcome(currentGroup.settings.welcome.enable)
-        setCAS(currentGroup.settings.cas)
-        setBanan(currentGroup.settings.banan.default)
-        setTimer(currentGroup.settings.welcome.timer)
-        setBananError(false)
-        setTimerError(false)
-    }
+    const [welcome, setWelcome] = useState(use_welcome)
+    const [cas, setCAS] = useState(use_cas)
+    const [banan, setBanan] = useState(use_banan)
+    const [timer, setTimer] = useState(use_timer)
+    const [bananError, setBananError] = useState(use_bananError)
+    const [timerError, setTimerError] = useState(use_timerError)
 
     const handleWelcomeChange = (event) => {
         setWelcome(event.target.checked)
