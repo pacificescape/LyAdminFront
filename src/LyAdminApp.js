@@ -123,11 +123,7 @@ class LyAdminApp extends Component {
 
     return (
       <div id="app">
-        <Header
-          userPhoto={this.state.userPhoto}
-          groups={this.props.groups}
-          currentGroup={this.props.currentGroup}
-        />
+        <Header/>
         {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
         <MemberList
         className={this.props.MemberList}

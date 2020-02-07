@@ -114,6 +114,8 @@ class Header extends Component {
 
     render() {
         const { classes } = this.props;
+        let a = this.props.currentGroupId ? this.props.groups[this.props.currentGroupId] ? true : false : false
+        if (!a) return 'error'
         const groupId = this.props.currentGroupId
         const group = this.props.groups[groupId]
         const groupPhoto = `/file/${group && group.photo ? group.photo.small_file_id : ''}`
@@ -152,7 +154,8 @@ class Header extends Component {
 
 
 const mapStateToProps = (state) => ({
-    currentGroupId: state.App.currentGroupId
+    currentGroupId: state.App.currentGroupId,
+    groups: state.App.groups,
 })
 
 let mapDispatchToProps = (dispatch) => {
