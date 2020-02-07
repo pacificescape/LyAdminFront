@@ -194,12 +194,12 @@ export const getUserGroupsThunk = () => async (dispatch) => {
 
     dispatch(setGroups(groups))
 
-
-    dispatch(toggleIsFetching(false, 'getUserGroups'))
-    dispatch(toggleIsAuth(true))
-    dispatch(toggleiIsInitializing(false))
-    dispatch(toggleIsInitialized(true))
-
+    setTimeout(() => {
+        dispatch(toggleIsFetching(false, 'getUserGroups'))
+        dispatch(toggleIsAuth(true))
+        dispatch(toggleiIsInitializing(false))
+        dispatch(toggleIsInitialized(true))
+    }, 3000)
 }
 
 export const setCurrentGroupIdThunk = groupId => (dispatch) => {
