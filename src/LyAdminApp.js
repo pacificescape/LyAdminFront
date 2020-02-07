@@ -72,7 +72,9 @@ class LyAdminApp extends Component {
   constructor(props) {
     super(props)
     const cookies = new Cookies()
+    debugger
     this.props.getUserGroups()
+    debugger
 
     if (props.location.pathname.indexOf('login') !== -1) {
       let { first_name, photo_url, group_id } = getDataFromUrl(props.location.search)
@@ -92,8 +94,6 @@ class LyAdminApp extends Component {
       isLoading: props.isFetching,
       defaultGroup
     }
-
-
   }
 
   componentDidMount() {
@@ -113,7 +113,7 @@ class LyAdminApp extends Component {
       />
     }
 
-    if (!this.props.groups[this.props.currentGroup]) {
+    if (!this.props.isInitialized) {
       return <Loader
         isAuth={this.props.isAuth}
       />
@@ -143,6 +143,7 @@ class LyAdminApp extends Component {
 
 let mapStateToProps = (state) => {
   return {
+    isInitialized: state.App.isInitialized,
     isAuth: state.App.isAuth,
     isLoading: state.App.isFetching,
     isLoadingGetGroupMembers: state.App.api.getGroupMembers,

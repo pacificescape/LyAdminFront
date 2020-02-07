@@ -7,6 +7,8 @@ import getGroupMembers from '../../Api/getGroupMembers'
 
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
+const INITIALIZE_APP = 'INITIALIZE_APP'
+
 const SET_GROUPS = 'SET_GROUPS'
 const SET_GROUP_SETTINGS = 'SET_GROUP_SETTINGS'
 const SET_CURRENT_GROUP_ID = 'SET_CURRENT_GROUP_ID'
@@ -16,6 +18,7 @@ const SET_USER = 'SET_USER'
 const TOGGLE_THEME = 'TOGGLE_THEME'
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+const TOGGLE_IS_INITIALIZING = 'TOGGLE_IS_INITIALIZING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
 
@@ -38,6 +41,7 @@ const initialSettings = {
 }
 
 let initialState = {
+    isInitialized: false,
     isAuth: false,
     isFetching: true,
     isError: false,
@@ -61,6 +65,9 @@ let initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case INITIALIZE_APP: {
+            return { ...state, isInitialized: action.isInitialized }
+        }
         case TOGGLE_IS_AUTH: {
             return { ...state, isAuth: action.isAuth }
         }
@@ -81,11 +88,11 @@ export default (state = initialState, action) => {
         }
         case SET_GROUPS: {
             let newGroups = state.groups
-            for ( const group in action.groups ) {
-                if (newGroups[group]){
+            for (const group in action.groups) {
+                if (newGroups[group]) {
                     delete action.groups[group].settings
                 }
-                newGroups = { ...newGroups, [group]: {...action.groups[group], ...newGroups[group] }}
+                newGroups = { ...newGroups, [group]: { ...action.groups[group], ...newGroups[group] } }
                 debugger
             }
 
@@ -132,6 +139,7 @@ export default (state = initialState, action) => {
     }
 }
 
+
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
 export const setGroupSettings = (group) => ({ type: SET_GROUP_SETTINGS, group })
 export const setGroupMembers = (members) => ({ type: SET_GROUP_MEMBERS, members })
@@ -139,46 +147,69 @@ export const setUser = (users, groupId) => ({ type: SET_USER, users, groupId })
 export const setCurrentGroupId = (groupId) => ({ type: SET_CURRENT_GROUP_ID, groupId })
 export const changeTheme = (themeType, primary) => ({ type: TOGGLE_THEME, themeType, primary })
 
+export const toggleIsInitialized = (isInitialized) => ({ type: INITIALIZE_APP, isInitialized })
+export const toggleiIsInitializing = (initializing) => ({ type: TOGGLE_IS_INITIALIZING, initializing })
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
 export const toggleIsFetching = (isFetching, method) => ({ type: TOGGLE_IS_FETCHING, isFetching, method })
 export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
 export const toggleisChangingSettings = (isChanging) => ({ type: TOGGLE_IS_CHANGING_SETTINGS, isChanging })
 
-export const getUserGroupsThunk = () => (dispatch) => {
-    dispatch(toggleIsFetching(true, 'getUserGroups'))
-
-    getUserGroups().then(res => {
-
-        if (!res.ok) {
-            dispatch(toggleIsError(true))
-            dispatch(toggleIsFetching(false, 'getUserGroups'))
-            return
-        }
-        // debugger
-        const arrOfGroups = res.result.groups || []
-
-        let groups = {}
-        arrOfGroups.forEach(group => {
-            groups = { ...groups, [group.id]: { ...group, ...initialSettings } }
-        })
-
-        dispatch(setGroups(groups))
+export const initialazeAppThunk = () => async (dispatch) => {
+    dispatch(toggleiIsInitializing(true))
+    let response = await getUserGroups().catch(err => {
+        console.log('getUserGroups failed', err)
+        dispatch(toggleIsError(true))
     })
-    .then(() => {
-            dispatch(toggleIsFetching(false, 'getUserGroups'))
-            dispatch(toggleIsAuth(true))
-        })
-        .catch((err) => {
+
+    if (!response.ok) {
+        console.log('server didn\'t respond in initialazing')
+        dispatch(toggleIsError(true))
+        dispatch(toggleiIsInitializing(false))
+        return
+    }
+
+    dispatch(toggleiIsInitializing(false))
+}
+
+export const getUserGroupsThunk = () => async (dispatch) => {
+    dispatch(toggleIsFetching(true, 'getUserGroups'))
+    dispatch(toggleiIsInitializing(true))
+
+    let response = await getUserGroups().catch(err => {
+            console.log('getUserGroups failed', err)
             dispatch(toggleIsError(true))
-            console.log('getUserGroups thunk failed', err)
         })
+
+    if (!response.ok) {
+        console.log('server didn\'t respond')
+        dispatch(toggleIsError(true))
+        dispatch(toggleIsFetching(false, 'getUserGroups'))
+        dispatch(toggleiIsInitializing(false))
+        return
+    }
+    debugger
+    const arrOfGroups = response.result.groups || []
+
+    let groups = {}
+    arrOfGroups.forEach(group => {
+        groups = { ...groups, [group.id]: { ...group, ...initialSettings } }
+    })
+
+    dispatch(setGroups(groups))
+
+
+    dispatch(toggleIsFetching(false, 'getUserGroups'))
+    dispatch(toggleIsAuth(true))
+    dispatch(toggleiIsInitializing(false))
+    dispatch(toggleIsInitialized(true))
+
 }
 
 export const setCurrentGroupIdThunk = groupId => (dispatch) => {
     dispatch(setCurrentGroupId(groupId))
 }
 
-export const getGroupSettingsThunk = (groupId) => (dispatch) => {
+export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
     if (!groupId) {
         console.log('getgroupSettings: no group')
         return
@@ -186,18 +217,17 @@ export const getGroupSettingsThunk = (groupId) => (dispatch) => {
 
     dispatch(toggleIsFetching(true))
     // debugger
-    getGroup(groupId).then((res) => {
+    const response = await getGroup(groupId).catch(err => console.log(err))
 
-        if (!res.ok) {
-            dispatch(toggleIsError(true))
-            return
-        }
+    if (!response.ok) {
+        dispatch(toggleIsError(true))
+        return
+    }
 
-        let groupInfo = res.result
-        // debugger
-        dispatch(setGroupSettings(groupInfo))
-        dispatch(toggleIsFetching(false))
-    })
+    let groupInfo = response.result
+    // debugger
+    dispatch(setGroupSettings(groupInfo))
+    dispatch(toggleIsFetching(false))
 }
 
 export const getUserThunk = (userIds, groupId) => (dispatch) => {
