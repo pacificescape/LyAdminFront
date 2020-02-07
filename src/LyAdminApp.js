@@ -84,9 +84,9 @@ class LyAdminApp extends Component {
       cookies.set('userPhoto', photo_url, { maxAge })
     }
     const defaultGroup = +cookies.get('defaultGroup')
-    if (defaultGroup) {
-      this.props.setCurrentGroupId(defaultGroup)
-    }
+    // if (defaultGroup) {
+    //   this.props.setCurrentGroupId(defaultGroup)
+    // }
 
     this.state = {
       userPhoto: cookies.get('userPhoto'),
@@ -97,7 +97,8 @@ class LyAdminApp extends Component {
   }
 
   componentDidMount() {
-    if (this.state.defaultGroup) {
+    if (this.state.groups) {
+      this.props.setCurrentGroupId(this.state.defaultGroup)
       this.props.getGroup(this.state.defaultGroup)
     } else if (this.props.isAuth) {
       this.props.getGroup(this.props.currentGroup)

@@ -190,10 +190,7 @@ export const getUserGroupsThunk = () => async (dispatch) => {
     debugger
     const arrOfGroups = response.result.groups || []
 
-    let groups = {}
-    arrOfGroups.forEach(group => {
-        groups = { ...groups, [group.id]: { ...group, ...initialSettings } }
-    })
+    let groups = arrOfGroups.reduce((groups, group) => { return { ...groups, [group.id]: { ...group, ...initialSettings } } }, {})
 
     dispatch(setGroups(groups))
 
