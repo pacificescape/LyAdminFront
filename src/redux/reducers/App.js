@@ -87,14 +87,24 @@ export default (state = initialState, action) => {
             return { ...state, currentGroupId: action.groupId }
         }
         case SET_GROUPS: {
-            let newGroups = state.groups
-            for (const group in action.groups) {
-                if (newGroups[group]) {
-                    delete action.groups[group].settings
+            // let newGroups = state.groups
+            // for (const group in action.groups) {
+            //     if (newGroups[group]) {
+            //         delete action.groups[group].settings
+            //     }
+            //     newGroups = { ...newGroups, [group]: { ...action.groups[group], ...newGroups[group] } }
+            //     debugger
+            // }
+
+            let keys = Object.keys(action.groups)
+
+            let newGroups = keys.reduce((acc, key) => {
+                if (state.groups[key]) {
+                    delete acc[key].settings
                 }
-                newGroups = { ...newGroups, [group]: { ...action.groups[group], ...newGroups[group] } }
-                debugger
-            }
+
+                return { ...acc, [key]: {...action.groups[key], ...state.groups[key]}} }
+                , { ...state.groups })
 
             return { ...state, groups: newGroups }
         }
@@ -199,7 +209,7 @@ export const getUserGroupsThunk = () => async (dispatch) => {
         dispatch(toggleIsAuth(true))
         dispatch(toggleiIsInitializing(false))
         dispatch(toggleIsInitialized(true))
-    }, 3000)
+    }, 1000)
 }
 
 export const setCurrentGroupIdThunk = groupId => (dispatch) => {
