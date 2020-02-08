@@ -114,8 +114,9 @@ class Header extends Component {
 
     render() {
         const { classes } = this.props;
-        let a = this.props.currentGroupId ? this.props.groups[this.props.currentGroupId] ? true : false : false
-        if (!a) return `error, ${Object.keys(this.props).join(' ')}`
+        // let a = this.props.currentGroupId ? this.props.groups[this.props.currentGroupId] ? true : false : false
+        // if (!a) return `error, ${Object.keys(this.props).join(' ')}`
+        console.log('я тут')
         const groupId = this.props.currentGroupId
         const group = this.props.groups[groupId]
         const groupPhoto = `/file/${group && group.photo ? group.photo.small_file_id : ''}`

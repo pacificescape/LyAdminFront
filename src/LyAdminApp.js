@@ -105,8 +105,6 @@ class LyAdminApp extends Component {
     }
   }
 
-
-
   render() {
     if (!this.props.isAuth && !this.props.isError) {
       return <Loader
@@ -125,7 +123,6 @@ class LyAdminApp extends Component {
     return (
       <div id="app">
         <Header/>
-        {/* <Firstline groupTitle={this.props.currentGroup.info.title}/> */}
         <MemberList
         className={this.props.MemberList}
         getGroupMembers={this.props.getGroupMembers}
@@ -145,9 +142,7 @@ let mapStateToProps = (state) => {
     isLoading: state.App.isFetching,
     isLoadingGetGroupMembers: state.App.api.getGroupMembers,
     isError: state.App.isError,
-    groups: state.App.groups,
-    currentGroup: state.App.currentGroupId,
-    groupmembers: state.App.groupmembers
+    currentGroup: state.App.currentGroupId
   }
 }
 
