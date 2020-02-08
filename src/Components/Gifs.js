@@ -41,7 +41,7 @@ function Gifs(props) {
     }
 
     function handlePlay(event) {
-        debugger
+        // debugger
         event.target.onplaying = (event) => {
             event.target.style.opacity = 1
         };
@@ -70,7 +70,7 @@ function Gifs(props) {
                 })}
             </div>
             {(() => {
-                debugger
+                // debugger
                 if (props.gifs.length === 0) {
                     return
                 }

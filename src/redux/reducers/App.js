@@ -93,7 +93,7 @@ export default (state = initialState, action) => {
             //         delete action.groups[group].settings
             //     }
             //     newGroups = { ...newGroups, [group]: { ...action.groups[group], ...newGroups[group] } }
-            //     debugger
+            //     // debugger
             // }
 
             let keys = Object.keys(action.groups)
@@ -109,7 +109,7 @@ export default (state = initialState, action) => {
             return { ...state, groups: newGroups }
         }
         case SET_GROUP_SETTINGS: {
-            debugger
+            // debugger
             return {
                 ...state,
                 groups: {
@@ -197,7 +197,7 @@ export const getUserGroupsThunk = () => async (dispatch) => {
         dispatch(toggleiIsInitializing(false))
         return
     }
-    debugger
+    // debugger
     const arrOfGroups = response.result.groups || []
 
     let groups = arrOfGroups.reduce((groups, group) => { return { ...groups, [group.id]: { ...group, ...initialSettings } } }, {})
@@ -223,7 +223,7 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
     }
 
     dispatch(toggleIsFetching(true))
-    // debugger
+    // // debugger
     const response = await getGroup(groupId).catch(err => console.log(err))
 
     if (!response.ok) {
@@ -232,7 +232,7 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
     }
 
     let groupInfo = response.result
-    // debugger
+    // // debugger
     dispatch(setGroupSettings(groupInfo))
     dispatch(toggleIsFetching(false))
 }

@@ -55,7 +55,7 @@ function MemberList(props) {
     }
 
     const handleChangePage = (event, newPage) => {
-        debugger
+        // debugger
         setPage(newPage);
       }
 

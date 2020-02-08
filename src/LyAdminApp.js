@@ -72,9 +72,9 @@ class LyAdminApp extends Component {
   constructor(props) {
     super(props)
     const cookies = new Cookies()
-    debugger
+    // debugger
     this.props.getUserGroups()
-    debugger
+    // debugger
 
     if (props.location.pathname.indexOf('login') !== -1) {
       let { first_name, photo_url, group_id } = getDataFromUrl(props.location.search)

@@ -36,7 +36,7 @@ function withTheme(WrappedComponent) {
 
         // onChangeTheme = () => {
         //         let theme = createTheme(this.props.type, this.props.primary)
-        //         debugger;
+        //         // debugger;
         //         const cookies = new Cookies();
         //         console.log(cookies.get('lyAdminTheme'))
         //         this.setState({ theme })
@@ -45,7 +45,7 @@ function withTheme(WrappedComponent) {
 
         render() {
             const theme = createTheme(this.props.type, this.props.primary);
-            // debugger;
+            // // debugger;
             // if (this.props.type) {
             //     if (this.props.type !== this.state.theme.palette.type || this.props.primary[500] !== this.state.theme.palette.primary[500]) {
             //         this.onChangeTheme()
