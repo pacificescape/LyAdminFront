@@ -26,21 +26,6 @@ const cookies = new Cookies();
 const theme = cookies.get('lyAdminTheme') || {}
 const groupId = cookies.get('defaultGroup') || ''
 
-const initialSettings = {
-    settings: {
-        welcome: {
-            enable: true,
-            timer: 180,
-            gifs: [],
-            texts: []
-        },
-        banan: {
-            default: 300
-        },
-        cas: true
-    }
-}
-
 let initialState = {
     isInitialized: false,
     isAuth: false,
@@ -119,18 +104,18 @@ export default (state = initialState, action) => {
         //         }
         //     }
         // }
-        case SET_GROUP_MEMBERS: {
-            let newmembers = {}
-            newmembers = { ...action.members, ...state.groupmembers }
-            newmembers.empty = false
-            return { ...state, groupmembers: newmembers }
-        }
-        case SET_USER: {
-            let newusers = {}
-            newusers = { ...action.users, ...state.users[action.groupId] }
-            newusers.empty = false
-            return { ...state, users: { ...state.users, [action.groupId]: newusers } }
-        }
+        // case SET_GROUP_MEMBERS: {
+        //     let newmembers = {}
+        //     newmembers = { ...action.members, ...state.groupmembers }
+        //     newmembers.empty = false
+        //     return { ...state, groupmembers: newmembers }
+        // }
+        // case SET_USER: {
+        //     let newusers = {}
+        //     newusers = { ...action.users, ...state.users[action.groupId] }
+        //     newusers.empty = false
+        //     return { ...state, users: { ...state.users, [action.groupId]: newusers } }
+        // }
         case TOGGLE_THEME: {
             // if(!action.primary[500] && !action.primary.main) {
             //     action.primary = state.theme.primary

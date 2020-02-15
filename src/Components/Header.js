@@ -116,10 +116,17 @@ class Header extends Component {
         const { classes } = this.props;
         // let a = this.props.currentGroupId ? this.props.groups[this.props.currentGroupId] ? true : false : false
         // if (!a) return `error, ${Object.keys(this.props).join(' ')}`
-        console.log('я тут')
+
         const groupId = this.props.currentGroupId
         const group = this.props.groups[groupId]
         const groupPhoto = `/file/${group && group.photo ? group.photo.small_file_id : ''}`
+        debugger
+
+        if (!group) {
+            // Object.keys(this.props.groups)
+            this.props.setCurrentGroupId(Object.keys(this.props.groups)[0])
+            return 'Loading'
+        }
 
         return (
             <header className={classes.header}>
