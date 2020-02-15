@@ -85,7 +85,6 @@ function MemberList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {console.log(groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount))}
                         {groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page * 10 + 10).map((member) => {
                             if (!users[id] || !users[id][member.telegram_id]) {
                                 return (
