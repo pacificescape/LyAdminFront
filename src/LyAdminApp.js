@@ -4,14 +4,18 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import {
   setCurrentGroupIdThunk,
-  getUserGroupsThunk,
-  getGroupSettingsThunk,
   toggleIsAuthThunk,
-  getGroupMembersThunk,
-  getUserThunk,
   changeThemeThunk,
   toggleIsError
 } from './redux/reducers/App'
+import {
+  getGroupSettingsThunk,
+  getUserGroupsThunk
+} from './redux/reducers/Groups'
+import {
+  getGroupMembersThunk,
+  getUserThunk
+} from './redux/reducers/Users'
 import { compose } from 'recompose'
 
 import Loader from './Components/Loader/Loader'

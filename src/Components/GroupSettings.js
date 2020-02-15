@@ -177,7 +177,7 @@ let mapStateToProps = (state) => {
     return {
         isError: state.App.isError,
         currentGroupId: state.App.currentGroupId,
-        groups: state.App.groups,
+        groups: state.Groups.groups,
         groupmembers: state.App.groupmembers
     }
 }

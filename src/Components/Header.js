@@ -156,7 +156,7 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
     currentGroupId: state.App.currentGroupId,
-    groups: state.App.groups,
+    groups: state.Groups.groups,
 })
 
 let mapDispatchToProps = (dispatch) => {

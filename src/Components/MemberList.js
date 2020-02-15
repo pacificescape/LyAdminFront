@@ -126,10 +126,10 @@ function MemberList(props) {
 
 let mapStateToProps = (state) => {
     return {
-      users: state.App.users,
+      users: state.Users.users,
       currentGroup: state.App.currentGroup,
       id: state.App.currentGroupId,
-      groupmembers: state.App.groupmembers,
+      groupmembers: state.Users.groupmembers,
     //   id: state.App.currentGroup.info.id,
       isLoading: {
           getUser: state.App.api.getUser,
