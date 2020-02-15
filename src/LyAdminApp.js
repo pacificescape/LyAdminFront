@@ -70,8 +70,6 @@ const styles = theme => ({
   }
 })
 
-
-
 class LyAdminApp extends Component {
   constructor(props) {
     super(props)

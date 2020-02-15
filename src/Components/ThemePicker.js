@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux'
+import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import {
     changeThemeThunk,
   } from '../redux/reducers/App'
@@ -112,6 +112,15 @@ const getColor = value => {
 };
 
 function SimpleDialog(props) {
+    const dispatch = useDispatch()
+
+    const toggleTheme = useCallback((type, primary) => {
+        dispatch(changeThemeThunk(type, primary))
+    }, [])
+
+    const type = useSelector( state => state.App.theme.type )
+    const primary = useSelector( state => state.App.theme.primary )
+
     const { classes } = props
 
     const [color, setColor] = useState(getColorString(props.theme.palette.primary.main))
@@ -120,18 +129,18 @@ function SimpleDialog(props) {
     const handleAccentChange = (event) => {
         setColor(event.target.value)
         let dark = darkMode ? 'dark' : 'light'
-        props.toggleTheme(dark, getColor(event.target.value))
+        toggleTheme(dark, getColor(event.target.value))
     }
 
     const handleDarkModeChange = event => {
         if (event.target.checked) {
             setDarkMode(true)
 
-            props.toggleTheme('dark', getColor(color))
+            toggleTheme('dark', getColor(color))
         } else {
             setDarkMode(false)
 
-            props.toggleTheme('light', getColor(color))
+            toggleTheme('light', getColor(color))
         }
       }
 
@@ -270,32 +279,4 @@ function ThemePicker(props) {
     );
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        toggleTheme: (type, primary) => {
-            dispatch(changeThemeThunk(type, primary))
-        }
-    }
-}
-
-let mapStateToProps = state => {
-    return {
-        type: state.App.theme.type,
-        primary: state.App.theme.primary
-    }
-}
-
-const ThemePickerContainer = connect(mapStateToProps, mapDispatchToProps)(ThemePicker)
-
-export default withStyles(styles, { withTheme: true })(ThemePickerContainer);
-
-// <List>
-// <ListItem autoFocus button onClick={props.onClose}>
-//   <ListItemAvatar>
-//     <Avatar>
-//       <AddIcon />
-//     </Avatar>
-//   </ListItemAvatar>
-//   <ListItemText primary="Add account" />
-// </ListItem>
-// </List>
+export default withStyles(styles, { withTheme: true })(ThemePicker);

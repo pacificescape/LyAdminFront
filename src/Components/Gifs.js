@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Typography from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -32,6 +32,10 @@ const styles = theme => ({
 })
 
 function Gifs(props) {
+
+    const gifs = useSelector(state => state.App.groups[state.App.currentGroupId].settings.welcome.gifs)
+
+
     const { classes } = props
 
     const [page, setPage] = useState(0)
@@ -54,9 +58,9 @@ function Gifs(props) {
 
     return (
         <div>
-            <Typography className={classes.GifsHeader}>Gifs {(() => {if (props.gifs.length === 0) return '(empty)'})()}</Typography>
+            <Typography className={classes.GifsHeader}>Gifs {(() => {if (gifs.length === 0) return '(empty)'})()}</Typography>
             <div className={classes.gifs}>
-                {props.gifs.slice(page * 5, (page + 1) * 5).map((gif) => {
+                {gifs.slice(page * 5, (page + 1) * 5).map((gif) => {
                     return (
                         <div
                             className={classes.gif}
@@ -71,7 +75,7 @@ function Gifs(props) {
             </div>
             {(() => {
                 // debugger
-                if (props.gifs.length === 0) {
+                if (gifs.length === 0) {
                     return
                 }
 
@@ -80,7 +84,7 @@ function Gifs(props) {
                         rowsPerPageOptions={[]}
                         labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 5)} of ${Math.ceil(count / 5)}`}
                         component="div"
-                        count={props.gifs.length}
+                        count={gifs.length}
                         rowsPerPage={5}
                         page={page}
                         onChangePage={handleChangePage}
@@ -90,19 +94,8 @@ function Gifs(props) {
     )
 }
 
-const mapStateToProps = (state) => ({
-    gifs: state.App.groups[state.App.currentGroupId].settings.welcome.gifs
-})
-
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
-}
-
-const GifsContainer = connect(mapStateToProps, mapDispatchToProps)(Gifs)
-
 const enhance = compose(
     withStyles(styles, { withTheme: true })
 )
 
-export default enhance(GifsContainer)
+export default enhance(Gifs)

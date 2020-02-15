@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -10,8 +11,6 @@ import TableRow from '@material-ui/core/TableRow'
 import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import { grey } from '@material-ui/core/colors'
-
-import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
     avatarWrapper: {
@@ -35,22 +34,34 @@ const useStyles = makeStyles({
   })
 
 function MemberList(props) {
+          const users = useSelector(state => state.Users.users)
+          const currentGroup = useSelector(state => state.App.currentGroup )
+          const id = useSelector(state => state.App.currentGroupId)
+          const groupmembers = useSelector(state => state.Users.groupmembers)
+          const isLoading =  {
+              getUser: useSelector(state => state.App.api.getUser),
+              getGroupMembers: useSelector(state => state.App.api.getGroupMembers)
+          }
+
+
+
+
     const classes = useStyles();
 
     // const [users, setUsers] = useState({empty: false})
     const [page, setPage] = useState(0)
 
-    if (!props.groupmembers[props.id]) {
-        if(!props.isLoading.getGroupMembers) {
-            if (props.id) {
-                props.getGroupMembers(props.id)
+    if (!groupmembers[id]) {
+        if(!isLoading.getGroupMembers) {
+            if (id) {
+                props.getGroupMembers(id)
             }
         }
         return <p>Загрузка...</p>
     }
 
-    if (!props.users[props.id] && !props.isLoading.getUser) {
-        props.getUser(props.groupmembers[props.id], props.id)
+    if (!users[id] && !isLoading.getUser) {
+        props.getUser(groupmembers[id], id)
         return <p>Загрузка...</p>
     }
 
@@ -61,7 +72,7 @@ function MemberList(props) {
 
     return (
         <div>
-            <span>В чате {props.groupmembers[props.id].length} <span role="img" aria-label="banan">😊</span></span>
+            <span>В чате {groupmembers[id].length} <span role="img" aria-label="banan">😊</span></span>
             <p></p>
             <TableContainer component={Paper}>
                 <Table className={classes.table} size="small" aria-label="a dense table">
@@ -74,8 +85,8 @@ function MemberList(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {props.groupmembers[props.id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page + 10).map(member => {
-                            if (!props.users[props.id] || !props.users[props.id][member.telegram_id]) {
+                        {groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page + 10).map(member => {
+                            if (!users[id] || !users[id][member.telegram_id]) {
                                 return (
                                     <TableRow key={member.telegram_id} className={classes.tableRow}>
                                         <TableCell>
@@ -84,7 +95,7 @@ function MemberList(props) {
                                     </TableRow>
                                 )
                             }
-                            let user = props.users[props.id][member.telegram_id]
+                            let user = users[id][member.telegram_id]
 
                             let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
 
@@ -115,7 +126,7 @@ function MemberList(props) {
                 rowsPerPageOptions={[]}
                 labelDisplayedRows={({from, count}) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
                 component="div"
-                count={props.groupmembers[props.id].length}
+                count={groupmembers[id].length}
                 rowsPerPage={10}
                 page={page}
                 onChangePage={handleChangePage}
@@ -124,18 +135,4 @@ function MemberList(props) {
     )
 }
 
-let mapStateToProps = (state) => {
-    return {
-      users: state.Users.users,
-      currentGroup: state.App.currentGroup,
-      id: state.App.currentGroupId,
-      groupmembers: state.Users.groupmembers,
-    //   id: state.App.currentGroup.info.id,
-      isLoading: {
-          getUser: state.App.api.getUser,
-          getGroupMembers: state.App.api.getGroupMembers
-      }
-    }
-  }
-
-export default connect(mapStateToProps)(MemberList)
+export default (MemberList)

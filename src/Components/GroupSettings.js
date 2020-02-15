@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -59,7 +59,12 @@ const styles = theme => ({
 function GroupSettings(props) {
     const { classes } = props
 
-    const currentGroup = props.groups[props.currentGroupId]
+    // const isError = useSelector( state => state.App.isError)
+    // const groupmembers = useSelector( state => state.App.groupmembers)
+    const currentGroupId = useSelector( state => state.App.currentGroupId)
+    const groups = useSelector( state => state.Groups.groups)
+
+    const currentGroup = groups[currentGroupId]
 
     let use_welcome = (currentGroup && currentGroup.settings && currentGroup.settings.welcome && currentGroup.settings.welcome.enable) || true
     let use_cas = (currentGroup && currentGroup.settings && currentGroup.settings.cas) || true
@@ -173,26 +178,8 @@ function GroupSettings(props) {
     )
 }
 
-let mapStateToProps = (state) => {
-    return {
-        isError: state.App.isError,
-        currentGroupId: state.App.currentGroupId,
-        groups: state.Groups.groups,
-        groupmembers: state.App.groupmembers
-    }
-}
-
-let mapDispatchTooProps = (dispatch) => {
-    return {
-
-    }
-}
-
-
-const GroupSettingsContainer = connect(mapStateToProps, mapDispatchTooProps)(GroupSettings)
-
 const enhance = compose(
     withStyles(styles, { withTheme: true })
 )
 
-export default enhance(GroupSettingsContainer)
+export default enhance(GroupSettings)
