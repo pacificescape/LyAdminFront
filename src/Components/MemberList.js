@@ -23,6 +23,9 @@ const useStyles = makeStyles({
         height: '25px',
         backgroundColor: grey[500]
     },
+    avatarEmpty: {
+        opacity: 0.2
+    },
     table: {
       minWidth: 250,
     },
@@ -68,7 +71,67 @@ function MemberList(props) {
     const handleChangePage = (event, newPage) => {
         // debugger
         setPage(newPage);
-      }
+    }
+
+    const renderList = () => {
+        let currentPage = groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page * 10 + 10)
+
+        currentPage = currentPage.map((member) => {
+            if (!users[id] || !users[id][member.telegram_id]) {
+                return (
+                    <TableRow key={member.telegram_id} className={classes.tableRow}>
+                        <TableCell>
+                            Loading...
+                        </TableCell>
+                    </TableRow>
+                )
+            }
+            let user = users[id][member.telegram_id]
+
+            let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
+
+            return (
+                <TableRow key={member.telegram_id} className={classes.tebleRow}>
+                    <TableCell component="th" scope="row">
+                        <div className={classes.avatarWrapper}>
+                            <Avatar
+                                // alt={user.first_name}
+                                src={avatar}
+                                className={classes.avatar}
+                            >
+                                {user.last_name ? user.first_name[0] + ' ' + user.last_name[0] : user.first_name[0]}
+                            </Avatar>
+                            {(() => (user.last_name ? user.first_name + ' ' + user.last_name : user.first_name))()}
+                        </div>
+                    </TableCell>
+                    <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
+                    <TableCell align="center">{member.banan.num}</TableCell>
+                    <TableCell padding='none' align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
+                </TableRow>
+            )
+        })
+
+        if (currentPage.length < 10) {
+            for (let i = currentPage.length; i < 10; i++) {
+                currentPage.push(
+                <TableRow key={`empty-${i}`}>
+                <TableCell component="th" scope="row">
+                <div className={classes.avatarWrapper}>
+                            <Avatar
+                                className={`${classes.avatar} ${classes.avatarEmpty}`}
+                            >
+                            </Avatar>
+                        </div>
+                </TableCell>
+                <TableCell padding='none' align="center"> </TableCell>
+                <TableCell align="center"> </TableCell>
+                <TableCell padding='none' align="center"> </TableCell>
+                </TableRow>)
+            }
+        }
+
+        return currentPage
+    }
 
     return (
         <div>
@@ -84,41 +147,8 @@ function MemberList(props) {
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">🎂</span></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody >
-                        {groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page * 10 + 10).map((member) => {
-                            if (!users[id] || !users[id][member.telegram_id]) {
-                                return (
-                                    <TableRow key={member.telegram_id} className={classes.tableRow}>
-                                        <TableCell>
-                                            Loading...
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            }
-                            let user = users[id][member.telegram_id]
-
-                            let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
-
-                            return (
-                                <TableRow key={member.telegram_id} className={classes.tebleRow}>
-                                    <TableCell component="th" scope="row">
-                                        <div className={classes.avatarWrapper}>
-                                            <Avatar
-                                                // alt={user.first_name}
-                                                src={avatar}
-                                                className={classes.avatar}
-                                                >
-                                                {user.last_name ? user.first_name[0] + ' ' + user.last_name[0] : user.first_name[0]}
-                                            </Avatar>
-                                            {(() => (user.last_name ? user.first_name + ' ' + user.last_name : user.first_name))()}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
-                                    <TableCell align="center">{member.banan.num}</TableCell>
-                                    <TableCell padding='none' align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
-                                </TableRow>
-                            )
-                        })}
+                    <TableBody>
+                        {renderList()}
                     </TableBody>
                 </Table>
             </TableContainer>
