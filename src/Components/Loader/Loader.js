@@ -28,7 +28,7 @@ class Loader extends React.Component {
             telegramButton.setAttribute('data-size', 'large')
             telegramButton.setAttribute('data-radius', '20')
             telegramButton.setAttribute('data-request-access', "write")
-            telegramButton.setAttribute('data-onauth', `this.onTelegramAuth(user)}`)
+            telegramButton.setAttribute('data-onauth', `this.onTelegramAuth(user)`)
             // telegramButton.setAttribute('data-auth-url', "https://lyadmin.stickerstat.info/login")
             document.getElementById('authButton').appendChild(telegramButton)
         } else {
