@@ -1,23 +1,21 @@
 import React from 'react';
 import { initialazeAppThunk } from '../../redux/reducers/App';
 import styles from './Loader.module.css';
-import { connect } from 'react-redux';
 
+window.onTelegramAuth = (user) => {
+    let params = ''
+    for(const param in user) {
+        params += user[param] + '?'
+    }
+    fetch(`https://lyadmin.stickerstat.info/login?${params}`).then((res) => {
+        if(!res.ok) {
+            console.log('error after login')
+        }
+        initialazeAppThunk()
+    })
+}
 class Loader extends React.Component {
     tgButton = () => 'Ошибка'
-
-    onTelegramAuth = (user) => {
-        let params = ''
-        for(const param in user) {
-            params += user[param] + '?'
-        }
-        fetch(`https://lyadmin.stickerstat.info/login?${params}`).then((res) => {
-            if(!res.ok) {
-                console.log('error after login')
-            }
-            this.props.initialazeApp()
-        })
-    }
 
     componentDidMount() {
         if (!this.props.isAuth) {
@@ -28,7 +26,7 @@ class Loader extends React.Component {
             telegramButton.setAttribute('data-size', 'large')
             telegramButton.setAttribute('data-radius', '20')
             telegramButton.setAttribute('data-request-access', "write")
-            telegramButton.dataset.onauth = this.onTelegramAuth
+            telegramButton.setAttribute('data-onauth', `onTelegramAuth(user)`)
             // telegramButton.setAttribute('data-auth-url', "https://lyadmin.stickerstat.info/login")
             document.getElementById('authButton').appendChild(telegramButton)
         } else {
@@ -52,16 +50,4 @@ class Loader extends React.Component {
     }
 }
 
-
-let mapDispatchToProps = (dispatch) => {
-    return {
-        initialazeApp: (groupId) => {
-              dispatch(initialazeAppThunk(groupId))
-          }
-    }
-}
-
-const LoaderContainer = connect(null, mapDispatchToProps)(Loader)
-
-
-export default LoaderContainer
+export default Loader
