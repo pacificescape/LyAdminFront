@@ -28,7 +28,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build2": "npm i && react-scripts build && sudo rsync -r build/* /var/www/stickerstat.info/lyadmin/",
-    "rebuild": "react-scripts build && sudo rsync -r build/* /var/www/stickerstat.info/lyadmin/"
+    "rebuild": "react-scripts build && sudo rsync -r build/* /var/www/stickerstat.info/lyadmin/ && sudo service nginx restart"
   },
   "eslintConfig": {
     "extends": "react-app"

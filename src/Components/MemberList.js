@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 
 function MemberList(props) {
           const users = useSelector(state => state.Users.users)
-          const currentGroup = useSelector(state => state.App.currentGroup )
           const id = useSelector(state => state.App.currentGroupId)
           const groupmembers = useSelector(state => state.Users.groupmembers)
           const isLoading =  {
@@ -51,7 +50,6 @@ function MemberList(props) {
 
     const classes = useStyles();
 
-    // const [users, setUsers] = useState({empty: false})
     const [page, setPage] = useState(0)
 
     if (!groupmembers[id]) {
@@ -69,7 +67,6 @@ function MemberList(props) {
     }
 
     const handleChangePage = (event, newPage) => {
-        // debugger
         setPage(newPage);
     }
 
@@ -80,6 +77,14 @@ function MemberList(props) {
             if (!users[id] || !users[id][member.telegram_id]) {
                 return (
                     <TableRow key={member.telegram_id} className={classes.tableRow}>
+                        <TableCell component="th" scope="row">
+                            <div className={classes.avatarWrapper}>
+                                <Avatar
+                                    className={`${classes.avatar} ${classes.avatarEmpty}`}
+                                >
+                                </Avatar>
+                            </div>
+                        </TableCell>
                         <TableCell>
                             Loading...
                         </TableCell>
@@ -95,7 +100,6 @@ function MemberList(props) {
                     <TableCell component="th" scope="row">
                         <div className={classes.avatarWrapper}>
                             <Avatar
-                                // alt={user.first_name}
                                 src={avatar}
                                 className={classes.avatar}
                             >
