@@ -5,7 +5,7 @@ import styles from './Loader.module.css';
 window.onTelegramAuth = (user) => {
     let params = ''
     for(const param in user) {
-        params += user[param] + '?'
+        params += param + '=' + user[param] + '?'
     }
     fetch(`https://lyadmin.stickerstat.info/login?${params}`).then((res) => {
         if(!res.ok) {
