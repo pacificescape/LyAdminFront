@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    getGroupSettingsThunk
+  } from '../redux/reducers/Groups'
 import Typography from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -32,8 +34,27 @@ const styles = theme => ({
 })
 
 function Gifs(props) {
+    const dispatch = useDispatch()
+    const currentGroupId = (useSelector(state => state.App.currentGroupId))
+    const isFetchingSettings = (useSelector(state => state.Groups.isFetchingSettings))
 
-    const gifs = useSelector(state => state.App.groups[state.App.currentGroupId].settings.welcome.gifs)
+    const getGroupSettings = useCallback(groupId => {
+        dispatch(getGroupSettingsThunk(groupId))
+    }, [])
+
+
+    const gifs = useSelector(state => {
+        debugger
+        if(state.Groups.settings[currentGroupId]) {
+            return state.Groups.settings[currentGroupId].welcome.gifs
+        }   else if (!isFetchingSettings) {
+            getGroupSettings(currentGroupId)
+            return null
+        } else {
+            return null
+        }
+    })
+
 
 
     const { classes } = props
@@ -54,6 +75,18 @@ function Gifs(props) {
         event.target.onended = (event) => {
             event.target.style.opacity = 0.6
         }
+    }
+
+    if (!gifs) {
+        return (
+            <p>
+                Loading Gifs
+            </p>
+        )
+    }
+
+    if (gifs.length === 0) {
+        return ''
     }
 
     return (

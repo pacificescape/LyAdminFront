@@ -125,7 +125,7 @@ class LyAdminApp extends Component {
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
         />
-        {/* <Gifs/> */}
+        <Gifs/>
         <GroupSettings/>
       </div>
     )

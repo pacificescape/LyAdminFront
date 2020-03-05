@@ -6,7 +6,7 @@ const SET_GROUP_SETTINGS = 'SET_GROUP_SETTINGS'
 
 const INITIALIZE_APP = 'INITIALIZE_APP'
 const TOGGLE_IS_AUTH = 'TOGGLE_IS_AUTH'
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+const TOGGLE_IS_FETCHING_SETTINGS = 'TOGGLE_IS_FETCHING_SETTINGS'
 const TOGGLE_IS_INITIALIZING = 'TOGGLE_IS_INITIALIZING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
@@ -14,7 +14,8 @@ const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
 let initialState = {
     groups: {},
     settings: {},
-    ids: []
+    ids: [],
+    isFetchingSettings: true
 }
 
 export default (state = initialState, action) => {
@@ -34,17 +35,22 @@ export default (state = initialState, action) => {
             return { ...state, groups: newGroups }
         }
         case SET_GROUP_SETTINGS: {
-            // debugger
+            debugger
             return {
                 ...state,
-                groups: {
-                    ...state.groups,
-                    [action.group.info.id]: {
-                        ...state.groups[action.group.info.id],
-                        info: action.group.info,
-                        settings: action.group.settings
+                settings: {
+                    ...state.settings,
+                    [action.groupInfo.info.id]: {
+                        ...action.groupInfo.info,
+                        ...action.groupInfo.settings
                     }
                 }
+            }
+        }
+        case TOGGLE_IS_FETCHING_SETTINGS: {
+            return {
+                ...state,
+                isFetchingSettings: action.isFetchingSettings
             }
         }
         default: return state
@@ -54,19 +60,19 @@ export default (state = initialState, action) => {
 
 
 export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
-export const setGroupSettings = (group) => ({ type: SET_GROUP_SETTINGS, group })
+export const setGroupSettings = (groupInfo) => ({ type: SET_GROUP_SETTINGS, groupInfo })
 
 export const toggleIsInitialized = (isInitialized) => ({ type: INITIALIZE_APP, isInitialized })
 export const toggleiIsInitializing = (initializing) => ({ type: TOGGLE_IS_INITIALIZING, initializing })
 export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
-export const toggleIsFetching = (isFetching, method) => ({ type: TOGGLE_IS_FETCHING, isFetching, method })
+export const toggleIsFetchingSettings = (isFetchingSettings) => ({ type: TOGGLE_IS_FETCHING_SETTINGS, isFetchingSettings })
 export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
 export const toggleisChangingSettings = (isChanging) => ({ type: TOGGLE_IS_CHANGING_SETTINGS, isChanging })
 
 
 
 export const getUserGroupsThunk = () => async (dispatch) => {
-    dispatch(toggleIsFetching(true, 'getUserGroups'))
+    dispatch(toggleIsFetchingSettings(true))
     dispatch(toggleiIsInitializing(true))
 
     let response = await getUserGroups().catch(err => {
@@ -77,11 +83,10 @@ export const getUserGroupsThunk = () => async (dispatch) => {
     if (!response.ok) {
         console.log('server didn\'t respond')
         dispatch(toggleIsError(true))
-        dispatch(toggleIsFetching(false, 'getUserGroups'))
+        dispatch(toggleIsFetchingSettings(false))
         dispatch(toggleiIsInitializing(false))
         return
     }
-    // debugger
     const arrOfGroups = response.result.groups || []
 
     let groups = arrOfGroups.reduce((groups, group) => { return { ...groups, [group.id]: { ...group } } }, {})
@@ -89,7 +94,7 @@ export const getUserGroupsThunk = () => async (dispatch) => {
     dispatch(setGroups(groups))
 
     setTimeout(() => {
-        dispatch(toggleIsFetching(false, 'getUserGroups'))
+        dispatch(toggleIsFetchingSettings(false))
         dispatch(toggleIsAuth(true))
         dispatch(toggleiIsInitializing(false))
         dispatch(toggleIsInitialized(true))
@@ -102,8 +107,9 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
         return
     }
 
-    dispatch(toggleIsFetching(true))
-    // // debugger
+    dispatch(toggleIsFetchingSettings(true))
+    // dispatch(toggleIsFetchingSettings(true))
+    debugger
     const response = await getGroup(groupId).catch(err => console.log(err))
 
     if (!response.ok) {
@@ -112,7 +118,7 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
     }
 
     let groupInfo = response.result
-    // // debugger
+    debugger
     dispatch(setGroupSettings(groupInfo))
-    dispatch(toggleIsFetching(false))
+    dispatch(toggleIsFetchingSettings(false))
 }

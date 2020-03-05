@@ -1,7 +1,6 @@
 import Cookies from 'universal-cookie';
 
 import getUserGroups from '../../Api/getUserGroups'
-import getGroup from '../../Api/getGroup'//
 import getUser from '../../Api/getUser'
 import getGroupMembers from '../../Api/getGroupMembers' //
 
