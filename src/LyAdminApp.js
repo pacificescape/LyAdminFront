@@ -22,6 +22,7 @@ import Loader from './Components/Loader/Loader'
 import Header from './Components/Header'
 import MemberList from './Components/MemberList'
 import Gifs from './Components/Gifs'
+import Texts from './Components/Texts'
 import GroupSettings from './Components/GroupSettings'
 import './LyAdminApp.css'
 // import styled from 'styled-components'
@@ -125,8 +126,9 @@ class LyAdminApp extends Component {
         getGroupMembers={this.props.getGroupMembers}
         getUser={this.props.getUser}
         />
-        <Gifs/>
         <GroupSettings/>
+        <Gifs/>
+        <Texts/>
       </div>
     )
   }
