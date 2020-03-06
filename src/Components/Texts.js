@@ -28,7 +28,7 @@ const styles = theme => ({
     text: {
         margin: '10px auto',
         // width: '80%', class="MuiFormControl-root MuiTextField-root"
-        width: '90%',
+        width: '95%',
         '& video': {
             transition: '1s',
             opacity: theme.palette.type === 'dark' ? 0.6 : 0.8,
@@ -40,6 +40,7 @@ const styles = theme => ({
 })
 
 function Texts(props) {
+    const { classes } = props
     const dispatch = useDispatch()
     const currentGroupId = (useSelector(state => state.App.currentGroupId))
     const isFetchingSettings = (useSelector(state => state.Groups.isFetchingSettings))
@@ -48,27 +49,40 @@ function Texts(props) {
         dispatch(getGroupSettingsThunk(groupId))
     }, [])
 
-
     const texts = useSelector(state => {
-        debugger
         if(state.Groups.settings[currentGroupId]) {
             return state.Groups.settings[currentGroupId].welcome.texts
         }   else if (!isFetchingSettings) {
             getGroupSettings(currentGroupId)
-            return null
-        } else {
-            return null
         }
+        return []
     })
 
+    const [textValues, setTextValues] = useState(null)
+    const [textErrors, setTextErrors] = useState(false)
 
+    if(!textValues && texts.length !== 0) {
+        setTextValues(texts.reduce((acc, v, i) => {return {...acc, [i]: v}}, {}))
+        setTextErrors(Object.assign({}, texts.map(t => false)))
+    }
 
-    const { classes } = props
+    function textValidator(event) {
+        if(event.target.value.indexOf('%name%') === -1) {
+            setTextErrors({...textErrors, [+event.target.id]: true})
+        } else {
+            setTextErrors({...textErrors, [+event.target.id]: false})
+        }
+        setTextValues({...textValues, [+event.target.id]: event.target.value})
+    }
 
     const [page, setPage] = useState(0)
-
     function handleChangePage(event, newPage) {
         setPage(newPage)
+    }
+
+    function deleteText(event) {
+        delete textValues[Object.keys(textValues)[0]]
+        setTextValues(textValues)
     }
 
     if (!texts) {
@@ -79,29 +93,29 @@ function Texts(props) {
         )
     }
 
-    if (texts.length === 0) {
+    if (!textValues) {
         return ''
     }
 
     return (
         <div>
-            <Typography className={classes.TextsHeader}>Texts {(() => {if (texts.length === 0) return '(empty)'})()}</Typography>
+            <Typography className={classes.TextsHeader}>{(() => {if (texts.length !== 0) return 'Texts'})()}</Typography>
             <form className={classes.texts}>
                 {texts.slice(page * 5, (page + 1) * 5).map((text, i) => {
                     return (
                         <div
-                            width='80%'
                             className={classes.text}
                             key={`text${i}`}>
                                 <TextField
                                     className={classes.text}
-                                    width='80%'
-                                    id="outlined-basic"
+                                    id={`${page * 5 + i}`}
                                     label="Outlined"
                                     variant="outlined"
-                                    value={text}
+                                    value={textValues[`${page * 5 + i}`]}
                                     multiline={true}
                                     rowsMax={5}
+                                    onChange={textValidator}
+                                    error={textErrors[`${page * 5 + i}`]}
                                 />
                         </div>
                     )
@@ -123,7 +137,8 @@ function Texts(props) {
                         onChangePage={handleChangePage}
                     />)
             })()}
-            <Button>
+            <Button
+            onClick={deleteText}>
                 +
             </Button>
             <Button>

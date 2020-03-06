@@ -120,7 +120,6 @@ class Header extends Component {
         const groupId = this.props.currentGroupId
         const group = this.props.groups[groupId]
         const groupPhoto = `/file/${group && group.photo ? group.photo.small_file_id : ''}`
-        debugger
 
         if (!group) {
             // Object.keys(this.props.groups)

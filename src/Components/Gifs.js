@@ -44,7 +44,6 @@ function Gifs(props) {
 
 
     const gifs = useSelector(state => {
-        debugger
         if(state.Groups.settings[currentGroupId]) {
             return state.Groups.settings[currentGroupId].welcome.gifs
         }   else if (!isFetchingSettings) {

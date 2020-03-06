@@ -35,7 +35,6 @@ export default (state = initialState, action) => {
             return { ...state, groups: newGroups }
         }
         case SET_GROUP_SETTINGS: {
-            debugger
             return {
                 ...state,
                 settings: {
@@ -109,7 +108,6 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
 
     dispatch(toggleIsFetchingSettings(true))
     // dispatch(toggleIsFetchingSettings(true))
-    debugger
     const response = await getGroup(groupId).catch(err => console.log(err))
 
     if (!response.ok) {
@@ -118,7 +116,6 @@ export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
     }
 
     let groupInfo = response.result
-    debugger
     dispatch(setGroupSettings(groupInfo))
     dispatch(toggleIsFetchingSettings(false))
 }
