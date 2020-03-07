@@ -95,7 +95,7 @@ function Gifs(props) {
         <div>
             <Typography className={classes.GifsHeader}>Gifs {(() => {if (gifs.length === 0) return '(empty)'})()}</Typography>
             <div className={classes.gifs}>
-                {gifs.slice(page * 5, (page + 1) * 5).map((gif) => {
+                {gifs.slice(page * 3, (page + 1) * 3).map((gif) => {
                     return (
                         <div
                             className={classes.gif}
@@ -117,10 +117,10 @@ function Gifs(props) {
                 return (
                     <TablePagination //вычислить ширину, подогнать количество на странице
                         rowsPerPageOptions={[]}
-                        labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 5)} of ${Math.ceil(count / 5)}`}
+                        labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 3)} of ${Math.ceil(count / 3)}`}
                         component="div"
                         count={gifs.length}
-                        rowsPerPage={5}
+                        rowsPerPage={3}
                         page={page}
                         onChangePage={handleChangePage}
                     />)
