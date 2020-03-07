@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
@@ -27,54 +27,55 @@ const useStyles = makeStyles({
         opacity: 0.2
     },
     table: {
-      minWidth: 250,
+        minWidth: 250,
     },
     tebleRow: {
         '&': {
             borderCollapse: 'none'
         }
     }
-  })
+})
 
 function MemberList(props) {
-          const users = useSelector(state => state.Users.users)
-          const id = useSelector(state => state.App.currentGroupId)
-          const groupmembers = useSelector(state => state.Users.groupmembers)
-          const isLoading =  {
-              getUser: useSelector(state => state.App.api.getUser),
-              getGroupMembers: useSelector(state => state.App.api.getGroupMembers)
-          }
+    const users = useSelector(state => state.Users.users)
+    const currentGroupId = useSelector(state => state.App.currentGroupId)
+    const groupmembers = useSelector(state => state.Users.groupmembers)
+    const isLoading = {
+        getUser: useSelector(state => state.App.api.getUser),
+        getGroupMembers: useSelector(state => state.App.api.getGroupMembers)
+    }
 
-
-
+    useEffect(() => {
+        setPage(0);
+      }, [currentGroupId]);
 
     const classes = useStyles();
 
     const [page, setPage] = useState(0)
 
-    if (!groupmembers[id]) {
-        if(!isLoading.getGroupMembers) {
-            if (id) {
-                props.getGroupMembers(id)
+    if (!groupmembers[currentGroupId]) {
+        if (!isLoading.getGroupMembers) {
+            if (currentGroupId) {
+                props.getGroupMembers(currentGroupId)
             }
         }
         return <p>Загрузка...</p>
     }
 
-    if (!users[id] && !isLoading.getUser) {
-        props.getUser(groupmembers[id], id)
+    if (!users[currentGroupId] && !isLoading.getUser) {
+        props.getUser(groupmembers[currentGroupId], currentGroupId)
         return <p>Загрузка...</p>
     }
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setPage(newPage)
     }
 
     const renderList = () => {
-        let currentPage = groupmembers[id].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page * 10 + 10)
+        let currentPage = groupmembers[currentGroupId].sort((a, b) => b.stats.messagesCount - a.stats.messagesCount).slice(page * 10, page * 10 + 10)
 
         currentPage = currentPage.map((member) => {
-            if (!users[id] || !users[id][member.telegram_id]) {
+            if (!users[currentGroupId] || !users[currentGroupId][member.telegram_id]) {
                 return (
                     <TableRow key={member.telegram_id} className={classes.tableRow}>
                         <TableCell component="th" scope="row">
@@ -86,12 +87,12 @@ function MemberList(props) {
                             </div>
                         </TableCell>
                         <TableCell>
-                            Loading...
+                            Загрузка...
                         </TableCell>
                     </TableRow>
                 )
             }
-            let user = users[id][member.telegram_id]
+            let user = users[currentGroupId][member.telegram_id]
 
             let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
 
@@ -118,19 +119,19 @@ function MemberList(props) {
         if (currentPage.length < 10) {
             for (let i = currentPage.length; i < 10; i++) {
                 currentPage.push(
-                <TableRow key={`empty-${i}`}>
-                <TableCell component="th" scope="row">
-                <div className={classes.avatarWrapper}>
-                            <Avatar
-                                className={`${classes.avatar} ${classes.avatarEmpty}`}
-                            >
-                            </Avatar>
-                        </div>
-                </TableCell>
-                <TableCell padding='none' align="center"> </TableCell>
-                <TableCell align="center"> </TableCell>
-                <TableCell padding='none' align="center"> </TableCell>
-                </TableRow>)
+                    <TableRow key={`empty-${i}`}>
+                        <TableCell component="th" scope="row">
+                            <div className={classes.avatarWrapper}>
+                                <Avatar
+                                    className={`${classes.avatar} ${classes.avatarEmpty}`}
+                                >
+                                </Avatar>
+                            </div>
+                        </TableCell>
+                        <TableCell padding='none' align="center"> </TableCell>
+                        <TableCell align="center"> </TableCell>
+                        <TableCell padding='none' align="center"> </TableCell>
+                    </TableRow>)
             }
         }
 
@@ -139,7 +140,7 @@ function MemberList(props) {
 
     return (
         <div>
-            <span>В чате {groupmembers[id].length} <span role="img" aria-label="banan">😊</span></span>
+            <span>В чате {groupmembers[currentGroupId].length} <span role="img" aria-label="banan">😊</span></span>
             <p></p>
             <TableContainer component={Paper}>
                 <Table className={classes.table} size="small" aria-label="a dense table">
@@ -158,14 +159,14 @@ function MemberList(props) {
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[]}
-                labelDisplayedRows={({from, count}) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
+                labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
                 component="div"
-                count={groupmembers[id].length}
+                count={groupmembers[currentGroupId].length}
                 rowsPerPage={10}
                 page={page}
                 onChangePage={handleChangePage}
             />
-    </div>
+        </div>
     )
 }
 

@@ -19,6 +19,7 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "styled-components": "^4.4.1",
     "universal-cookie": "^4.0.3"
   },

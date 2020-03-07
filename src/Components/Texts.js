@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
 import { useSelector, useDispatch } from 'react-redux'
@@ -23,11 +23,11 @@ const styles = theme => ({
         flexDirection: 'column',
         flexWrap: 'wrap',
         width: '100%',
+        minHeight: '405px'
 
     },
     text: {
         margin: '10px auto',
-        // width: '80%', class="MuiFormControl-root MuiTextField-root"
         width: '95%',
         '& video': {
             transition: '1s',
@@ -48,6 +48,10 @@ function Texts(props) {
     const getGroupSettings = useCallback(groupId => {
         dispatch(getGroupSettingsThunk(groupId))
     }, [])
+
+    useEffect(() => {
+        setPage(0);
+      }, [currentGroupId]);
 
     const texts = useSelector(state => {
         if(state.Groups.settings[currentGroupId]) {
@@ -99,23 +103,23 @@ function Texts(props) {
 
     return (
         <div>
-            <Typography className={classes.TextsHeader}>{(() => {if (texts.length !== 0) return 'Texts'})()}</Typography>
+            <Typography className={classes.TextsHeader}>{(() => {if (texts.length !== 0) return 'Приветствия:'})()}</Typography>
             <form className={classes.texts}>
-                {texts.slice(page * 5, (page + 1) * 5).map((text, i) => {
+                {texts.slice(page * 3, (page + 1) * 3).map((text, i) => {
                     return (
                         <div
                             className={classes.text}
                             key={`text${i}`}>
                                 <TextField
                                     className={classes.text}
-                                    id={`${page * 5 + i}`}
-                                    label="Outlined"
+                                    id={`${page * 3 + i}`}
+                                    label={textErrors[`${page * 3 + i}`] ? textValues[`${page * 3 + i}`].length !== 0 ? 'Добавьте %name%' : "Приветсвие будет удалено" : "Приветствие"}
                                     variant="outlined"
-                                    value={textValues[`${page * 5 + i}`]}
+                                    value={textValues[`${page * 3 + i}`]}
                                     multiline={true}
-                                    rowsMax={5}
+                                    rowsMax={3}
                                     onChange={textValidator}
-                                    error={textErrors[`${page * 5 + i}`]}
+                                    error={textErrors[`${page * 3 + i}`]}
                                 />
                         </div>
                     )
@@ -127,7 +131,7 @@ function Texts(props) {
                 }
 
                 return (
-                    <TablePagination //вычислить ширину, подогнать количество на странице
+                    <TablePagination
                         rowsPerPageOptions={[]}
                         labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 5)} of ${Math.ceil(count / 5)}`}
                         component="div"
@@ -139,9 +143,10 @@ function Texts(props) {
             })()}
             <Button
             onClick={deleteText}>
-                +
+                -
             </Button>
-            <Button>
+            <Button
+            >
                 save
             </Button>
         </div>

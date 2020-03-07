@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'recompose'
 import { useSelector, useDispatch } from 'react-redux'
@@ -42,6 +42,9 @@ function Gifs(props) {
         dispatch(getGroupSettingsThunk(groupId))
     }, [])
 
+    useEffect(() => {
+        setPage(0);
+      }, [currentGroupId]);
 
     const gifs = useSelector(state => {
         if(state.Groups.settings[currentGroupId]) {
