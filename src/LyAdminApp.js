@@ -119,6 +119,7 @@ class LyAdminApp extends Component {
     return (
       <div id="app">
         <Header/>
+        <div  id="blocks">
         <MemberList
         className={this.props.MemberList}
         getGroupMembers={this.props.getGroupMembers}
@@ -127,6 +128,7 @@ class LyAdminApp extends Component {
         <GroupSettings/>
         <Gifs/>
         <Texts/>
+        </div>
       </div>
     )
   }

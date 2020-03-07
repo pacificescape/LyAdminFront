@@ -14,7 +14,7 @@ import { grey } from '@material-ui/core/colors'
 
 const useStyles = makeStyles({
     avatarWrapper: {
-        display: 'flex',
+        float: 'left',
         borderCollapse: 'none !important'
     },
     avatar: {
@@ -29,11 +29,43 @@ const useStyles = makeStyles({
     table: {
         minWidth: 250,
     },
-    tebleRow: {
-        '&': {
-            borderCollapse: 'none'
+    tdName: {
+        width: '60%',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        // minWidth: '50px',
+        overflow: 'hidden'
+        // '& > td': {
+        //     overflow: 'hidden',
+        //     width: '6%',
+        //     borderCollapse: 'none'
+        // }
+    },
+    tdMessages: {
+        width: '18%',
+        minWidth: '55px',
+        padding: '0px',
+        '& > div': {
+            width: 'fit-content',
+            margin: 'auto'
+        }
+    },
+    tdBanan: {
+        width: '5%',
+        maxWidth: '70px',
+        padding: '0px',
+        '& > div': {
+            width: 'fit-content',
+            margin: 'auto'
         }
     }
+    // overrides: {
+    //     MuiTableCell: {
+    //         width: '7% !important',
+    //         overflow: 'hidden',
+    //         paddingRight: '15px'
+    //     }
+    // }
 })
 
 function MemberList(props) {
@@ -47,7 +79,7 @@ function MemberList(props) {
 
     useEffect(() => {
         setPage(0);
-      }, [currentGroupId]);
+    }, [currentGroupId]);
 
     const classes = useStyles();
 
@@ -98,7 +130,7 @@ function MemberList(props) {
 
             return (
                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="td" padding='10px' className={classes.tdName}>
                         <div className={classes.avatarWrapper}>
                             <Avatar
                                 src={avatar}
@@ -106,12 +138,18 @@ function MemberList(props) {
                             >
                                 {user.last_name ? user.first_name[0] + ' ' + user.last_name[0] : user.first_name[0]}
                             </Avatar>
-                            {(() => (user.last_name ? user.first_name + ' ' + user.last_name : user.first_name))()}
                         </div>
+                        <span>
+                            {user.last_name ? (user.first_name + ' ' + user.last_name) : user.first_name}
+                        </span>
                     </TableCell>
-                    <TableCell padding='none' align="center">{member.stats.messagesCount}</TableCell>
-                    <TableCell align="center">{member.banan.num}</TableCell>
-                    <TableCell padding='none' align="center">{new Date(member.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell styles={{ 'min-width': '50px' }} align="center" className={classes.tdMessages}>
+                        <div >
+                            {member.stats.messagesCount}
+                        </div>
+                        </TableCell>
+                    <TableCell align="center" className={classes.tdBanan}><div>{member.banan.num}</div></TableCell>
+                    <TableCell align="center" className={classes.tdDate}>{new Date(member.createdAt).toLocaleDateString()}</TableCell>
                 </TableRow>
             )
         })
@@ -120,7 +158,7 @@ function MemberList(props) {
             for (let i = currentPage.length; i < 10; i++) {
                 currentPage.push(
                     <TableRow key={`empty-${i}`}>
-                        <TableCell component="th" scope="row">
+                        <TableCell component="td" scope="row">
                             <div className={classes.avatarWrapper}>
                                 <Avatar
                                     className={`${classes.avatar} ${classes.avatarEmpty}`}
@@ -148,7 +186,7 @@ function MemberList(props) {
                         <TableRow>
                             <TableCell><span role="img" aria-label="banan">😊</span></TableCell>
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">✉️</span></TableCell>
-                            <TableCell padding='none' align="center"><span role="img" aria-label="banan">🍌</span></TableCell>
+                            <TableCell className={classes.banan} padding='none' align="center"><span role="img" aria-label="banan">🍌</span></TableCell>
                             <TableCell padding='none' align="center"><span role="img" aria-label="banan">🎂</span></TableCell>
                         </TableRow>
                     </TableHead>

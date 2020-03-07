@@ -6,7 +6,7 @@ html {
     background: rgb(50, 50, 50);
     /* height: 100%; */
     width: 100%;
-    max-width: 1024px;
+    /* max-width: 1024px; */
     margin: auto;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -67,3 +67,27 @@ mark {
 .pointer {
     cursor: pointer;
 }
+
+@media screen and (min-device-width: 1050px) {
+
+    #blocks {
+        width: fit-content;
+        margin: 20px auto 20px auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex-grow: 2;
+
+    }
+
+    #blocks > div {
+        width: 620px;
+        margin-left: 80px;
+        margin-left: 80px;
+    }
+
+    .MuiDrawer-paper {
+        width: 800px;
+        margin: auto;
+    }
+   }
