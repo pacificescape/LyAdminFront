@@ -33,13 +33,8 @@ const useStyles = makeStyles({
         width: '60%',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        // minWidth: '50px',
-        overflow: 'hidden'
-        // '& > td': {
-        //     overflow: 'hidden',
-        //     width: '6%',
-        //     borderCollapse: 'none'
-        // }
+        padding: '1%',
+        overflow: 'hidden',
     },
     tdMessages: {
         width: '18%',
@@ -58,6 +53,9 @@ const useStyles = makeStyles({
             width: 'fit-content',
             margin: 'auto'
         }
+    },
+    noselect: {
+        userSelect: 'none !important'
     }
     // overrides: {
     //     MuiTableCell: {
@@ -130,7 +128,7 @@ function MemberList(props) {
 
             return (
                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
-                    <TableCell component="td" padding='10px' className={classes.tdName}>
+                    <TableCell component="td" className={classes.tdName}>
                         <div className={classes.avatarWrapper}>
                             <Avatar
                                 src={avatar}
@@ -155,7 +153,9 @@ function MemberList(props) {
         })
 
         if (currentPage.length < 10) {
-            for (let i = currentPage.length; i < 10; i++) {
+            let length = groupmembers[currentGroupId] > 9 ? 10 : groupmembers[currentGroupId]
+
+            for (let i = currentPage.length; i < length; i++) {
                 currentPage.push(
                     <TableRow key={`empty-${i}`}>
                         <TableCell component="td" scope="row">
@@ -196,6 +196,7 @@ function MemberList(props) {
                 </Table>
             </TableContainer>
             <TablePagination
+                className={classes.noselect}
                 rowsPerPageOptions={[]}
                 labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 10)} of ${Math.ceil(count / 10)}`}
                 component="div"

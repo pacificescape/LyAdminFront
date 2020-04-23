@@ -12,7 +12,9 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 
 const styles = theme => ({
-
+    noselect: {
+        userSelect: 'none !important'
+    },
     TextsHeader: {
         padding: '10px',
         backgroundColor: theme.palette.grey[700] + '11'
@@ -23,8 +25,7 @@ const styles = theme => ({
         flexDirection: 'column',
         flexWrap: 'wrap',
         width: '100%',
-        minHeight: '405px'
-
+        justifyContent: 'space-between'
     },
     text: {
         margin: '10px auto',
@@ -40,10 +41,14 @@ const styles = theme => ({
 })
 
 function Texts(props) {
+    let minHeight
     const { classes } = props
     const dispatch = useDispatch()
     const currentGroupId = (useSelector(state => state.App.currentGroupId))
     const isFetchingSettings = (useSelector(state => state.Groups.isFetchingSettings))
+
+    const [textsOnPage, setTextsOnPage] = useState(null)
+    const [textErrors, setTextErrors] = useState(false)
 
     const getGroupSettings = useCallback(groupId => {
         dispatch(getGroupSettingsThunk(groupId))
@@ -58,16 +63,18 @@ function Texts(props) {
             return state.Groups.settings[currentGroupId].welcome.texts
         }   else if (!isFetchingSettings) {
             getGroupSettings(currentGroupId)
+            setTextsOnPage([])
         }
         return []
     })
 
-    const [textValues, setTextValues] = useState(null)
-    const [textErrors, setTextErrors] = useState(false)
-
-    if(!textValues && texts.length !== 0) {
-        setTextValues(texts.reduce((acc, v, i) => {return {...acc, [i]: v}}, {}))
+    if(!textsOnPage && texts.length !== 0) {
+        setTextsOnPage(texts.reduce((acc, v, i) => {return {...acc, [i]: v}}, {}))
         setTextErrors(Object.assign({}, texts.map(t => false)))
+    }
+
+    if(texts.length > 2) {
+        minHeight = "393px"
     }
 
     function textValidator(event) {
@@ -76,7 +83,7 @@ function Texts(props) {
         } else {
             setTextErrors({...textErrors, [+event.target.id]: false})
         }
-        setTextValues({...textValues, [+event.target.id]: event.target.value})
+        setTextsOnPage({...textsOnPage, [+event.target.id]: event.target.value})
     }
 
     const [page, setPage] = useState(0)
@@ -85,8 +92,8 @@ function Texts(props) {
     }
 
     function deleteText(event) {
-        delete textValues[Object.keys(textValues)[0]]
-        setTextValues(textValues)
+        delete textsOnPage[Object.keys(textsOnPage)[0]]
+        setTextsOnPage(textsOnPage)
     }
 
     if (!texts) {
@@ -97,14 +104,14 @@ function Texts(props) {
         )
     }
 
-    if (!textValues) {
+    if (!textsOnPage) {
         return ''
     }
 
     return (
         <div>
             <Typography className={classes.TextsHeader}>{(() => {if (texts.length !== 0) return 'Приветствия:'})()}</Typography>
-            <form className={classes.texts}>
+            <form className={classes.texts} style={{minHeight}}>
                 {texts.slice(page * 3, (page + 1) * 3).map((text, i) => {
                     return (
                         <div
@@ -113,9 +120,9 @@ function Texts(props) {
                                 <TextField
                                     className={classes.text}
                                     id={`${page * 3 + i}`}
-                                    label={textErrors[`${page * 3 + i}`] ? textValues[`${page * 3 + i}`].length !== 0 ? 'Добавьте %name%' : "Приветсвие будет удалено" : "Приветствие"}
+                                    label={textErrors[`${page * 3 + i}`] ? textsOnPage[`${page * 3 + i}`].length !== 0 ? 'Добавьте %name%' : "Приветсвие будет удалено" : "Приветствие"}
                                     variant="outlined"
-                                    value={textValues[`${page * 3 + i}`]}
+                                    value={textsOnPage[`${page * 3 + i}`]}
                                     multiline={true}
                                     rowsMax={3}
                                     onChange={textValidator}
@@ -132,6 +139,7 @@ function Texts(props) {
 
                 return (
                     <TablePagination
+                        className={classes.noselect}
                         rowsPerPageOptions={[]}
                         labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 5)} of ${Math.ceil(count / 5)}`}
                         component="div"

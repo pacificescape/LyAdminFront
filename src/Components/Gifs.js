@@ -30,6 +30,9 @@ const styles = theme => ({
             width: '100%px',
             height: '90px'
         }
+    },
+    noselect: {
+        userSelect: 'none !important'
     }
 })
 
@@ -116,6 +119,7 @@ function Gifs(props) {
 
                 return (
                     <TablePagination //вычислить ширину, подогнать количество на странице
+                        className={classes.noselect}
                         rowsPerPageOptions={[]}
                         labelDisplayedRows={({ from, count }) => `${Math.ceil(from / 3)} of ${Math.ceil(count / 3)}`}
                         component="div"
