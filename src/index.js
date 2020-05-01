@@ -16,11 +16,11 @@ if (window.location.href.indexOf('login') !== -1) {
 }
 
 ReactDOM.render(
-        <Router>
-            <Provider store={store}>
+    <Router>
+        <Provider store={store}>
             <Route path="/" component={LyAdminApp} />
-            </Provider>
-        </Router>,
+        </Provider>
+    </Router>,
     document.getElementById('root')
 );
 

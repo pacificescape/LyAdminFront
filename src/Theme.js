@@ -9,13 +9,11 @@ function createTheme(type, primary) {
         palette: {
             type: type,
             primary: primary,
-            secondary: { main: '#E53935' },
-
+            secondary: { main: '#E53935' }
         },
         status: {
             danger: 'orange',
         },
-
         MuiAppBar: {
             flexDirection: "row"
         }
