@@ -1,4 +1,4 @@
-html {
+/* html {
   overflow: auto;
 }
 
@@ -10,7 +10,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
 }
 
 code {
@@ -20,4 +19,4 @@ code {
 
 #app {
   max-width: 1024px;
-}
+} */

@@ -1,5 +1,6 @@
 import getUserGroups from '../../Api/getUserGroups' // list of groups
 import getGroup from '../../Api/getGroup' // settings of group
+import { InitialStateType } from '../../types/types'
 
 const SET_GROUPS = 'SET_GROUPS' // groups
 const SET_GROUP_SETTINGS = 'SET_GROUP_SETTINGS'
@@ -11,19 +12,19 @@ const TOGGLE_IS_INITIALIZING = 'TOGGLE_IS_INITIALIZING'
 const TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR'
 const TOGGLE_IS_CHANGING_SETTINGS = 'TOGGLE_IS_CHANGING_SETTINGS'
 
-let initialState = {
+let initialState:InitialStateType = {
     groups: {},
     settings: {},
     ids: [],
     isFetchingSettings: true
 }
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_GROUPS: {
             let keys = Object.keys(action.groups)
 
-            let newGroups = keys.reduce((acc, key) => {
+            let newGroups = keys.reduce((acc: Record<string, any>, key: string) => {
                 if (state.groups[key]) {
                     delete acc[key].settings
                 }
@@ -57,20 +58,31 @@ export default (state = initialState, action) => {
 }
 
 
+type ActionType = {
+    type: typeof TOGGLE_IS_CHANGING_SETTINGS
+        | typeof SET_GROUPS
+        | typeof SET_GROUP_SETTINGS
+        | typeof INITIALIZE_APP
+        | typeof TOGGLE_IS_AUTH
+        | typeof TOGGLE_IS_FETCHING_SETTINGS
+        | typeof TOGGLE_IS_INITIALIZING
+        | typeof TOGGLE_IS_ERROR
+        | typeof TOGGLE_IS_CHANGING_SETTINGS
+    }
 
-export const setGroups = (groups) => ({ type: SET_GROUPS, groups })
-export const setGroupSettings = (groupInfo) => ({ type: SET_GROUP_SETTINGS, groupInfo })
+export const setGroups = (groups: Array<object>) => ({ type: SET_GROUPS, groups })
+export const setGroupSettings = (groupInfo: object) => ({ type: SET_GROUP_SETTINGS, groupInfo })
 
-export const toggleIsInitialized = (isInitialized) => ({ type: INITIALIZE_APP, isInitialized })
-export const toggleiIsInitializing = (initializing) => ({ type: TOGGLE_IS_INITIALIZING, initializing })
-export const toggleIsAuth = (isAuth) => ({ type: TOGGLE_IS_AUTH, isAuth })
-export const toggleIsFetchingSettings = (isFetchingSettings) => ({ type: TOGGLE_IS_FETCHING_SETTINGS, isFetchingSettings })
-export const toggleIsError = (isError) => ({ type: TOGGLE_IS_ERROR, isError })
-export const toggleisChangingSettings = (isChanging) => ({ type: TOGGLE_IS_CHANGING_SETTINGS, isChanging })
+export const toggleIsInitialized = (isInitialized: boolean) => ({ type: INITIALIZE_APP, isInitialized })
+export const toggleiIsInitializing = (initializing: boolean) => ({ type: TOGGLE_IS_INITIALIZING, initializing })
+export const toggleIsAuth = (isAuth: boolean) => ({ type: TOGGLE_IS_AUTH, isAuth })
+export const toggleIsFetchingSettings = (isFetchingSettings: boolean) => ({ type: TOGGLE_IS_FETCHING_SETTINGS, isFetchingSettings })
+export const toggleIsError = (isError: boolean) => ({ type: TOGGLE_IS_ERROR, isError })
+export const toggleisChangingSettings = (isChanging: boolean): Record<string, any> => ({ type: TOGGLE_IS_CHANGING_SETTINGS, isChanging })
 
 
 
-export const getUserGroupsThunk = () => async (dispatch) => {
+export const getUserGroupsThunk = () => async (dispatch: any) => {
     dispatch(toggleIsFetchingSettings(true))
     dispatch(toggleiIsInitializing(true))
 
@@ -88,7 +100,7 @@ export const getUserGroupsThunk = () => async (dispatch) => {
     }
     const arrOfGroups = response.result.groups || []
 
-    let groups = arrOfGroups.reduce((groups, group) => { return { ...groups, [group.id]: { ...group } } }, {})
+    let groups = arrOfGroups.reduce((groups: object, group: Record<string, any>) => { return { ...groups, [group.id]: { ...group } } }, {})
 
     dispatch(setGroups(groups))
 
@@ -97,10 +109,10 @@ export const getUserGroupsThunk = () => async (dispatch) => {
         dispatch(toggleIsAuth(true))
         dispatch(toggleiIsInitializing(false))
         dispatch(toggleIsInitialized(true))
-    }, 1000)
+    }, 10)
 }
 
-export const getGroupSettingsThunk = (groupId) => async (dispatch) => {
+export const getGroupSettingsThunk = (groupId: string) => async (dispatch: any) => {
     if (!groupId) {
         console.log('getgroupSettings: no group')
         return

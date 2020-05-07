@@ -43,7 +43,7 @@ function Gifs(props) {
 
     const getGroupSettings = useCallback(groupId => {
         dispatch(getGroupSettingsThunk(groupId))
-    }, [])
+    }, [dispatch]) // ????????????? []
 
     useEffect(() => {
         setPage(0);

@@ -17,6 +17,7 @@ body {
     padding: 0;
     width: 100%;
     font: 15px/20px 'Roboto', sans-serif;
+    min-height: 100vh;
 }
 
 b,

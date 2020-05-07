@@ -149,7 +149,7 @@ function SimpleDialog(props) {
             onClose={props.onClose}
             aria-labelledby="simple-dialog-title"
             open={props.open}
-            fullWidth={true}
+            fullWidth={false}
             maxWidth={'xl'}>
 
             <DialogTitle id="simple-dialog-title">Color theme picker</DialogTitle>
