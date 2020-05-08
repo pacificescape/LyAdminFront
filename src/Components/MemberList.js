@@ -124,7 +124,7 @@ function MemberList(props) {
             }
             let user = users[currentGroupId][member.telegram_id]
 
-            let avatar = user.username ? `https://t.me/i/userpic/320/${user.username}.jpg` : ''
+            let avatar = user.username ? `https://tx.me/i/userpic/320/${user.username}.jpg` : ''
 
             return (
                 <TableRow key={member.telegram_id} className={classes.tebleRow}>
